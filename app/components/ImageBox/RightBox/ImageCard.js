@@ -1,0 +1,55 @@
+import React from 'react';
+import Paper from '@material-ui/core/Paper'
+import Box from '@material-ui/core/Box';
+import Checkbox  from '@material-ui/core/Checkbox';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import {makeStyles} from '@material-ui/core/styles';
+
+const styles = makeStyles({
+    container: {
+        padding: '5px',
+        margin: '5px',
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    imageName: {
+        paddingLeft: '4px'
+    },
+    smallCheckBox : {
+        padding: '0px'
+    },
+    smallBtn : {
+        padding : "1px 3px",
+        fontSize : "10px",
+        margin : "3px"
+    },
+    image: {
+        margin: '5px'
+    }
+})
+
+export default function ImageCard(props) {
+    console.log('re-render', props.image)
+    const classes = styles();
+    const {container, imageName, smallBtn, smallCheckBox, image} = classes;
+    const {index, filename, imageSrc, checked} = props.image;
+    const {toggleCheck, onClickSave, onClickRemove} = props;
+    return (
+        <Paper className={container} elevation={3} > 
+            <Box bgcolor="aliceblue">
+                <Checkbox className={smallCheckBox} checked={checked} onChange={toggleCheck(index)}></Checkbox>
+                <Typography className={imageName} variant="caption">[{index}] {filename}</Typography>
+            </Box>   
+            <Box className="handle" display="flex" flexDirection="row" width="1">
+                <Box bgcolor="black" display="flex" justifyContent="center" flex="1">
+                    <img className={image} alt="poster" src={imageSrc} style={{height:'80px'}}></img>
+                </Box>
+            </Box>
+            <Box display="flex" flexDirection="row" justifyContent="center" width={1}>
+                    <Button className={smallBtn} onClick={onClickSave} variant="contained">Save</Button>  
+                    <Button className={smallBtn} onClick={onClickRemove} variant="contained" >Remove</Button>  
+            </Box>
+        </Paper>
+    ) 
+}
