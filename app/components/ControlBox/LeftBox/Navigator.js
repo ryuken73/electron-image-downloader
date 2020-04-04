@@ -9,10 +9,10 @@ import ToggleImageButton from '../../template/ToggleImageButton';
 export default function NavigatorPanel(props) {
     console.log(props);
     const {launchUrl="https://www.daum.net"} = props;
-    const {changeUrl} = props;
+    const {setURL} = props.NavigatorActions;
     const onChange = (event) => {
         console.log(event.target.value)
-        changeUrl(event.target.value)
+        setURL(event.target.value)
     }
     return (
         <Box display="flex" flexDirection="row" alignItems="center" width={1} alignContent="center"> 
