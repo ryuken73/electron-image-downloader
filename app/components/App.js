@@ -29,7 +29,8 @@ function App() {
         <FirstChildSection flexGrow="0">
           <ControlBox></ControlBox>
         </FirstChildSection> 
-        <FirstChildSection>
+        {/* <FirstChildSection> */}
+        <FirstChildSection flexGrow="1" flexShrink="1" flexBasis="auto">
           <ImageBox></ImageBox>
         </FirstChildSection> 
       </FullHeightContainer>

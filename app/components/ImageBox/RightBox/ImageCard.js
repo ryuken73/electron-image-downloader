@@ -29,7 +29,7 @@ const styles = makeStyles({
     }
 })
 
-export default function ImageCard(props) {
+function ImageCard(props) {
     console.log('re-render', props.image)
     const classes = styles();
     const {container, imageName, smallBtn, smallCheckBox, image} = classes;
@@ -53,3 +53,5 @@ export default function ImageCard(props) {
         </Paper>
     ) 
 }
+
+export default React.memo(ImageCard);

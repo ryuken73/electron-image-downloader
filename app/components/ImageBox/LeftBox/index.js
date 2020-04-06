@@ -10,6 +10,7 @@ import SectionWithFullHeightFlex from '../../template/SectionWithFullHeightFlex'
 export default function SavePanel() {
     return (
         <SectionWithFullHeightFlex className="SectionWithFullHeightFlex ImageBox" flexGrow="0" width="20px" >
+             <BorderedBox display="flex" alignContent="center" flexGrow="1">
             <Box display="flex" flexDirection="column" width="1" textAlign={"center"}>
                 <Box mt="20px" display="flex" height="120px" justifyContent="space-around" flexShrink="0" flexDirection="column" mx="10px" mb="10px">
                     <Typography variant={"body1"}>Save Directory</Typography>
@@ -32,6 +33,7 @@ export default function SavePanel() {
                     <Button variant={"contained"}>Delete Selected</Button>
                 </Box>            
             </Box>
+            </BorderedBox>
         </SectionWithFullHeightFlex>
     )
 }

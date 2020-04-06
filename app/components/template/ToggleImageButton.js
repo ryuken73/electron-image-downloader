@@ -5,13 +5,13 @@ import {SmallPaddingIconButton} from './smallComponents';
 
 
 export default function ToggleImageButton(props) {
-  const {mode='OFF_RECORDING'} = props;
+  const {mode='OFF_RECORDING', onClick} = props;
   const color = {
     'ON_RECORDING': 'secondary',
     'OFF_RECORDING':'primary'
   }
   return (
-      <SmallPaddingIconButton aria-label="record">
+      <SmallPaddingIconButton onClick={onClick} aria-label="record">
         <FiberManualRecordIcon color={color[mode]} fontSize="small" />
       </SmallPaddingIconButton>
   )

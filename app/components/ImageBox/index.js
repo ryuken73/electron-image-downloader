@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import BorderedBox from '../template/BorderedBox';
 import Box from '@material-ui/core/Box';
 import LeftBox from './LeftBox';
-import RightBox from './RightBox';
+// import ImageListPanel from './RightBox/ImageListPanel';
+import ImageListContainer from '../../containers/ImageListContainer';
 import SectionWithFullHeight from '../template/SectionWithFullHeight';
 
 export default class ImageBox extends Component {
@@ -12,7 +13,7 @@ export default class ImageBox extends Component {
         return (
             <Box className="ImageBox" display="flex" flexDirection="row" flexGrow="1">
                 <LeftBox></LeftBox>
-                <RightBox></RightBox>
+                <ImageListContainer></ImageListContainer>
             </Box>
         )
     }

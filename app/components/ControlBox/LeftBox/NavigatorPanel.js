@@ -7,12 +7,24 @@ import ToggleImageButton from '../../template/ToggleImageButton';
 
 
 export default function NavigatorPanel(props) {
-    console.log(props);
-    const {launchUrl="https://www.daum.net"} = props;
-    const {setURL} = props.NavigatorActions;
+    console.log('re-render NavigatorPanel:',props);
+    const {launchUrl="https://www.daum.net", tracking, launched=false} = props;
+    const {setURL, launchBrowserAsync, toggleTrackAsync} = props.NavigatorActions;
+    const trackMode = tracking ? "ON_RECORDING" : "OFF_RECORDING";
+    const launchIconDiabled = launched ? true : false;
+    const launchIconMode = launched ? 'disabled' : 'primary';
+
     const onChange = (event) => {
         console.log(event.target.value)
         setURL(event.target.value)
+    }
+    const onClickLaunch = (event) => {
+        console.log('launch brwoser clicked');
+        launchBrowserAsync();
+    }
+    const onClickTrack = (event) => {
+        console.log('track button clicked');
+        toggleTrackAsync();
     }
     return (
         <Box display="flex" flexDirection="row" alignItems="center" width={1} alignContent="center"> 
@@ -33,10 +45,17 @@ export default function NavigatorPanel(props) {
                 onChange={onChange}
             >
             </SmallMarginTextField>     
-            <SmallPaddingIconButton aria-label="launch">
-                <OpenInBrowserTwoToneIcon color="primary" fontSize="small" />
+            <SmallPaddingIconButton 
+                onClick={onClickLaunch} 
+                aria-label="launch"
+                disabled={launchIconDiabled} 
+            >
+                <OpenInBrowserTwoToneIcon color={launchIconMode} fontSize="small" />
             </SmallPaddingIconButton>       
-            <ToggleImageButton></ToggleImageButton>
+            <ToggleImageButton
+                mode={trackMode}
+                onClick={onClickTrack}
+            ></ToggleImageButton>
         </Box>
     )
 }
