@@ -11,8 +11,9 @@ import BorderedList from '../../template/BorderedList';
 import {SmallMarginTextField}  from '../../template/smallComponents';
 
 export default function FilterPanel(props) {
-    const {contentType="imageAll"} = props;
-    const {contentSizeMin=0, contentSizeMax=1024000} = props;
+    const {contentTypes=['image', 'jpg']} = props;
+    const {contentSizeMin=1024, contentSizeMax=10240000} = props;
+    const {urlPatthern=['*']} = props;
 
     const optionContentType = {
         title: <Typography variant="body1">Content-Type</Typography>,
@@ -24,9 +25,10 @@ export default function FilterPanel(props) {
                     labelId="content-type-select-label" 
                     variant="outlined"
                     margin="dense"
-                    value={contentType}
+                    value={contentTypes}
+                    multiple
                     >
-                        <MenuItem value={"imageAll"}>image/*</MenuItem>
+                        <MenuItem value={"image"}>image/*</MenuItem>
                         <MenuItem value={"jpg"}>image/jpeg</MenuItem>
                         <MenuItem value={"png"}>image/png</MenuItem>
                     </Select>
@@ -67,6 +69,7 @@ export default function FilterPanel(props) {
                 <SmallMarginTextField 
                     variant="outlined"
                     margin="dense"
+                    value={urlPatthern.join(',')}
                 ></SmallMarginTextField> 
             </Box>
         ) 

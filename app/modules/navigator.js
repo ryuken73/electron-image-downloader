@@ -16,7 +16,7 @@ export const toggleTrack = createAction(TOGGLE_TRACK);
 export const enableTrackBtn = createAction(ENABLE_TRACKBTN);
 export const enableLaunchBtn = createAction(ENABLE_LAUNCHBTN);
 
-
+// react thunk
 export const launchBrowserAsync = () => async (dispatch, getState) => {
     const state = getState();
     const {launchUrl} = state.navigator;
@@ -45,13 +45,16 @@ export const toggleTrackAsync = () => async (dispatch, getState) => {
     const state = getState();
     const {browser, page, tracking} = state.navigator;
     const {trackingTab} = state.browserOptions;
-    const {startTrack, stopTrack} = chromeBrowser;
+    const {contentTypes, contentSizeMin, contentSizeMax, urlPatterns} = state.trackFilters;
+    console.log(state.trackFilters);
+    const {startTrack, stopTrack, mkTrackFilter} = chromeBrowser;
     const newTrackFlag = !tracking;
+    const genTrackFilter = mkTrackFilter({contentTypes, contentSizeMin, contentSizeMax, urlPatterns});
     const startSave = trackingTab === 'all' ? startTrack(browser) : startTrack(page);
     const stopSave = trackingTab === 'all' ? stopTrack(browser) : stopTrack(page);
     // const trackMethod = trackingTab === 'all' ? chromeBrowser.startTrackingAll : chromeBrowser.startTracking
     // newTrackFlag ? await chromeBrowser.startTracking(page) : await chromeBrowser.stopTracking(page);
-    newTrackFlag ? await startSave() : await stopSave();
+    newTrackFlag ? await startSave(genTrackFilter) : await stopSave();
     dispatch(toggleTrack(newTrackFlag));
 }
 
