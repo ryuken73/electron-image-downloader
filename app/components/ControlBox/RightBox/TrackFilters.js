@@ -13,7 +13,23 @@ import {SmallMarginTextField}  from '../../template/smallComponents';
 export default function FilterPanel(props) {
     const {contentTypes=['image', 'jpg']} = props;
     const {contentSizeMin=1024, contentSizeMax=10240000} = props;
-    const {urlPatthern=['*']} = props;
+    const {urlPatterns=['*']} = props;
+    const {setContentTypes, setContentSizeMin, setContentSizeMax, setUrlPattern} = props.TrackFilterActions;
+    const setUrlPatternByArray = (patternString) => {
+        const patternArray = patternString.split(',');
+        setUrlPattern(patternArray);
+    }
+    const actionFunctions = {
+        'contentTypes': setContentTypes,
+        'minSize': setContentSizeMin,
+        'maxSize': setContentSizeMax,
+        'urlPatterns': setUrlPatternByArray
+    }
+    const onChange = (type) => {
+        return (event) => {
+            actionFunctions[type](event.target.value);
+        }
+    }
 
     const optionContentType = {
         title: <Typography variant="body1">Content-Type</Typography>,
@@ -26,6 +42,7 @@ export default function FilterPanel(props) {
                     variant="outlined"
                     margin="dense"
                     value={contentTypes}
+                    onChange={onChange('contentTypes')}
                     multiple
                     >
                         <MenuItem value={"image"}>image/*</MenuItem>
@@ -46,6 +63,7 @@ export default function FilterPanel(props) {
                         variant="outlined"
                         margin="dense"
                         value={contentSizeMin}
+                        onChange={onChange('minSize')}
                     ></SmallMarginTextField>
                 </Box>
                 <Box width="50px" textAlign="center">
@@ -56,6 +74,7 @@ export default function FilterPanel(props) {
                         variant="outlined"
                         margin="dense"
                         value={contentSizeMax}
+                        onChange={onChange('maxSize')}
                     ></SmallMarginTextField>
                 </Box>
             </React.Fragment>
@@ -69,7 +88,8 @@ export default function FilterPanel(props) {
                 <SmallMarginTextField 
                     variant="outlined"
                     margin="dense"
-                    value={urlPatthern.join(',')}
+                    value={urlPatterns.join(',')}
+                    onChange={onChange('urlPatterns')}
                 ></SmallMarginTextField> 
             </Box>
         ) 

@@ -29,8 +29,8 @@ const getFirstStringBySep = ({str='', sep=' '}) => {
 }
 
 const launchBrowser = async (url, width, height) => {
-    const widthToNumber = Number(width) === NaN ? 800 : Number(width);
-    const heightToNumber = Number(height) === NaN ? 600 : Number(height);
+    const widthToNumber = isNaN(Number(width)) ? 800 : Number(width);
+    const heightToNumber = isNaN(Number(height)) ? 600 : Number(height);
     console.log({widthToNumber, heightToNumber})
     const browser = await puppeteer.launch({
         headless: false,
