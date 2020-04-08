@@ -36,6 +36,9 @@ const allowedByWhiteList = (response, whiteList) => {
 }
 
 const launchBrowser = async (url, width, height) => {
+    const widthToNumber = Number(width) === NaN ? 800 : Number(width);
+    const heightToNumber = Number(height) === NaN ? 600 : Number(height);
+    console.log({widthToNumber, heightToNumber})
     const browser = await puppeteer.launch({
         headless: false,
         devtools: false,
@@ -49,14 +52,22 @@ const launchBrowser = async (url, width, height) => {
     const pages = await browser.pages();
     const currentPage = pages[0];  
 
-    await currentPage.setViewport({width, height});
+    await currentPage.setViewport({width:widthToNumber, height:heightToNumber});
 
     return {browser, currentPage};
 
 }
 
-    console.log('pass--2');
+console.log('pass--2');
 
+
+
+const targetCreatedHandler = browser => async(target) => {
+    console.log('targetcreated event occurred', target.type());
+    const IS_NEW_PAGE_EVENT = target.type() === 'page';
+    const page = IS_NEW_PAGE_EVENT && await target.page();
+    trackRequest(page);
+}
 
 const whiteList = [
     'image',
@@ -64,14 +75,19 @@ const whiteList = [
 ];
 
 
-const attachEventListenerToPage = (event, handler, page) => {
-    console.log('event mgmt called : y', page)
-    page.on(event, handler);
-}
+// const attachEventListenerToPage = (event, handler, page) => {
+//     console.log('event mgmt called : y', page)
+//     page.on(event, handler);
+// }
 
-const detachEventListenerFromPage = (event, handler, page) => {
-    console.log('event mgmt called : n')
-    page.removeListener(event, handler);
+// const detachEventListenerFromPage = (event, handler, page) => {
+//     console.log('event mgmt called : n')
+//     page.removeListener(event, handler);
+// }
+
+const requestHandler = page => (request) => {
+        const url = request.url();
+        requestMap.set(url, index++);
 }
 
 const responseHandler = page => async (response) => {
@@ -112,56 +128,110 @@ const responseHandler = page => async (response) => {
 
 let index = 1;
 const requestMap = new Map();
+
 const launch = async (options) => {
     const {url='https://www.google.com', width=800, height=600} = options;
     const {browser, currentPage:page} = await launchBrowser(url, width, height);
     page.setDefaultTimeout(60000);
     attachListenerToPage(page);
+    page.on('request', requestHandler(page));
 
     // listener for request must be attached before page.goto
-    page.on('request', async (request) => {
-        const url = request.url();
-        requestMap.set(url, index++);
-    })
+    // trackRequest(page);
+
+    // listener for request must be attached before page.goto
+    // page.on('request', async (request) => {
+    //     const url = request.url();
+    //     requestMap.set(url, index++);
+    // })
 
     console.time('goto');
     await page.goto(url);  
     console.timeEnd('goto');
-
-    // const message = `track ? (y/n) :`
-    // console.log(message);
-    // const stdinReader = process.stdin;
-    // stdinReader.on('data' , (buff) => {
-    //     const EVENT = 'response';
-    //     const ans = buff.toString().slice(0,1);
-    //     ans === 'y' && attachEventListenerToPage(EVENT, handler, page);
-    //     ans === 'n' && detachEventListenerFromPage(EVENT, handler, page);
-    //     console.log(message);
-    // })
     console.log(browser.process().pid)
+
     return {page, browser};
 }
-
-
-const attachListener = (page) => {
-    console.log(page);
-    page.responseHandler = responseHandler(page);
-    attachEventListenerToPage('response', page.responseHandler, page);
+const trackRequest = {
+    start(page){
+        page.requestHandler = requestHandler(page);
+        page.responseHandler = responseHandler(page);
+        page.on('request', page.requestHandler);
+        page.on('response', page.responseHandler);
+        return true
+    },
+    stop(page){
+        page.removeListener('response', page.responseHandler);
+        page.removeListener('request', page.requestHandler);
+        return true
+    }
 }
 
-const detachListener = (page) => {
-    console.log(page);
-    detachEventListenerFromPage('response', page.responseHandler, page);
+const startTracking = (page) => {
+    return () => {
+        console.log(page);
+        // page.responseHandler = responseHandler(page);
+        return trackRequest.start(page);
+        // page.on('response', page.responseHandler);
+    }
+}
+
+const stopTracking = (page) => {
+    return () => {
+        console.log(page);
+        return trackRequest.stop(page);
+        // page.removeListener('response', page.responseHandler);
+    }
 }
 
 // const url = 'https://eguru.tumblr.com/post/188921110492/%EA%B7%80%EB%A9%B8%EC%9D%98-%EC%B9%BC%EB%82%A0-1%EA%B6%8C'
 
+// const followNewTab = (browser) => {
+//     browser.targetCreatedHandler = targetCreatedHandler(browser);
+//     browser.on('targetcreated', browser.targetCreatedHandler);
 
+// }
+
+// const unfollowNewTab = (browser) => {
+//     browser.removeListener('targetcreated', browser.targetCreatedHandler);
+// }
+
+const startTrackingAll = (browser) => {
+    return async () => {
+        const pages = await browser.pages();
+        const requestStartTracking = pages.map(page => startTracking(page)());
+        return requestStartTracking.every(result => result === true);
+    }
+}
+
+const stopTrackingAll = (browser) => {
+    return async () => {
+        const pages = await browser.pages();
+        const requestStopTracking = pages.map(page => stopTracking(page)());
+        return requestStopTracking.every(result => result === true);
+    }
+}
+
+const startTrack = (puppetInstance) => {
+    const IS_BROWSER = puppetInstance.target().type() === 'browser';
+    if(IS_BROWSER) return startTrackingAll(puppetInstance);
+    return startTracking(puppetInstance)
+}
+
+const stopTrack = (puppetInstance) => {
+    const IS_BROWSER = puppetInstance.target().type() === 'browser';
+    if(IS_BROWSER) return stopTrackingAll(puppetInstance);
+    return stopTracking(puppetInstance);
+}
 
 module.exports = {
     launch,
-    startTracking: attachListener,
-    stopTracking: detachListener
+    startTrack,
+    stopTrack
+    // startTracking,
+    // stopTracking,
+    // startTrackingAll,
+    // stopTrackingAll,
 }
 
 // start(url, requestMap)

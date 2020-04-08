@@ -10,15 +10,17 @@ import {SmallPaddingFormControlLabel} from '../../template/smallComponents';
 
 export default function BrowserOptions(props) {
     console.log(props)
-    const {width=800, height=600} = props;
-    const {setBrowserWidth, setBrowserHeight} = props.BrowserOptionsActions
-    const {newWindowsTrack="automatic"} = props;
+    const {width=800, height=600, trackingTab="all"} = props;
+    const {setBrowserWidth, setBrowserHeight, setTrackingTab} = props.BrowserOptionsActions
 
     const onWidthChange = (event) => {
         setBrowserWidth(event.target.value);
     }
     const onHeightChange = (event) => {
         setBrowserHeight(event.target.value);
+    }
+    const onTrackingChange = (event) => {
+        setTrackingTab(event.target.value);
     }
 
     const optionViewPort = {
@@ -49,13 +51,15 @@ export default function BrowserOptions(props) {
     }
     
     const optionNewWindow = {
-        title: <Typography variant="body1">New Window</Typography>,
+        title: <Typography variant="body1">Tracking Tab</Typography>,
         content: (
             <React.Fragment>
                 <FormControl component="fieldset">
-                    <RadioGroup aria-label="newWindowTrack" name="newWindowTrack" value={newWindowsTrack}>
-                        <SmallPaddingFormControlLabel value="automatic" control={<Radio />} label="automatic track" />
-                        <SmallPaddingFormControlLabel value="manual" control={<Radio />} label="manual track" />
+                    <RadioGroup aria-label="trackingTab" name="trackingTab" onChange={onTrackingChange} value={trackingTab}>
+                        <Box display="flex">
+                            <SmallPaddingFormControlLabel value="all" control={<Radio />} label="ALL" />
+                            <SmallPaddingFormControlLabel value="initial" control={<Radio />} label="INITIAL" />
+                        </Box>
                     </RadioGroup>
                 </FormControl>
             </React.Fragment>

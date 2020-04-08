@@ -19,7 +19,6 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
     const state = getState();
     const {launchUrl} = state.navigator;
     const {browserWidth:width, browserHeight:height} = state.browserOptions;
-    console.log(width, height)
     const {page, browser} = await chromeBrowser.launch({url:launchUrl, width, height});
     browser.on('disconnected', () => {
         console.log('browser closed')
@@ -30,14 +29,27 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
         console.log('saved:',fname);
         dispatch(addImageData(fname))
     })
-    dispatch(launchBrowser(page));
+    browser.on('targetcreated', async (target) => {
+        console.log('target created')
+        target.type() === 'page' && (await target.page()).on('saveFile', fname => {
+            console.log('saved:',fname);
+            dispatch(addImageData(fname))
+        })
+    })
+    dispatch(launchBrowser({browser, page}));
 }
 
 export const toggleTrackAsync = () => async (dispatch, getState) => {
     const state = getState();
-    const {page, tracking} = state.navigator;
+    const {browser, page, tracking} = state.navigator;
+    const {trackingTab} = state.browserOptions;
+    const {startTrack, stopTrack} = chromeBrowser;
     const newTrackFlag = !tracking;
-    newTrackFlag ? await chromeBrowser.startTracking(page) : await chromeBrowser.stopTracking(page);
+    const startSave = trackingTab === 'all' ? startTrack(browser) : startTrack(page);
+    const stopSave = trackingTab === 'all' ? stopTrack(browser) : stopTrack(page);
+    // const trackMethod = trackingTab === 'all' ? chromeBrowser.startTrackingAll : chromeBrowser.startTracking
+    // newTrackFlag ? await chromeBrowser.startTracking(page) : await chromeBrowser.stopTracking(page);
+    newTrackFlag ? await startSave() : await stopSave();
     dispatch(toggleTrack(newTrackFlag));
 }
 
@@ -45,6 +57,7 @@ export const toggleTrackAsync = () => async (dispatch, getState) => {
 // initial state
 const initialState = {
     launchUrl: 'https://www.google.com',
+    browser: null,
     page: null,
     tracking: false,
     launched: false
@@ -62,11 +75,12 @@ export default handleActions({
     },
     [LAUNCH]: (state, action) => {
         console.log('launch browser triggered', state);
-        const page = action.payload;
-        console.log(page)
+        const {browser, page} = action.payload;
+        console.log(browser, page)
         return {
             ...state,
             launched: true,
+            browser,
             page
         }
     },

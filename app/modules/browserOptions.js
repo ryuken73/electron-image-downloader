@@ -5,10 +5,12 @@ const {screen} = require('electron');
 // action types
 const SET_BROWSER_WIDTH = 'browserOptions/SET_BROWSER_WIDTH';
 const SET_BROWSER_HEIGHT = 'browserOptions/SET_BROWSER_HEIGHT';
+const SET_TRACKING_TAB = 'browserOptions/SET_TRACKING_TAB';
 
 // action creator
 export const setBrowserWidth = createAction(SET_BROWSER_WIDTH);
 export const setBrowserHeight = createAction(SET_BROWSER_HEIGHT);
+export const setTrackingTab = createAction(SET_TRACKING_TAB);
 
 
 // initial state
@@ -18,6 +20,7 @@ const {width, height} = screen.getPrimaryDisplay().workAreaSize;
 const initialState = { 
     browserWidth: width,
     browserHeight: height,
+    trackingTab: 'all'
 }
 
 // reducer
@@ -40,4 +43,11 @@ export default handleActions({
             browserHeight: height
         }
     },
+    [SET_TRACKING_TAB]: (state, action) => {
+        const trackingTab = action.payload;
+        return {
+            ...state,
+            trackingTab
+        }
+    }
 }, initialState);
