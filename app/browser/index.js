@@ -134,7 +134,7 @@ const launch = async (options) => {
     const {browser, currentPage:page} = await launchBrowser(url, width, height);
     page.setDefaultTimeout(60000);
     attachListenerToPage(page);
-    page.on('request', requestHandler(page));
+    // page.on('request', requestHandler(page));
 
     // listener for request must be attached before page.goto
     // trackRequest(page);
@@ -170,9 +170,7 @@ const trackRequest = {
 const startTracking = (page) => {
     return () => {
         console.log(page);
-        // page.responseHandler = responseHandler(page);
         return trackRequest.start(page);
-        // page.on('response', page.responseHandler);
     }
 }
 
@@ -180,21 +178,8 @@ const stopTracking = (page) => {
     return () => {
         console.log(page);
         return trackRequest.stop(page);
-        // page.removeListener('response', page.responseHandler);
     }
 }
-
-// const url = 'https://eguru.tumblr.com/post/188921110492/%EA%B7%80%EB%A9%B8%EC%9D%98-%EC%B9%BC%EB%82%A0-1%EA%B6%8C'
-
-// const followNewTab = (browser) => {
-//     browser.targetCreatedHandler = targetCreatedHandler(browser);
-//     browser.on('targetcreated', browser.targetCreatedHandler);
-
-// }
-
-// const unfollowNewTab = (browser) => {
-//     browser.removeListener('targetcreated', browser.targetCreatedHandler);
-// }
 
 const startTrackingAll = (browser) => {
     return async () => {
@@ -228,13 +213,8 @@ module.exports = {
     launch,
     startTrack,
     stopTrack
-    // startTracking,
-    // stopTracking,
-    // startTrackingAll,
-    // stopTrackingAll,
 }
 
-// start(url, requestMap)
 
 
 
