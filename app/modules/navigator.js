@@ -6,12 +6,14 @@ const chromeBrowser = require('../browser');
 const SET_URL = 'navigator/SET_URL';
 const LAUNCH = 'navigator/LAUNCH';
 const TOGGLE_TRACK = 'navigator/TOGGLE_TRACK';
+const ENABLE_TRACKBTN = 'navigator/ENABLE_TRACKBTN';
 const ENABLE_LAUNCHBTN = 'navigator/ENABLE_LAUNCHBTN';
 
 // action creator
 export const setURL = createAction(SET_URL);
 export const launchBrowser = createAction(LAUNCH);
 export const toggleTrack = createAction(TOGGLE_TRACK);
+export const enableTrackBtn = createAction(ENABLE_TRACKBTN);
 export const enableLaunchBtn = createAction(ENABLE_LAUNCHBTN);
 
 

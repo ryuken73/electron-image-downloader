@@ -8,10 +8,11 @@ export default function ToggleImageButton(props) {
   const {mode='OFF_RECORDING', onClick} = props;
   const color = {
     'ON_RECORDING': 'secondary',
-    'OFF_RECORDING':'primary'
+    'OFF_RECORDING':'primary',
+    'DISABLED': 'disabled'
   }
   return (
-      <SmallPaddingIconButton onClick={onClick} aria-label="record">
+      <SmallPaddingIconButton disabled={disabled} onClick={onClick} aria-label="record">
         <FiberManualRecordIcon color={color[mode]} fontSize="small" />
       </SmallPaddingIconButton>
   )

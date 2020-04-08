@@ -2,18 +2,21 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import OpenInBrowserTwoToneIcon from '@material-ui/icons/OpenInBrowserTwoTone';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import {SmallMarginTextField, SmallPaddingIconButton} from '../../template/smallComponents';
-import ToggleImageButton from '../../template/ToggleImageButton';
+// import ToggleImageButton from '../../template/ToggleImageButton';
 
 
 export default function NavigatorPanel(props) {
     console.log('re-render NavigatorPanel:',props);
     const {launchUrl="https://www.daum.net", tracking, launched=false} = props;
     const {setURL, launchBrowserAsync, toggleTrackAsync} = props.NavigatorActions;
-    const trackMode = tracking ? "ON_RECORDING" : "OFF_RECORDING";
     const urlInputDisabled = launched ? true : false;
     const launchIconDiabled = launched ? true : false;
+    const trackIconDisabled = launched ? false : true;
     const launchIconMode = launched ? 'disabled' : 'primary';
+    const trackIconMode = launched ? tracking ? "secondary" : "primary" : 'disabled';
+    
 
     const onChange = (event) => {
         console.log(event.target.value)
@@ -53,11 +56,19 @@ export default function NavigatorPanel(props) {
                 disabled={launchIconDiabled} 
             >
                 <OpenInBrowserTwoToneIcon color={launchIconMode} fontSize="small" />
-            </SmallPaddingIconButton>       
-            <ToggleImageButton
+            </SmallPaddingIconButton>   
+            <SmallPaddingIconButton 
+                onClick={onClickTrack} 
+                aria-label="track"
+                disabled={trackIconDisabled} 
+            >
+                <FiberManualRecordIcon color={trackIconMode} fontSize="small" />
+            </SmallPaddingIconButton>                   
+            {/* <ToggleImageButton
                 mode={trackMode}
                 onClick={onClickTrack}
-            ></ToggleImageButton>
+                disabled={trackIconDisabled}
+            ></ToggleImageButton> */}
         </Box>
     )
 }
