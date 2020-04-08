@@ -9,8 +9,18 @@ import BorderedList from '../../template/BorderedList';
 import {SmallPaddingFormControlLabel} from '../../template/smallComponents';
 
 export default function BrowserOptions(props) {
-    const {viewPortWidth=800, viewPortHeight=600} = props;
+    console.log(props)
+    const {width=800, height=600} = props;
+    const {setBrowserWidth, setBrowserHeight} = props.BrowserOptionsActions
     const {newWindowsTrack="automatic"} = props;
+
+    const onWidthChange = (event) => {
+        setBrowserWidth(event.target.value);
+    }
+    const onHeightChange = (event) => {
+        setBrowserHeight(event.target.value);
+    }
+
     const optionViewPort = {
         title: <Typography variant="body1">Viewport Size</Typography>,
         content: (
@@ -19,7 +29,8 @@ export default function BrowserOptions(props) {
                     <SmallMarginTextField
                         variant="outlined"
                         margin="dense"
-                        value={viewPortWidth}
+                        value={width}
+                        onChange={onWidthChange}
                     ></SmallMarginTextField>
                 </Box>
                 <Box width="20px" textAlign="center">
@@ -29,8 +40,9 @@ export default function BrowserOptions(props) {
                     <SmallMarginTextField
                         variant="outlined"
                         margin="dense"
-                        value={viewPortHeight}
-                    ></SmallMarginTextField>
+                        value={height}
+                        onChange={onHeightChange}
+                        ></SmallMarginTextField>
                 </Box> 
             </React.Fragment>   
         )
@@ -54,13 +66,13 @@ export default function BrowserOptions(props) {
         <Box display="flex" flexDirection="column" width={1}> 
             <Typography variant="body1">Browser Options</Typography>
             <BorderedList 
-                titleComponent={optionViewPort.title} 
-                contentComponent={optionViewPort.content} 
+                title={optionViewPort.title} 
+                content={optionViewPort.content} 
                 mb={0}
             ></BorderedList>
             <BorderedList 
-                titleComponent={optionNewWindow.title} 
-                contentComponent={optionNewWindow.content}
+                title={optionNewWindow.title} 
+                content={optionNewWindow.content}
             ></BorderedList>          
         </Box>
     )

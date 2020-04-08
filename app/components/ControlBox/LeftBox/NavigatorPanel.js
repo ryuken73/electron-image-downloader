@@ -11,6 +11,7 @@ export default function NavigatorPanel(props) {
     const {launchUrl="https://www.daum.net", tracking, launched=false} = props;
     const {setURL, launchBrowserAsync, toggleTrackAsync} = props.NavigatorActions;
     const trackMode = tracking ? "ON_RECORDING" : "OFF_RECORDING";
+    const urlInputDisabled = launched ? true : false;
     const launchIconDiabled = launched ? true : false;
     const launchIconMode = launched ? 'disabled' : 'primary';
 
@@ -43,6 +44,7 @@ export default function NavigatorPanel(props) {
                 placeholder="https://naver.com"
                 value={launchUrl}
                 onChange={onChange}
+                disabled={urlInputDisabled}
             >
             </SmallMarginTextField>     
             <SmallPaddingIconButton 

@@ -77,18 +77,18 @@ export default function FilterPanel(props) {
         <Box display="flex" flexDirection="column" width={1}> 
             <Typography variant="body1">Track Filter Options</Typography>
             <BorderedList 
-                titleComponent={optionContentType.title} 
-                contentComponent={optionContentType.content} 
+                title={optionContentType.title} 
+                content={optionContentType.content} 
                 mb={0}
             ></BorderedList>
             <BorderedList 
-                titleComponent={optionContentSize.title} 
-                contentComponent={optionContentSize.content} 
+                title={optionContentSize.title} 
+                content={optionContentSize.content} 
                 mb={0}
             ></BorderedList>
             <BorderedList 
-                titleComponent={optionTextMatching.title} 
-                contentComponent={optionTextMatching.content}
+                title={optionTextMatching.title} 
+                content={optionTextMatching.content}
             ></BorderedList>
         </Box>
     )

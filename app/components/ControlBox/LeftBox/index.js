@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import BorderedBox from '../../template/BorderedBox';
 import NavigatorContainer from '../../../containers/NavigatorContainer';
+import BrowserOptionsContainer from '../../../containers/BrowserOptionsContainer';
 // import Navigator from './Navigator';
 // import FilterPanel from '../control/FilterPanel';
-import BrowserOptions from './BrowserOptions';
+// import BrowserOptions from './BrowserOptions';
 import SectionWithFullHeight from '../../template/SectionWithFullHeight';
 
 export default class LeftBox extends Component {
@@ -14,7 +15,7 @@ export default class LeftBox extends Component {
                     <NavigatorContainer></NavigatorContainer>
                 </BorderedBox>
                 <BorderedBox display="flex" alignItems="center" flexGrow="1">
-                    <BrowserOptions></BrowserOptions>
+                    <BrowserOptionsContainer></BrowserOptionsContainer>
                 </BorderedBox>
             </SectionWithFullHeight>
         )

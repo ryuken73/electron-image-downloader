@@ -54,6 +54,9 @@ const onEnd = (evt) => {
   console.log(evt.item)
 }
 
+
+const toggleCheck = () => {};
+
 function ImageCardContainer(props) {
   // const [state, setState] = React.useState(imageData);
   const {imageData} = props;
@@ -61,7 +64,7 @@ function ImageCardContainer(props) {
   console.log(imageData);
 
   const onStart = () => {};
-  const toggleCheck = () => {};
+
 
   // const onStart = evt => {
   //     console.log('drag started', evt.oldIndex);

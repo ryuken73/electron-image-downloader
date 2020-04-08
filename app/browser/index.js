@@ -4,7 +4,7 @@ const path = require('path');
 const checkDirExists = require('./checkDirExist');
 const saveFile = require('./saveFile');
 const config = require('./config.json');
-const SAVE_DIRECTORY = 'd:/temp/image';
+const SAVE_DIRECTORY = 'c:/temp/image';
 // const browserEventHandler = require('./plugins/browserEventHandler');
 // const pageEventHandler = require('./plugins/pageEventHandler');
 
@@ -35,8 +35,7 @@ const allowedByWhiteList = (response, whiteList) => {
     return {success:isAllowed, type, ext}
 }
 
-const launchBrowser = async (url) => {
-
+const launchBrowser = async (url, width, height) => {
     const browser = await puppeteer.launch({
         headless: false,
         devtools: false,
@@ -50,10 +49,7 @@ const launchBrowser = async (url) => {
     const pages = await browser.pages();
     const currentPage = pages[0];  
 
-    await currentPage.setViewport({
-        width: 1920,
-        height: 1080,
-    });
+    await currentPage.setViewport({width, height});
 
     return {browser, currentPage};
 
@@ -116,8 +112,9 @@ const responseHandler = page => async (response) => {
 
 let index = 1;
 const requestMap = new Map();
-const launch = async (url) => {
-    const {browser, currentPage:page} = await launchBrowser(url);
+const launch = async (options) => {
+    const {url='https://www.google.com', width=800, height=600} = options;
+    const {browser, currentPage:page} = await launchBrowser(url, width, height);
     page.setDefaultTimeout(60000);
     attachListenerToPage(page);
 

@@ -18,7 +18,9 @@ export const enableLaunchBtn = createAction(ENABLE_LAUNCHBTN);
 export const launchBrowserAsync = () => async (dispatch, getState) => {
     const state = getState();
     const {launchUrl} = state.navigator;
-    const {page, browser} = await chromeBrowser.launch(launchUrl);
+    const {browserWidth:width, browserHeight:height} = state.browserOptions;
+    console.log(width, height)
+    const {page, browser} = await chromeBrowser.launch({url:launchUrl, width, height});
     browser.on('disconnected', () => {
         console.log('browser closed')
         dispatch(enableLaunchBtn());
