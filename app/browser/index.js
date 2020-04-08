@@ -49,7 +49,7 @@ const launchBrowser = async (url, width, height) => {
 
 console.log('pass--2');
 
-const targetCreatedHandler = browser => async(target) => {
+const targetCreatedHandler = browser => async (target) => {
     console.log('targetcreated event occurred', target.type());
     const IS_NEW_PAGE_EVENT = target.type() === 'page';
     const page = IS_NEW_PAGE_EVENT && await target.page();
@@ -243,7 +243,8 @@ const startTrackingAll = (browser) => {
         // track response currently existing tab
         const requestStartTracking = pages.map(page => startTracking(page)(genTrackFilter));
         // attach event listen for future child tab
-        browser.on('targetcreated', targetCreatedHandler(browser));
+        browser.targetCreatedHandler = targetCreatedHandler(browser);
+        browser.on('targetcreated', browser.targetCreatedHandler);
         return requestStartTracking.every(result => result === true);
     }
 }
@@ -252,6 +253,7 @@ const stopTrackingAll = (browser) => {
     return async () => {
         const pages = await browser.pages();
         const requestStopTracking = pages.map(page => stopTracking(page)());
+        browser.removeListener('targetcreated', browser.targetCreatedHandler);
         return requestStopTracking.every(result => result === true);
     }
 }
