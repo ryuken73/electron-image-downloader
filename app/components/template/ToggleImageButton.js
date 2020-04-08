@@ -5,7 +5,7 @@ import {SmallPaddingIconButton} from './smallComponents';
 
 
 export default function ToggleImageButton(props) {
-  const {mode='OFF_RECORDING', onClick} = props;
+  const {mode='OFF_RECORDING', onClick, disabled} = props;
   const color = {
     'ON_RECORDING': 'secondary',
     'OFF_RECORDING':'primary',
