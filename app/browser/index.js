@@ -53,9 +53,9 @@ const targetCreatedHandler = browser => async (target) => {
     console.log('targetcreated event occurred', target.type());
     const IS_NEW_PAGE_EVENT = target.type() === 'page';
     const page = IS_NEW_PAGE_EVENT && await target.page();
-    const {width, height, defaultTimeout} = browser.pageOptions;
-    page.setDefaultTimeout(defaultTimeout);
-    page.setViewport({width, height});
+    // const {width, height, defaultTimeout} = browser.pageOptions;
+    // page.setDefaultTimeout(defaultTimeout);
+    // page.setViewport({width, height});
 
     const {genTrackFilter} = browser;
     trackRequest.start(page, genTrackFilter);

@@ -32,10 +32,17 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
         dispatch(addImageData(fname))
     })
     browser.on('targetcreated', async (target) => {
-        console.log('target created')
-        target.type() === 'page' && (await target.page()).on('saveFile', fname => {
-            console.log('saved:',fname);
-            dispatch(addImageData(fname))
+        console.log('target created');
+        if(target.type() !== 'page') return;
+        const page = await target.page();
+        // set common settings on page (height, width and timeout)
+        const {width, height, defaultTimeout} = browser.pageOptions;
+        page.setDefaultTimeout(defaultTimeout);
+        page.setViewport({width, height});
+        // attach event when file save done, dispatch addImage on pannel
+        page.on('saveFile', fname => {
+                console.log('saved:',fname);
+                dispatch(addImageData(fname))
         })
     })
     dispatch(launchBrowser({browser, page}));
