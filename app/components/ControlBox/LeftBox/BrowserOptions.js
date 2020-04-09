@@ -54,14 +54,14 @@ export default function BrowserOptions(props) {
     }
     
     const optionNewWindow = {
-        title: <Typography variant="body1">Tracking Tab</Typography>,
+        title: <Typography variant="body1">Tracking Child Tab</Typography>,
         content: (
             <React.Fragment>
                 <FormControl component="fieldset">
                     <RadioGroup aria-label="trackingTab" name="trackingTab" onChange={onTrackingChange} value={trackingTab}>
                         <Box display="flex">
-                            <SmallPaddingFormControlLabel disabled={disabled} value="all" control={<Radio />} label="ALL" />
-                            <SmallPaddingFormControlLabel disabled={disabled} value="initial" control={<Radio />} label="INITIAL" />
+                            <SmallPaddingFormControlLabel disabled={disabled} value="all" control={<Radio />} label="YES" />
+                            <SmallPaddingFormControlLabel disabled={disabled} value="initial" control={<Radio />} label="NO" />
                         </Box>
                     </RadioGroup>
                 </FormControl>

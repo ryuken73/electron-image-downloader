@@ -14,6 +14,8 @@ export default function FilterPanel(props) {
     const {contentTypes=['image', 'jpg']} = props;
     const {contentSizeMin=1024, contentSizeMax=10240000} = props;
     const {urlPatterns=['*']} = props;
+    const {tracking} = props;
+    const disabled = tracking;
     const {setContentTypes, setContentSizeMin, setContentSizeMax, setUrlPattern} = props.TrackFilterActions;
     const setUrlPatternByArray = (patternString) => {
         const patternArray = patternString.split(',');
@@ -44,6 +46,7 @@ export default function FilterPanel(props) {
                     value={contentTypes}
                     onChange={onChange('contentTypes')}
                     multiple
+                    disabled={disabled}
                     >
                         <MenuItem value={"image"}>image/*</MenuItem>
                         <MenuItem value={"jpg"}>image/jpeg</MenuItem>
@@ -63,6 +66,7 @@ export default function FilterPanel(props) {
                         variant="outlined"
                         margin="dense"
                         value={contentSizeMin}
+                        disabled={disabled}
                         onChange={onChange('minSize')}
                     ></SmallMarginTextField>
                 </Box>
@@ -74,6 +78,7 @@ export default function FilterPanel(props) {
                         variant="outlined"
                         margin="dense"
                         value={contentSizeMax}
+                        disabled={disabled}
                         onChange={onChange('maxSize')}
                     ></SmallMarginTextField>
                 </Box>
@@ -89,6 +94,7 @@ export default function FilterPanel(props) {
                     variant="outlined"
                     margin="dense"
                     value={urlPatterns.join(',')}
+                    disabled={disabled}
                     onChange={onChange('urlPatterns')}
                 ></SmallMarginTextField> 
             </Box>
@@ -98,7 +104,7 @@ export default function FilterPanel(props) {
 
     return (
         <Box display="flex" flexDirection="column" width={1}> 
-            <Typography variant="body1">Track Filter Options</Typography>
+            <Typography variant="body1">Tracking Filter</Typography>
             <BorderedList 
                 title={optionContentType.title} 
                 content={optionContentType.content} 

@@ -9,7 +9,8 @@ function mapStateToProps(state) {
     contentTypes: state.trackFilters.contentTypes,
     contentSizeMin: state.trackFilters.contentSizeMin,
     contentSizeMax: state.trackFilters.contentSizeMax,
-    urlPatterns: state.trackFilters.urlPatterns
+    urlPatterns: state.trackFilters.urlPatterns,
+    tracking: state.navigator.tracking
   }
 }
 
