@@ -10,8 +10,9 @@ import {SmallPaddingFormControlLabel} from '../../template/smallComponents';
 
 export default function BrowserOptions(props) {
     console.log(props)
-    const {width=800, height=600, trackingTab="all"} = props;
+    const {width=800, height=600, trackingTab="all", launched} = props;
     const {setBrowserWidth, setBrowserHeight, setTrackingTab} = props.BrowserOptionsActions
+    const disabled = launched;
 
     const onWidthChange = (event) => {
         setBrowserWidth(event.target.value);
@@ -32,6 +33,7 @@ export default function BrowserOptions(props) {
                         variant="outlined"
                         margin="dense"
                         value={width}
+                        disabled={disabled}
                         onChange={onWidthChange}
                     ></SmallMarginTextField>
                 </Box>
@@ -43,8 +45,9 @@ export default function BrowserOptions(props) {
                         variant="outlined"
                         margin="dense"
                         value={height}
+                        disabled={disabled}
                         onChange={onHeightChange}
-                        ></SmallMarginTextField>
+                    ></SmallMarginTextField>
                 </Box> 
             </React.Fragment>   
         )
@@ -57,8 +60,8 @@ export default function BrowserOptions(props) {
                 <FormControl component="fieldset">
                     <RadioGroup aria-label="trackingTab" name="trackingTab" onChange={onTrackingChange} value={trackingTab}>
                         <Box display="flex">
-                            <SmallPaddingFormControlLabel value="all" control={<Radio />} label="ALL" />
-                            <SmallPaddingFormControlLabel value="initial" control={<Radio />} label="INITIAL" />
+                            <SmallPaddingFormControlLabel disabled={disabled} value="all" control={<Radio />} label="ALL" />
+                            <SmallPaddingFormControlLabel disabled={disabled} value="initial" control={<Radio />} label="INITIAL" />
                         </Box>
                     </RadioGroup>
                 </FormControl>

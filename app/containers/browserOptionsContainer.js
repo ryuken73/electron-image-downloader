@@ -8,7 +8,8 @@ function mapStateToProps(state) {
   return {
     width: state.browserOptions.browserWidth,
     height: state.browserOptions.browserHeight,
-    trackingTab: state.browserOptions.trackingTab
+    trackingTab: state.browserOptions.trackingTab,
+    launched: state.navigator.launched
   }
 }
 
