@@ -27,9 +27,9 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
         dispatch(enableLaunchBtn());
         dispatch(toggleTrack(false));
     })
-    page.on('saveFile', fname => {
-        console.log('saved:',fname);
-        dispatch(addImageData(fname))
+    page.on('saveFile', imageInfo => {
+        console.log('saved:',imageInfo);
+        dispatch(addImageData(imageInfo))
     })
     browser.on('targetcreated', async (target) => {
         console.log('target created');
@@ -46,6 +46,7 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
         })
     })
     dispatch(launchBrowser({browser, page}));
+    // dispatch(toggleTrackAsync());
 }
 
 export const toggleTrackAsync = () => async (dispatch, getState) => {
