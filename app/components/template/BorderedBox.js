@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 const defaultProps = {
     bgcolor: 'lightgrey',
     borderColor: 'black',
-    m: "5px",
+    m: "3px",
     border: 1,
     boxSizing: 'border-box',
     minWidth: 'fit-content'
