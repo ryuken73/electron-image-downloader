@@ -299,8 +299,11 @@ const mkTrackFilter = (options) => {
             return size > contentSizeMin && size < contentSizeMax;
         }
         const nameFilter = url => {
-            if(urlPatterns.includes('*')) return true;
-            return urlPatterns.includes(url);
+            const matches = urlPatterns.map(urlPattern => {
+                return url.includes(urlPattern);
+            })
+            console.log('matches:', matches)
+            return matches.some(match => match === true);
         }
         trackFilters.set('typeFilter', typeFilter);
         trackFilters.set('sizeFilter', sizeFilter);
