@@ -79,8 +79,10 @@ const targetCreatedHandler = browser => async (target) => {
 // }
 
 const requestHandler = page => (request) => {
-        const url = request.url();
-        requestMap.set(url, index++);
+    // javascript Map can have objet as a key;
+    // if using request url as a key, duplicatte url can be occurred!!
+    // const url = request.url();
+    requestMap.set(request, index++);
 }
 
 // const allowedByWhiteList = (response, whiteList) => {
@@ -113,9 +115,11 @@ const applyFilter = async (trackFilter, response) => {
     }
 }
 
-const mkFname = async (requestUrl, responseHeaders) => {
+const mkFname = async (requestUrl, request, responseHeaders) => {
     try {
-        const index = requestMap.get(requestUrl);
+        
+        const index = requestMap.get(request);
+
         const requestedFname = getFirstStringBySep({str:getLastStringBySep({str: requestUrl, sep: '/'}), sep:'?'});
         const extname = path.extname(requestedFname);
         if(extname === ''){
@@ -138,7 +142,9 @@ const mkFname = async (requestUrl, responseHeaders) => {
 
 const responseHandler = (page, trackFilters) => async (response) => {
     try {
+        console.log(`size of request Map: ${requestMap.size}`);
         // trackFilters : filter functions(typeFilter, sizeFilter, nameFilter)
+        const request = response.request();
         const status = response.status();
         const IS_STATUS_REDIRECTED = (status >= 300) && (status <= 399);
         if(IS_STATUS_REDIRECTED) return;
@@ -147,26 +153,31 @@ const responseHandler = (page, trackFilters) => async (response) => {
         console.log(allowed, requestUrl, responseHeaders);
         if(!allowed) {
             console.log('not allowed, skip...: ',blockFilter);
+            requestMap.delete(request);
             return;
         }
-        const {tmpName, index} = await mkFname(requestUrl, responseHeaders);
+        const {tmpName, index} = await mkFname(requestUrl, request, responseHeaders);
         if(!tmpName) {
             console.log('filename make failed! skip...');
+            requestMap.delete(request);
             return;
         }
         console.log(`[${index}][${tmpName}]allowed...saving...`);
         const metadata = await imageUtil.getMetadata(buff);
         const tmpFname = path.basename(tmpName);
+        metadata.reqIndex = index;
         console.log(metadata, tmpFname)
 
         const success = await saveFile({fname:tmpName, buff});
         // saveFile({fname:`c:/temp/image/${index}.jpg`, buff:displaySrc});
         if(success) {
             console.log(`[${index}][${tmpName}]saved`);
+            requestMap.delete(request);
             page.emit('saveFile', {tmpSrc:tmpName, tmpFname, metadata});
             return
         }
         console.log(`[${index}][${tmpName}]failed!!`);
+        requestMap.delete(request);
         return
     } catch (err) {
         console.error(err);

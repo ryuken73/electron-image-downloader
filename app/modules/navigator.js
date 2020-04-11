@@ -40,9 +40,9 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
         page.setDefaultTimeout(defaultTimeout);
         page.setViewport({width, height});
         // attach event when file save done, dispatch addImage on pannel
-        page.on('saveFile', fname => {
-                console.log('saved:',fname);
-                dispatch(addImageData(fname))
+        page.on('saveFile', imageInfo => {
+                console.log('saved:',imageInfo);
+                dispatch(addImageData(imageInfo))
         })
     })
     dispatch(launchBrowser({browser, page}));

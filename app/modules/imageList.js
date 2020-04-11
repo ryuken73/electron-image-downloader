@@ -34,7 +34,7 @@ export const setImageData = createAction(SET_IMAGE_DATA);
 
 // initial state
 // image = {index, filename, imageSrc, dragStart:false, checkeck:false}
-let imageCount = 0;
+// let imageCount = 0;
 
 const imageDefault = {
     index: null,
@@ -48,7 +48,8 @@ const imageDefault = {
 const mkImageItem = (imageInfo) => {
     return {
         ...imageDefault,
-        index: ++imageCount,
+        // index: ++imageCount,
+        index: imageInfo.metadata.reqIndex,
         tmpFname: imageInfo.tmpFname,
         tmpSrc: imageInfo.tmpSrc,
         metadata: imageInfo.metadata
