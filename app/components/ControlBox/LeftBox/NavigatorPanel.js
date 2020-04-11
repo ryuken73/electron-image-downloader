@@ -16,7 +16,10 @@ export default function NavigatorPanel(props) {
     const trackIconDisabled = launched ? false : true;
     const launchIconMode = launched ? 'disabled' : 'primary';
     const trackIconMode = launched ? tracking ? "secondary" : "primary" : 'disabled';
-    
+
+    React.useEffect(() => {
+        launched && toggleTrackAsync();
+    },[launched])    
 
     const onChange = (event) => {
         console.log(event.target.value)
