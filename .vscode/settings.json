@@ -11,8 +11,8 @@
     ".flowconfig": "ignore"
   },
 
-  "javascript.validate.enable": false,
-  "javascript.format.enable": false,
+  "javascript.validate.enable": true,
+  "javascript.format.enable": true,
   "typescript.validate.enable": false,
   "typescript.format.enable": false,
 

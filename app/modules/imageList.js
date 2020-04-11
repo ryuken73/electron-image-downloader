@@ -1,4 +1,5 @@
 import {createAction, handleActions} from 'redux-actions';
+const utils = require('../utils');
 const chromeBrowser = require('../browser');
 
 // action types
@@ -8,33 +9,6 @@ const SET_IMAGE_DATA = 'imageList/SET_IMAGE_DATA';
 // action creator
 export const addImageData = createAction(ADD_IMAGE_DATA);
 export const setImageData = createAction(SET_IMAGE_DATA);
-
-
-
-// export const launchBrowserAsync = () => async (dispatch, getState) => {
-//     const state = getState();
-//     const {launchUrl} = state.navigator;
-//     const {page, browser} = await chromeBrowser.launch(launchUrl);
-//     browser.on('disconnected', () => {
-//         console.log('browser closed')
-//         dispatch(enableLaunchBtn());
-//         dispatch(toggleTrack(false));
-//     })
-//     dispatch(launchBrowser(page));
-// }
-
-// export const toggleTrackAsync = () => async (dispatch, getState) => {
-//     const state = getState();
-//     const {page, tracking} = state.navigator;
-//     const newTrackFlag = !tracking;
-//     newTrackFlag ? await chromeBrowser.startTracking(page) : await chromeBrowser.stopTracking(page);
-//     dispatch(toggleTrack(newTrackFlag));
-// }
-
-
-// initial state
-// image = {index, filename, imageSrc, dragStart:false, checkeck:false}
-// let imageCount = 0;
 
 const imageDefault = {
     index: null,
@@ -46,9 +20,10 @@ const imageDefault = {
 }
 
 const mkImageItem = (imageInfo) => {
+    const {size} = imageInfo.metadata;
+    imageInfo.metadata.sizeKB = utils.number.toByteUnit({number:Number(size), unit:'KB'});
     return {
         ...imageDefault,
-        // index: ++imageCount,
         index: imageInfo.metadata.reqIndex,
         tmpFname: imageInfo.tmpFname,
         tmpSrc: imageInfo.tmpSrc,
@@ -82,29 +57,4 @@ export default handleActions({
             imageData: newImageData
         }
     }
-    // [LAUNCH]: (state, action) => {
-    //     console.log('launch browser triggered', state);
-    //     const page = action.payload;
-    //     console.log(page)
-    //     return {
-    //         ...state,
-    //         launched: true,
-    //         page
-    //     }
-    // },
-    // [ENABLE_LAUNCHBTN]: (state, action) => {
-    //     return {
-    //         ...state,
-    //         launched: false
-    //     }
-    // },
-    // [TOGGLE_TRACK]: (state, action) => {
-    //     console.log('toggling', state);
-    //     const newTrackFlag = action.payload;
-    //     console.log(newTrackFlag)
-    //     return {
-    //         ...state,
-    //         tracking: newTrackFlag
-    //     }
-    // }
 }, initialState);
