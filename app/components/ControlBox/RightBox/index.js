@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import Box from '@material-ui/core/Box';
 import BorderedBox from '../../template/BorderedBox';
-// import TrackFilters from './TrackFilters';
 import TrackFilterContainer from '../../../containers/TrackFilterContainer';
-import DisplayFilters from './DisplayFilters';
+import DisplayFilterContainer from '../../../containers/DisplayFilterContainer';
 import SectionWithFullHeight from '../../template/SectionWithFullHeight';
 
 export default class LeftBox extends Component {
@@ -15,10 +14,10 @@ export default class LeftBox extends Component {
                         <TrackFilterContainer></TrackFilterContainer>
                     </BorderedBox>
                     <BorderedBox display="flex" alignContent="center" flexGrow="1" width={0.5}>
-                        <DisplayFilters></DisplayFilters>
+                        <DisplayFilterContainer></DisplayFilterContainer>
                     </BorderedBox>
                 </Box>
             </SectionWithFullHeight>     
         )
-    }
-}
+    } 
+}  

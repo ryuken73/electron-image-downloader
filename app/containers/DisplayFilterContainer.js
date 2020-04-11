@@ -1,12 +1,11 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import ImageListPanel from '../components/ImageBox/RightBox/ImageListPanel';
-import * as imageActions from '../modules/imageList';
+import DisplayFilters from '../components/ControlBox/RightBox/DisplayFilters';
+import * as displayFilterActions from '../modules/displayFilters';
 
 function mapStateToProps(state) {
   console.log('mapStateToProps:',state)
   return {
-    imageData: state.imageList.imageData,
     fileTypes: state.displayFilters.fileTypes,
     fileSizeMin: state.displayFilters.fileSizeMin,
     fileSizeMax: state.displayFilters.fileSizeMax,
@@ -15,7 +14,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {ImageActions: bindActionCreators(imageActions, dispatch)};
+  return {DisplayFilterActions: bindActionCreators(displayFilterActions, dispatch)};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ImageListPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(DisplayFilters);

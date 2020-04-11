@@ -22,6 +22,7 @@ const toggleCheck = () => {};
 function ImageCardContainer(props) {
   // const [state, setState] = React.useState(imageData);
   const {imageData} = props;
+  const {fileType, fileSizeMin, fileSizeMax, filePatterns} = props;
   const {setImageData} = props.ImageActions;
   console.log(imageData);
 

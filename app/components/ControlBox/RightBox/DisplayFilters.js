@@ -11,11 +11,28 @@ import BorderedList from '../../template/BorderedList';
 import {SmallMarginTextField}  from '../../template/smallComponents';
 
 export default function DisplayFilters(props) {
-    const {contentType="imageAll"} = props;
-    const {contentSizeMin=0, contentSizeMax=1024000} = props;
-
-    const optionContentType = {
-        title: <Typography variant="body1">Content-Type</Typography>,
+    const {fileTypes=["all"]} = props;
+    const {fileSizeMin=0, fileSizeMax=1024000} = props;
+    const {filePatterns} = props;
+    const {setFileTypes, setFileSizeMin, setFileSizeMax, setFilePattern} = props.DisplayFilterActions;
+    const setFilePatternByArray = (patternString) => {
+        const patternArray = patternString.split(',');
+        setFilePattern(patternArray);
+    }
+    const actionFunctions = {
+        'fileTypes': setFileTypes,
+        'minSize': setFileSizeMin,
+        'maxSize': setFileSizeMax,
+        'filePatterns': setFilePatternByArray
+    }
+    const onChange = (type) => {
+        return (event) => {
+            console.log(event.target.value)
+            actionFunctions[type](event.target.value);
+        }
+    }    
+    const optionFileType = {
+        title: <Typography variant="body1">File-Type</Typography>,
         content: (
             <React.Fragment>
                 <FormControl style={{minWidth:"300px"}}>
@@ -24,26 +41,30 @@ export default function DisplayFilters(props) {
                     labelId="content-type-select-label" 
                     variant="outlined"
                     margin="dense"
-                    value={contentType}
+                    value={fileTypes}
+                    multiple
+                    onChange={onChange('fileTypes')}
                     >
-                        <MenuItem value={"imageAll"}>image/*</MenuItem>
-                        <MenuItem value={"jpg"}>image/jpeg</MenuItem>
-                        <MenuItem value={"png"}>image/png</MenuItem>
+                        <MenuItem value={"all"}>*</MenuItem>
+                        <MenuItem value={"jpg"}>jpg</MenuItem>
+                        <MenuItem value={"png"}>png</MenuItem>
+                        <MenuItem value={"gif"}>gif</MenuItem>
                     </Select>
                 </FormControl>
             </React.Fragment>
         )
     }
     
-    const optionContentSize = {
-        title: <Typography variant="body1">Content-Size</Typography>,
+    const optionFileSize = {
+        title: <Typography variant="body1">File-Size</Typography>,
         content: (
             <React.Fragment>
                 <Box width="120px">
                     <SmallMarginTextField
                         variant="outlined"
                         margin="dense"
-                        value={contentSizeMin}
+                        value={fileSizeMin}                        
+                        onChange={onChange('minSize')}
                     ></SmallMarginTextField>
                 </Box>
                 <Box width="50px" textAlign="center">
@@ -53,20 +74,23 @@ export default function DisplayFilters(props) {
                     <SmallMarginTextField
                         variant="outlined"
                         margin="dense"
-                        value={contentSizeMax}
+                        value={fileSizeMax}                        
+                        onChange={onChange('maxSize')}                        
                     ></SmallMarginTextField>
                 </Box>
             </React.Fragment>
         )
     }
     
-    const optionTextMatching = {
-        title: <Typography variant="body1">Text-Matching</Typography>,
+    const optionFilePatterns = {
+        title: <Typography variant="body1">File-Pattern</Typography>,
         content: (
             <Box width="120px">
                 <SmallMarginTextField 
                     variant="outlined"
                     margin="dense"
+                    value={filePatterns}
+                    onChange={onChange('filePatterns')}                        
                 ></SmallMarginTextField> 
             </Box>
         ) 
@@ -75,20 +99,20 @@ export default function DisplayFilters(props) {
 
     return (
         <Box display="flex" flexDirection="column" width={1}> 
-            <Typography variant="body1">Display Filter Options</Typography>
+            <Typography variant="body1">Display Filter</Typography>
             <BorderedList 
-                title={optionContentType.title} 
-                content={optionContentType.content} 
+                title={optionFileType.title} 
+                content={optionFileType.content} 
                 mb={0}
             ></BorderedList>
             <BorderedList 
-                title={optionContentSize.title} 
-                content={optionContentSize.content} 
+                title={optionFileSize.title} 
+                content={optionFileSize.content} 
                 mb={0}
             ></BorderedList>
             <BorderedList 
-                title={optionTextMatching.title} 
-                content={optionTextMatching.content}
+                title={optionFilePatterns.title} 
+                content={optionFilePatterns.content}
             ></BorderedList>
         </Box>
     )
