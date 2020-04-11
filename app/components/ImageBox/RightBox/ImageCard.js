@@ -5,6 +5,7 @@ import Checkbox  from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import {makeStyles} from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = makeStyles({
     container: {
@@ -34,7 +35,7 @@ function ImageCard(props) {
     const classes = styles();
     const {container, imageName, smallBtn, smallCheckBox, image} = classes;
     const {index, tmpFname, tmpSrc, metadata, checked} = props.image;
-    const {sizeKB} = metadata;
+    const {sizeKB, reqUrl} = metadata;
     const {toggleCheck, onClickSave, onClickRemove} = props;
     return (
         <Paper className={container} elevation={3} > 
@@ -44,12 +45,14 @@ function ImageCard(props) {
             </Box>   
             <Box className="handle" display="flex" flexDirection="row" width="1">
                 <Box bgcolor="black" display="flex" justifyContent="center" flex="1">
-                    <img className={image} alt="poster" src={tmpSrc} style={{height:'80px'}}></img>
+                    <Tooltip title={reqUrl}>
+                        <img className={image} alt="poster" src={tmpSrc} style={{height:'80px'}}></img>
+                    </Tooltip>
                 </Box>
             </Box>
             <Box display="flex" flexDirection="row" justifyContent="center" width={1}>
-                    <Button className={smallBtn} onClick={onClickSave} variant="contained">Save</Button>  
-                    <Button className={smallBtn} onClick={onClickRemove} variant="contained" >Remove</Button>  
+                <Button className={smallBtn} onClick={onClickSave} variant="contained">Save</Button>  
+                <Button className={smallBtn} onClick={onClickRemove} variant="contained" >Remove</Button>  
             </Box>
         </Paper>
     ) 

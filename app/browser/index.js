@@ -166,6 +166,7 @@ const responseHandler = (page, trackFilters) => async (response) => {
         const metadata = await imageUtil.getMetadata(buff);
         const tmpFname = path.basename(tmpName);
         metadata.reqIndex = index;
+        metadata.reqUrl = requestUrl;
         console.log(metadata, tmpFname)
 
         const success = await saveFile({fname:tmpName, buff});
@@ -299,6 +300,7 @@ const mkTrackFilter = (options) => {
             return size > contentSizeMin && size < contentSizeMax;
         }
         const nameFilter = url => {
+            if(urlPatterns.includes('*')) return true;
             const matches = urlPatterns.map(urlPattern => {
                 return url.includes(urlPattern);
             })

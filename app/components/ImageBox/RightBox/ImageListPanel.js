@@ -28,6 +28,8 @@ function ImageCardContainer(props) {
 
   const onStart = () => {};
 
+  const formatFilter = (format) => fileType.includes(format);
+  const sizeFilter = (size) => ((fileSizeMin < size) && (size < fileSizeMax));
 
   // const onStart = evt => {
   //     console.log('drag started', evt.oldIndex);
