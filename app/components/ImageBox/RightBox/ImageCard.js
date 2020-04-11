@@ -33,17 +33,24 @@ function ImageCard(props) {
     console.log('re-render', props.image)
     const classes = styles();
     const {container, imageName, smallBtn, smallCheckBox, image} = classes;
-    const {index, filename, imageSrc, checked} = props.image;
+    const {index, tmpFname, tmpSrc, metadata, checked} = props.image;
     const {toggleCheck, onClickSave, onClickRemove} = props;
+    // displaySrc == javascript Array Buffer (Unit8)
+    // Array Buffer to Blob and then Blob to object url
+    // const imageBlob = new window.Blob(displaySrc);
+    // const dataUrl = window.URL.createObjectURL(imageBlob);
+    // console.log(imageBlob)
+    // console.log(dataUrl)
+    // console.log(window)
     return (
         <Paper className={container} elevation={3} > 
             <Box bgcolor="aliceblue">
                 <Checkbox className={smallCheckBox} checked={checked} onChange={toggleCheck(index)}></Checkbox>
-                <Typography className={imageName} variant="caption">[{index}] {filename}</Typography>
+                <Typography className={imageName} variant="caption">[{index}] {tmpFname}</Typography>
             </Box>   
             <Box className="handle" display="flex" flexDirection="row" width="1">
                 <Box bgcolor="black" display="flex" justifyContent="center" flex="1">
-                    <img className={image} alt="poster" src={imageSrc} style={{height:'80px'}}></img>
+                    <img className={image} alt="poster" src={tmpSrc} style={{height:'80px'}}></img>
                 </Box>
             </Box>
             <Box display="flex" flexDirection="row" justifyContent="center" width={1}>

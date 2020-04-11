@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const checkDirExists = require('./checkDirExist');
 const saveFile = require('./saveFile');
+const imageUtil = require('./imageUtil');
 const config = require('./config.json');
 const SAVE_DIRECTORY = 'c:/temp/image';
 const DEFAULT_PAGE_TIMEOUT = 60000;
@@ -61,10 +62,10 @@ const targetCreatedHandler = browser => async (target) => {
     trackRequest.start(page, genTrackFilter);
 }
 
-const whiteList = [
-    'image',
-    'image/jpeg'
-];
+// const whiteList = [
+//     'image',
+//     'image/jpeg'
+// ];
 
 
 // const attachEventListenerToPage = (event, handler, page) => {
@@ -82,13 +83,13 @@ const requestHandler = page => (request) => {
         requestMap.set(url, index++);
 }
 
-const allowedByWhiteList = (response, whiteList) => {
-    const responseHeaders = response.headers();
-    const [type, ext] = responseHeaders['content-type'] ? responseHeaders['content-type'].split('/'):[]
-    console.log(`filter response : ${type}, ${ext}`);
-    const isAllowed = whiteList.includes(type) || whiteList.includes(`${type}/${ext}`);                
-    return {success:isAllowed, type, ext}
-}
+// const allowedByWhiteList = (response, whiteList) => {
+//     const responseHeaders = response.headers();
+//     const [type, ext] = responseHeaders['content-type'] ? responseHeaders['content-type'].split('/'):[]
+//     console.log(`filter response : ${type}, ${ext}`);
+//     const isAllowed = whiteList.includes(type) || whiteList.includes(`${type}/${ext}`);                
+//     return {success:isAllowed, type, ext}
+// }
 
 const applyFilter = async (trackFilter, response) => {
     const filterResult = {allowed:null, requestUrl:null, responseHeaders:null, blockFilter:null};
@@ -104,9 +105,6 @@ const applyFilter = async (trackFilter, response) => {
     const buff = await response.buffer();  
     if(!trackFilter.get('sizeFilter')(buff.length)) return {...filterResult, allowed:false, blockFilter:'sizeFilter'};
     
-    // const index = requestMap.get(requestUrl);
-    // const requestedFname = getFirstStringBySep({str:getLastStringBySep({str: requestUrl, sep: '/'}), sep:'?'});
-    // const [type, ext] = responseHeaders['content-type'] ? responseHeaders['content-type'].split('/'):[];
     return {
         allowed: true,
         requestUrl,
@@ -119,15 +117,18 @@ const mkFname = async (requestUrl, responseHeaders) => {
     try {
         const index = requestMap.get(requestUrl);
         const requestedFname = getFirstStringBySep({str:getLastStringBySep({str: requestUrl, sep: '/'}), sep:'?'});
-        const filename = requestedFname || index;
-        // if(!requestedFname) {
-        //     console.error('filename empty. return request index number...');
-        //     return {};
-        // }
-        const [type, ext] = responseHeaders['content-type'] ? responseHeaders['content-type'].split('/'):[];
+        const extname = path.extname(requestedFname);
+        if(extname === ''){
+            console.log('No file extension. skip....');
+            return;
+        }        
+        const filename = `${index}${extname}`;
+        console.log(`${filename}`)
         await checkDirExists({dirname:SAVE_DIRECTORY});
-        const fname = path.join(SAVE_DIRECTORY, `${index}_${filename}.${ext}`);
-        return {fname, index};
+        
+        const tmpName = path.join(SAVE_DIRECTORY, filename);
+        console.log(tmpName)
+        return {tmpName, index};
     } catch (err) {
         console.error('something wrong:', err);
         return {};
@@ -148,20 +149,24 @@ const responseHandler = (page, trackFilters) => async (response) => {
             console.log('not allowed, skip...: ',blockFilter);
             return;
         }
-        const {fname, index} = await mkFname(requestUrl, responseHeaders);
-        if(!fname) {
+        const {tmpName, index} = await mkFname(requestUrl, responseHeaders);
+        if(!tmpName) {
             console.log('filename make failed! skip...');
             return;
         }
-        console.log(`[${index}][${fname}]allowed...saving...`);
+        console.log(`[${index}][${tmpName}]allowed...saving...`);
+        const metadata = await imageUtil.getMetadata(buff);
+        const tmpFname = path.basename(tmpName);
+        console.log(metadata, tmpFname)
 
-        const success = await saveFile({fname, buff});
+        const success = await saveFile({fname:tmpName, buff});
+        // saveFile({fname:`c:/temp/image/${index}.jpg`, buff:displaySrc});
         if(success) {
-            console.log(`[${index}][${fname}]saved`);
-            page.emit('saveFile', fname);
+            console.log(`[${index}][${tmpName}]saved`);
+            page.emit('saveFile', {tmpSrc:tmpName, tmpFname, metadata});
             return
         }
-        console.log(`[${index}][${fname}]failed!!`);
+        console.log(`[${index}][${tmpName}]failed!!`);
         return
     } catch (err) {
         console.error(err);

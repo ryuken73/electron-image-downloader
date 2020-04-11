@@ -38,18 +38,20 @@ let imageCount = 0;
 
 const imageDefault = {
     index: null,
-    filename: null,
-    imageSrc: null,
+    tmpFname: null,
+    tmpSrc: null,
+    metadata: {},
     dragStart: false,
     checked: false
 }
 
-const mkImageItem = (fname) => {
+const mkImageItem = (imageInfo) => {
     return {
         ...imageDefault,
         index: ++imageCount,
-        imageSrc: fname,
-        filename: 'some.jpg'
+        tmpFname: imageInfo.tmpFname,
+        tmpSrc: imageInfo.tmpSrc,
+        metadata: imageInfo.metadata
     }
 }
 
@@ -61,11 +63,11 @@ const initialState = {
 export default handleActions({
     [ADD_IMAGE_DATA]: (state, action) => {
         console.log(state, action)
-        const fname = action.payload;
-        console.log(`*************${fname}`)
+        const imageInfo = action.payload;
+        console.log(`*************${imageInfo}`)
         const newImageData = [
             ...state.imageData,
-            mkImageItem(fname)
+            mkImageItem(imageInfo)
         ]
         return {
             ...state,
