@@ -124,7 +124,7 @@ const mkFname = async (requestUrl, request, responseHeaders) => {
         const extname = path.extname(requestedFname);
         if(extname === ''){
             console.log('No file extension. skip....');
-            return;
+            return {};
         }        
         const filename = `${index}${extname}`;
         console.log(`${filename}`)
@@ -183,7 +183,8 @@ const responseHandler = (page, trackFilters) => async (response) => {
     } catch (err) {
         console.error(err);
         // process.exit();
-        console.log('there is something wrong to get response!')
+        console.log('there is something wrong to get response!');
+        // requestMap.delete(request);
     }
 };
 

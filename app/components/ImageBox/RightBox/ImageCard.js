@@ -41,7 +41,7 @@ function ImageCard(props) {
         <Paper className={container} elevation={3} > 
             <Box bgcolor="aliceblue">
                 <Checkbox className={smallCheckBox} checked={checked} onChange={toggleCheck(index)}></Checkbox>
-                <Typography className={imageName} variant="caption">[{index}] {tmpFname} [{sizeKB}KB]</Typography>
+                <Typography className={imageName} variant="caption">{tmpFname} [{sizeKB}KB]</Typography>
             </Box>   
             <Box className="handle" display="flex" flexDirection="row" width="1">
                 <Box bgcolor="black" display="flex" justifyContent="center" flex="1">

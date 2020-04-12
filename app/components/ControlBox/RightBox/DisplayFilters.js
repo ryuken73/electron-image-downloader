@@ -46,7 +46,7 @@ export default function DisplayFilters(props) {
                     onChange={onChange('fileTypes')}
                     >
                         <MenuItem value={"all"}>*</MenuItem>
-                        <MenuItem value={"jpg"}>jpg</MenuItem>
+                        <MenuItem value={"jpeg"}>jpg</MenuItem>
                         <MenuItem value={"png"}>png</MenuItem>
                         <MenuItem value={"gif"}>gif</MenuItem>
                     </Select>
@@ -83,7 +83,7 @@ export default function DisplayFilters(props) {
     }
     
     const optionFilePatterns = {
-        title: <Typography variant="body1">File-Pattern</Typography>,
+        title: <Typography variant="body1">Name-Pattern</Typography>,
         content: (
             <Box width="120px">
                 <SmallMarginTextField 

@@ -22,14 +22,30 @@ const toggleCheck = () => {};
 function ImageCardContainer(props) {
   // const [state, setState] = React.useState(imageData);
   const {imageData} = props;
-  const {fileType, fileSizeMin, fileSizeMax, filePatterns} = props;
+  const {fileTypes, fileSizeMin, fileSizeMax, filePatterns} = props;
   const {setImageData} = props.ImageActions;
-  console.log(imageData);
-
   const onStart = () => {};
+  const formatFilter = (format) => {
+    if(fileTypes.includes('all')) return true;
+    return fileTypes.includes(format);
+  }
+  const sizeFilter = (size) => {console.log(`*****${size}`); return ((fileSizeMin < size) && (size < fileSizeMax));}
+  const nameFilter = (name) => {
+    console.log(`*****${name}`);
+    const blnakRemoved = filePatterns.filter(pattern => pattern !== '');
+    if(blnakRemoved.includes('*')) return true;
+    const results = blnakRemoved.map(filename => {
+      console.log(name)
+      console.log(filename)
+      return name.includes(filename)
+    })
+    return results.some(result => result === true);
+  }
 
-  const formatFilter = (format) => fileType.includes(format);
-  const sizeFilter = (size) => ((fileSizeMin < size) && (size < fileSizeMax));
+  const filteredImages = imageData
+  .filter(image => formatFilter(image.metadata.format))
+  .filter(image => sizeFilter(image.metadata.size))
+  .filter(image => nameFilter(image.tmpFname))
 
   // const onStart = evt => {
   //     console.log('drag started', evt.oldIndex);
@@ -51,7 +67,7 @@ function ImageCardContainer(props) {
     <BorderedBox display="flex" alignContent="center" alignItems="flex-start" flexGrow="1" minWidth="auto" flexBasis="0" overflow="auto">
 
         <StyledReactSortable 
-          list={imageData} 
+          list={filteredImages} 
           setList={setImageData}
           chosenClass={"chosen"}
           animation={150}
@@ -60,7 +76,7 @@ function ImageCardContainer(props) {
           onStart={onStart} 
           handle=".handle"
         >
-            {imageData.map(image => (
+            {filteredImages.map(image => (
               <ImageCard key={image.index} image={image} toggleCheck={toggleCheck}></ImageCard>
             ))}
 
