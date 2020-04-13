@@ -2,6 +2,7 @@ import React from 'react';
 import ImageCard from './ImageCard';
 import { ReactSortable } from "react-sortablejs";
 import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
 import SectionWithFullHeightFlex from '../../template/SectionWithFullHeightFlex';
 import BorderedBox from '../../template/BorderedBox'
 
@@ -24,28 +25,49 @@ function ImageCardContainer(props) {
   const {imageData} = props;
   const {fileTypes, fileSizeMin, fileSizeMax, filePatterns} = props;
   const {setImageData} = props.ImageActions;
+  const {filterImageByType, filterImageByMinSize} = props.ImageActions;
+  const {filterImageByMaxSize, filterImageByName} = props.ImageActions;
   const onStart = () => {};
-  const formatFilter = (format) => {
-    if(fileTypes.includes('all')) return true;
-    return fileTypes.includes(format);
-  }
-  const sizeFilter = (size) => {console.log(`*****${size}`); return ((fileSizeMin < size) && (size < fileSizeMax));}
-  const nameFilter = (name) => {
-    console.log(`*****${name}`);
-    const blnakRemoved = filePatterns.filter(pattern => pattern !== '');
-    if(blnakRemoved.includes('*')) return true;
-    const results = blnakRemoved.map(filename => {
-      console.log(name)
-      console.log(filename)
-      return name.includes(filename)
-    })
-    return results.some(result => result === true);
-  }
 
-  const filteredImages = imageData
-  .filter(image => formatFilter(image.metadata.format))
-  .filter(image => sizeFilter(image.metadata.size))
-  .filter(image => nameFilter(image.tmpFname))
+  React.useEffect(() => {
+    filterImageByType(fileTypes)
+  },[fileTypes])
+  
+  React.useEffect(() => {
+    filterImageByMinSize(fileSizeMin)
+  },[fileSizeMin])
+
+  React.useEffect(() => {
+    filterImageByMaxSize(fileSizeMax)
+  },[fileSizeMax])
+  
+  React.useEffect(() => {
+    filterImageByName(filePatterns)
+  },[filePatterns])
+  
+
+  // const formatFilter = (format) => {
+  //   if(fileTypes.includes('all')) return true;
+  //   return fileTypes.includes(format);
+  // }
+  // const sizeFilter = (size) => {console.log(`*****${size}`); return ((fileSizeMin < size) && (size < fileSizeMax));}
+  // const nameFilter = (name) => {
+  //   console.log(`*****${name}`);
+  //   const blnakRemoved = filePatterns.filter(pattern => pattern !== '');
+  //   if(blnakRemoved.includes('*')) return true;
+  //   const results = blnakRemoved.map(filename => {
+  //     console.log(name)
+  //     console.log(filename)
+  //     return name.includes(filename)
+  //   })
+  //   return results.some(result => result === true);
+  // }
+  // const filteredImages = imageData
+  // .filter(image => formatFilter(image.metadata.format))
+  // .filter(image => sizeFilter(image.metadata.size))
+  // .filter(image => nameFilter(image.tmpFname));
+
+
 
   // const onStart = evt => {
   //     console.log('drag started', evt.oldIndex);
@@ -66,7 +88,7 @@ function ImageCardContainer(props) {
     // <SectionWithFullHeightFlex className="SectionWithFullHeightFlexFlex ImageListPanel">
     <BorderedBox display="flex" alignContent="center" alignItems="flex-start" flexGrow="1" minWidth="auto" flexBasis="0" overflow="auto">
 
-        <StyledReactSortable 
+        {/* <StyledReactSortable 
           list={filteredImages} 
           setList={setImageData}
           chosenClass={"chosen"}
@@ -75,14 +97,17 @@ function ImageCardContainer(props) {
           invertSwap={true}
           onStart={onStart} 
           handle=".handle"
-        >
-            {filteredImages.map(image => (
-              <ImageCard key={image.index} image={image} toggleCheck={toggleCheck}></ImageCard>
-            ))}
+        > */}
+        <Box display="flex" flexDirection="row" flexWrap="wrap" width={1} overflow="auto">
+          {imageData.map(image => (
+            <ImageCard key={image.index} order={image.index} image={image} toggleCheck={toggleCheck}></ImageCard>
+          ))}
+        </Box>
 
-        </StyledReactSortable>
+
+        {/* </StyledReactSortable> */}
       </BorderedBox>
-    //  </SectionWithFullHeightFlex>
+    // {/* //  </SectionWithFullHeightFlex> */}
     
 
   );

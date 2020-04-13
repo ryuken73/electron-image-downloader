@@ -8,12 +8,14 @@ import {makeStyles} from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = makeStyles({
-    container: {
+    container: props =>({
         padding: '5px',
         margin: '5px',
         display: 'flex',
-        flexDirection: 'column'
-    },
+        flexDirection: 'column',
+        order: props.order,
+        display: !props.image.show && 'none' 
+    }),
     imageName: {
         paddingLeft: '4px'
     },
@@ -31,10 +33,10 @@ const styles = makeStyles({
 })
 
 function ImageCard(props) {
-    console.log('re-render', props.image)
-    const classes = styles();
+    // console.log('re-render', props.image)
+    const classes = styles(props);
     const {container, imageName, smallBtn, smallCheckBox, image} = classes;
-    const {index, tmpFname, tmpSrc, metadata, checked} = props.image;
+    const {index, tmpFname, tmpSrc, metadata, checked, show} = props.image;
     const {sizeKB, reqUrl} = metadata;
     const {toggleCheck, onClickSave, onClickRemove} = props;
     return (
