@@ -7,7 +7,8 @@ const defaultProps = {
     m: "3px",
     border: 1,
     boxSizing: 'border-box',
-    minWidth: 'fit-content'
+    minWidth: 'fit-content',
+    boxShadow: 0
   };
   
 
