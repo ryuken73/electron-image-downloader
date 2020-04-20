@@ -6,7 +6,9 @@ const saveFile = require('./saveFile');
 const imageUtil = require('./imageUtil');
 const config = require('./config.json');
 const SAVE_DIRECTORY = 'c:/temp/image';
-// const DEFAULT_PAGE_TIMEOUT = 60000;
+const DEFAULT_PAGE_TIMEOUT = 60000;
+// const browserEventHandler = require('./plugins/browserEventHandler');
+// const pageEventHandler = require('./plugins/pageEventHandler');
 
 const attachListenerToPage = (page => {
     page.on('frameattached', ()=> console.log('frameattached'));
@@ -52,11 +54,29 @@ const targetCreatedHandler = browser => async (target) => {
     console.log('targetcreated event occurred', target.type());
     const IS_NEW_PAGE_EVENT = target.type() === 'page';
     const page = IS_NEW_PAGE_EVENT && await target.page();
+    // const {width, height, defaultTimeout} = browser.pageOptions;
+    // page.setDefaultTimeout(defaultTimeout);
+    // page.setViewport({width, height});
 
     const {genTrackFilter} = browser;
     trackRequest.start(page, genTrackFilter);
 }
 
+// const whiteList = [
+//     'image',
+//     'image/jpeg'
+// ];
+
+
+// const attachEventListenerToPage = (event, handler, page) => {
+//     console.log('event mgmt called : y', page)
+//     page.on(event, handler);
+// }
+
+// const detachEventListenerFromPage = (event, handler, page) => {
+//     console.log('event mgmt called : n')
+//     page.removeListener(event, handler);
+// }
 
 const requestHandler = page => (request) => {
     // javascript Map can have objet as a key;
@@ -65,6 +85,13 @@ const requestHandler = page => (request) => {
     requestMap.set(request, index++);
 }
 
+// const allowedByWhiteList = (response, whiteList) => {
+//     const responseHeaders = response.headers();
+//     const [type, ext] = responseHeaders['content-type'] ? responseHeaders['content-type'].split('/'):[]
+//     console.log(`filter response : ${type}, ${ext}`);
+//     const isAllowed = whiteList.includes(type) || whiteList.includes(`${type}/${ext}`);                
+//     return {success:isAllowed, type, ext}
+// }
 
 const applyFilter = async (trackFilter, response) => {
     const filterResult = {allowed:null, requestUrl:null, responseHeaders:null, blockFilter:null};
@@ -177,11 +204,22 @@ const launch = async (options) => {
     
     page.setDefaultTimeout(DEFAULT_PAGE_TIMEOUT);
     attachListenerToPage(page);
+    // page.on('request', requestHandler(page));
+
+    // listener for request must be attached before page.goto
+    // trackRequest(page);
+
+    // listener for request must be attached before page.goto
+    // page.on('request', async (request) => {
+    //     const url = request.url();
+    //     requestMap.set(url, index++);
+    // })
 
     console.time('goto');
     await page.goto(url);  
     console.timeEnd('goto');
     console.log(browser.process().pid)
+
     return {page, browser};
 }
 const trackRequest = {

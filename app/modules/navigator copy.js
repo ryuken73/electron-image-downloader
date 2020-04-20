@@ -1,6 +1,6 @@
 import {createAction, handleActions} from 'redux-actions';
 import {addImageData} from './imageList'
-const chromeBrowser = require('../browser/Browser');
+const chromeBrowser = require('../browser');
 
 // action types
 const SET_URL = 'navigator/SET_URL';
@@ -21,36 +21,49 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
     const state = getState();
     const {launchUrl} = state.navigator;
     const {browserWidth:width, browserHeight:height} = state.browserOptions;
-    const browser = chromeBrowser.initBrowser({width, height});
-    browser.registerPageEventHandler('saveFile', imageInfo => {
-        console.log('saved:',imageInfo);
-        dispatch(addImageData(imageInfo));
-    })
-    await browser.launch(launchUrl);
+    const {page, browser} = await chromeBrowser.launch({url:launchUrl, width, height});
     browser.on('disconnected', () => {
         console.log('browser closed')
         dispatch(enableLaunchBtn());
         dispatch(toggleTrack(false));
     })
-    dispatch(launchBrowser(browser));
+    page.on('saveFile', imageInfo => {
+        console.log('saved:',imageInfo);
+        dispatch(addImageData(imageInfo))
+    })
+    browser.on('targetcreated', async (target) => {
+        console.log('target created');
+        if(target.type() !== 'page') return;
+        const page = await target.page();
+        // set common settings on page (height, width and timeout)
+        const {width, height, defaultTimeout} = browser.pageOptions;
+        page.setDefaultTimeout(defaultTimeout);
+        page.setViewport({width, height});
+        // attach event when file save done, dispatch addImage on pannel
+        page.on('saveFile', imageInfo => {
+                console.log('saved:',imageInfo);
+                dispatch(addImageData(imageInfo))
+        })
+    })
+    dispatch(launchBrowser({browser, page}));
     // dispatch(toggleTrackAsync());
 }
 
 export const toggleTrackAsync = () => async (dispatch, getState) => {
     const state = getState();
-    const {browser, tracking} = state.navigator;
+    const {browser, page, tracking} = state.navigator;
     const {trackingTab} = state.browserOptions;
     const {contentTypes, contentSizeMin, contentSizeMax, urlPatterns} = state.trackFilters;
     console.log(state.trackFilters);
-    const {startTrack, stopTrack, mkTrackFilter} = browser;
-    const TrackRequested = !tracking;
-    // make track filter based on current track filter's state
-    const trackFilter = mkTrackFilter({contentTypes, contentSizeMin, contentSizeMax, urlPatterns});
-    const startSave = (trackFilter) => trackingTab === 'all' ? startTrack(trackFilter) : startTrack(trackFilter,0);
-    const stopSave = () => trackingTab === 'all' ? stopTrack() : stopTrack(0);
-
-    TrackRequested ? await startSave(trackFilter) : await stopSave();
-    dispatch(toggleTrack(TrackRequested));
+    const {startTrack, stopTrack, mkTrackFilter} = chromeBrowser;
+    const newTrackFlag = !tracking;
+    const genTrackFilter = mkTrackFilter({contentTypes, contentSizeMin, contentSizeMax, urlPatterns});
+    const startSave = trackingTab === 'all' ? startTrack(browser) : startTrack(page);
+    const stopSave = trackingTab === 'all' ? stopTrack(browser) : stopTrack(page);
+    // const trackMethod = trackingTab === 'all' ? chromeBrowser.startTrackingAll : chromeBrowser.startTracking
+    // newTrackFlag ? await chromeBrowser.startTracking(page) : await chromeBrowser.stopTracking(page);
+    newTrackFlag ? await startSave(genTrackFilter) : await stopSave();
+    dispatch(toggleTrack(newTrackFlag));
 }
 
 
@@ -75,12 +88,13 @@ export default handleActions({
     },
     [LAUNCH]: (state, action) => {
         console.log('launch browser triggered', state);
-        const browser = action.payload;
-        console.log(browser)            
+        const {browser, page} = action.payload;
+        console.log(browser, page)
         return {
             ...state,
             launched: true,
-            browser
+            browser,
+            page
         }
     },
     [ENABLE_LAUNCHBTN]: (state, action) => {
