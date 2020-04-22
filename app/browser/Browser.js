@@ -60,8 +60,7 @@ const mkFname = async (page, requestUrl, request) => {
         
         const index = page.requestMap.get(request);
 
-        const requestedFname = getFirstStringBySep({str:getLastStringBySep({str: requestUrl, sep: '/'}), sep:'?'});
-        const extname = path.extname(requestedFname);
+
         if(extname === ''){
             console.log('No file extension. skip....');
             return {};
@@ -77,8 +76,31 @@ const mkFname = async (page, requestUrl, request) => {
         console.error('something wrong:', err);
         return {};
     }
-
 }
+
+// const mkFname = async (page, requestUrl, request) => {
+//     try {
+        
+//         const index = page.requestMap.get(request);
+
+//         const requestedFname = getFirstStringBySep({str:getLastStringBySep({str: requestUrl, sep: '/'}), sep:'?'});
+//         const extname = path.extname(requestedFname);
+//         if(extname === ''){
+//             console.log('No file extension. skip....');
+//             return {};
+//         }        
+//         const filename = `${index}${extname}`;
+//         console.log(`${filename}`)
+//         await checkDirExists({dirname:SAVE_DIRECTORY});
+        
+//         const tmpName = path.join(SAVE_DIRECTORY, filename);
+//         console.log(tmpName)
+//         return {tmpName, index};
+//     } catch (err) {
+//         console.error('something wrong:', err);
+//         return {};
+//     }
+// }
 
 class Browser extends EventEmitter {
     constructor(options){
@@ -112,7 +134,7 @@ class Browser extends EventEmitter {
         page.requestMap = new Map();
         page.requestIndex = 0;
         page.getNextRequestIndex = () => page.requestIndex++;
-    }
+    } 
     _setPageEventHandler = page => [...this.pageEventHandler].map(([event, handler]) => {
         console.log(event, handler)
         page.on(event, handler)
@@ -136,28 +158,35 @@ class Browser extends EventEmitter {
                 page.requestMap.delete(request);
                 return;
             }
-            const {tmpName, index} = await mkFname(page, requestUrl, request);
+            const pageIndex = this._getPageIndex(page);
+            const requestIndex = page.requestMap.get(request);
+            const requestFname = getFirstStringBySep({str:getLastStringBySep({str: requestUrl, sep: '/'}), sep:'?'});
+            const extname = path.extname(requestFname);
+            const filename = `${pageIndex}_${requestIndex}${extname}`;
+            await checkDirExists({dirname:SAVE_DIRECTORY});           
+            const tmpName = path.join(SAVE_DIRECTORY, filename);
+        
             if(!tmpName) {
                 console.log('filename make failed! skip...');
                 page.requestMap.delete(request);
                 return;
             }
-            console.log(`[${index}][${tmpName}]allowed...saving...`);
+            console.log(`[${pageIndex}][${requestIndex}][${tmpName}]allowed...saving...`);
             const metadata = await imageUtil.getMetadata(buff);
             const tmpFname = path.basename(tmpName);
-            metadata.reqIndex = index;
+            metadata.reqIndex = requestIndex;
             metadata.reqUrl = requestUrl;
             console.log(metadata, tmpFname)
     
             const success = await saveFile({fname:tmpName, buff});
             // saveFile({fname:`c:/temp/image/${index}.jpg`, buff:displaySrc});
             if(success) {
-                console.log(`[${index}][${tmpName}]saved`);
+                console.log(`[${pageIndex}][${requestIndex}][${tmpName}]saved`);
                 page.requestMap.delete(request);
-                page.emit('saveFile', {tmpSrc:tmpName, tmpFname, metadata});
+                page.emit('saveFile', {pageIndex, tmpSrc:tmpName, tmpFname, metadata});
                 return
             }
-            console.log(`[${index}][${tmpName}]failed!!`);
+            console.log(`[${pageIndex}][${requestIndex}][${tmpName}]failed!!`);
             page.requestMap.delete(request);
             return
         } catch (err) {
@@ -236,7 +265,8 @@ class Browser extends EventEmitter {
     }
     registerPageEventHandler = (event, handler) => this.pageEventHandler.set(event, handler);
     
-    startTrack = (trackFilter, pageIndex) => {        
+    startTrack = (trackFilter, pageIndex) => {   
+        console.log('start track:',this.pages.has(pageIndex))     
         pageIndex === undefined ? 
         this._startTrackBrowser(trackFilter):
         this.pages.has(pageIndex) && this._startTrackPage(trackFilter, pageIndex)
