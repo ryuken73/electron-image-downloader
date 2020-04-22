@@ -3,16 +3,19 @@ const utils = require('../utils');
 const chromeBrowser = require('../browser');
 
 // action types
-const ADD_IMAGE_DATA = 'imageList/ADD_IMAGE_DATA';
-const SET_IMAGE_DATA = 'imageList/SET_IMAGE_DATA';
+// const ADD_IMAGE_DATA = 'imageList/ADD_IMAGE_DATA';
+const SET_PAGE_IMAGES = 'imageList/SET_PAGE_IMAGES';
+const SET_CURRENT_TAB = 'imageList/SET_CURRENT_TAB';
 const FILTER_IMAGES_BY_TYPE = 'imageList/FILTER_IMAGES_BY_TYPE';
 const FILTER_IMAGES_BY_MINSIZE = 'imageList/FILTER_IMAGES_BY_MINSIZE';
 const FILTER_IMAGES_BY_MAXSIZE = 'imageList/FILTER_IMAGES_BY_MAXSIZE';
 const FILTER_IMAGES_BY_NAME = 'imageList/FILTER_IMAGES_BY_NAME';
 
 // action creator
-export const addImageData = createAction(ADD_IMAGE_DATA);
-export const setImageData = createAction(SET_IMAGE_DATA);
+// export const addImageData = createAction(ADD_IMAGE_DATA);
+// export const setImageData = createAction(SET_IMAGE_DATA);
+export const setPageImages = createAction(SET_PAGE_IMAGES)
+export const setCurrentTab = createAction(SET_CURRENT_TAB)
 export const filterImageByType = createAction(FILTER_IMAGES_BY_TYPE);
 export const filterImageByMinSize = createAction(FILTER_IMAGES_BY_MINSIZE);
 export const filterImageByMaxSize = createAction(FILTER_IMAGES_BY_MAXSIZE);
@@ -66,49 +69,81 @@ const filterImageDataBy = ({imageData, fileTypes, fileSizeMin, fileSizeMax, file
   return filteredImages;
 }
 
+export const addImageData = (imageInfo) => async (dispatch, getState) => {
+    console.log(`#### in addImageData:`, imageInfo)
+    const state = getState();
+    const {pageIndex} = imageInfo;
+    const imageData = state.imageList.pageImages.get(pageIndex) || [];
+    const images = [
+        ...imageData,
+        mkImageItem(imageInfo)
+    ]
+    dispatch(setPageImages({pageIndex, images}))
+}
+
 const initialState = {
-    imageData: [],
-    // displayImages: []
+    currentTab: 0,
+    pageImages: new Map()
 }
 
 // reducer
 export default handleActions({
-    [ADD_IMAGE_DATA]: (state, action) => {
-        console.log(state, action)
-        const imageInfo = action.payload;
-        console.log(`*************${imageInfo}`)
-        const newImageData = [
-            ...state.imageData,
-            mkImageItem(imageInfo)
-        ]
+    // [ADD_IMAGE_DATA]: (state, action) => {
+    //     console.log(state, action)
+    //     const imageInfo = action.payload;
+    //     const {pageIndex} = imageInfo;
+    //     console.log(`*************${imageInfo}`)
+    //     const newImageData = [
+    //         ...state.imageData,
+    //         mkImageItem(imageInfo)
+    //     ]
+    //     return {
+    //         ...state,
+    //         imageData: newImageData
+    //     }
+    // },
+    // [SET_IMAGE_DATA]: (state, action) => {
+    //     const newImageData = action.payload;
+    //     return {
+    //         ...state,
+    //         imageData: newImageData
+    //     }
+    // },
+    [SET_PAGE_IMAGES]: (state, action) => {
+        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        const {pageIndex, images} = action.payload;
+        const pageImages = new Map(state.pageImages);
+        pageImages.set(pageIndex, images);
         return {
             ...state,
-            imageData: newImageData
+            pageImages
         }
     },
-    [SET_IMAGE_DATA]: (state, action) => {
-        const newImageData = action.payload;
+    [SET_CURRENT_TAB]: (state, action) => {
+        const currentTab = action.payload;
         return {
             ...state,
-            imageData: newImageData
+            currentTab
         }
     },
     [FILTER_IMAGES_BY_TYPE]: (state, action) => {
-        const fileTypes = action.payload;
+        const {pageIndex, fileTypes} = action.payload;
         const formatFilter = (image) => {
             const {format} = image.metadata;
             if(fileTypes.includes('all')) return {...image, show:true};
             if(fileTypes.includes(format)) return {...image, show:true};
             return {...image, show:false};
         }
-        const newImageData = state.imageData.map(image => formatFilter(image));
+        const newImageData = state.pageImages.get(pageIndex).map(image => formatFilter(image));
+        const pageImages = new Map(state.pageImages);
+        pageImages.set(pageIndex, newImageData);
         return {
             ...state,
-            imageData: newImageData
+            pageImages
         }
     },   
     [FILTER_IMAGES_BY_MINSIZE]: (state, action) => {
-        const fileSizeMin = action.payload;
+        const {pageIndex, fileSizeMin} = action.payload;
         const sizeFilter = image => {
             const {size} = image.metadata;
             const show = (size > fileSizeMin);
@@ -116,28 +151,32 @@ export default handleActions({
             if(image.show === show) return image;
             return {...image, show:!image.show}
         }
-        const newImageData = state.imageData.map(image => sizeFilter(image));
+        const newImageData = state.pageImages.get(pageIndex).map(image => sizeFilter(image));
+        const pageImages = new Map(state.pageImages);
+        pageImages.set(pageIndex, newImageData);
         return {
             ...state,
-            imageData: newImageData
+            pageImages
         }
     },
     [FILTER_IMAGES_BY_MAXSIZE]: (state, action) => {
-        const fileSizeMax = action.payload;
+        const {pageIndex, fileSizeMax} = action.payload;
         const sizeFilter = image => {
             const {size} = image.metadata;
             console.log(`*****${size}`); 
             if(size < fileSizeMax) return {...image, show:true};
             return {...image, show:false};
         }
-        const newImageData = state.imageData.map(image => sizeFilter(image));
+        const newImageData = state.pageImages.get(pageIndex).map(image => sizeFilter(image));
+        const pageImages = new Map(state.pageImages);
+        pageImages.set(pageIndex, newImageData);
         return {
             ...state,
-            imageData: newImageData
+            pageImages
         }
     },    
     [FILTER_IMAGES_BY_NAME]: (state, action) => {
-        const filePatterns = action.payload;
+        const {pageIndex, filePatterns} = action.payload;
         const nameFilter = (image) => {
             const name = image.tmpFname;
             console.log(`*****${name}`);
@@ -151,10 +190,12 @@ export default handleActions({
             if(results.some(result => result === true)) return {...image, show:true};
             return {...image, show:false};
         }
-        const newImageData = state.imageData.map(image => nameFilter(image));
+        const newImageData = state.pageImages.get(pageIndex).map(image => nameFilter(image));
+        const pageImages = new Map(state.pageImages);
+        pageImages.set(pageIndex, newImageData);
         return {
             ...state,
-            imageData: newImageData
+            pageImages
         }
     },        
 }, initialState);

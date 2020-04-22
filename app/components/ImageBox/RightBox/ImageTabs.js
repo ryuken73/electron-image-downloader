@@ -8,42 +8,64 @@ import ImageListPanel from './ImageListPanel';
 import { Typography } from '@material-ui/core';
 
 function TabPanel(props){
-    const {children, value, index} = props;
+    console.log('render TabPanel:', props)
+    const {value, index, imageData} = props;
+    const hidden = (value === index) ? false : true;
     return (
-        <Typography
-            hidden={value !== index}
+        <ImageListPanel
+            pageIndex = {index}
+            {...props}
+            hidden = {hidden}
+            imageData = {imageData}
         >
-            {value === index && <Box p={3}>{children}</Box>}
-        </Typography>
+        </ImageListPanel>
+        // <Typography
+        //     component="div"
+        //     role="tabpanel"
+        //     hidden={value !== index}
+        // >
+        //     {value === index && <Box p={3}>
+        //         {imageData.map(child => <p>{child.tmpFname}</p>)}
+        //     </Box>}
+        // </Typography>
     )
 }
 
 
-export default function ImageTabs() {
-    const [tabId, setTabId] = React.useState(0)
+function ImageTabs(props) { 
+    console.log('!!!!!!!!!!!!!!!',props);
+    
+    const {currentTab, pageImages} = props;
+    const {setCurrentTab} = props.ImageActions;
     const onChange = (event, newValue) => {
-        setTabId(newValue)
+        setCurrentTab(newValue)
     };
     return (
-        <BorderedBox display="flex" alignContent="center" alignItems="flex-start" flexGrow="1" minWidth="auto" flexBasis="0" overflow="auto">
-
+        <BorderedBox  alignContent="center" alignItems="flex-start" flexGrow="1" minWidth="auto" flexBasis="0" overflow="auto">
             <AppBar position="static" color="default">
                 <Tabs
-                    value={tabId}
-                    tabId={tabId}
+                    value={currentTab}
                     onChange={onChange}
                     indicatorColor="primary"
                     variant="scrollable"
                     scrollButtons="auto"
                     aria-label="scrollable auto tabs"
                 >
-                    <Tab label="Item one" aria-controls='tabpanel-0'></Tab>
-                    <Tab label="Item two" aria-controls='tabpanel-1'></Tab>
+                    {[...pageImages].map(pageImage => {
+                        const pageIndex = pageImage[0];
+                        return <Tab label={pageIndex} key={pageIndex} aria-controls={`tabpanel-${pageIndex}`}></Tab>                      
+                    })}
 
                 </Tabs>
-                <TabPanel value={tabId} index={0}>Item one</TabPanel>
-                <TabPanel value={tabId} index={1}>Item two</TabPanel>              
             </AppBar>
+            {[...pageImages].map(pageImage => {
+                const [pageIndex, imageData] = pageImage;
+                return <TabPanel value={currentTab} key={pageIndex} index={pageIndex}  {...props} imageData={imageData}></TabPanel>                 
+
+            }
+            )}
         </BorderedBox>
         )
 }
+
+export default React.memo(ImageTabs);

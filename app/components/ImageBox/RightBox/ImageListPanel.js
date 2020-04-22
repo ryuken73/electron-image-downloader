@@ -22,7 +22,8 @@ const toggleCheck = () => {};
 
 function ImageCardContainer(props) {
   // const [state, setState] = React.useState(imageData);
-  const {imageData} = props;
+  const {pageIndex, imageData, hidden} = props;
+  console.log('&&&&&&&&&&&&&&&&&&&&&', hidden, imageData)
   const {fileTypes, fileSizeMin, fileSizeMax, filePatterns} = props;
   const {setImageData} = props.ImageActions;
   const {filterImageByType, filterImageByMinSize} = props.ImageActions;
@@ -30,19 +31,19 @@ function ImageCardContainer(props) {
   const onStart = () => {};
 
   React.useEffect(() => {
-    filterImageByType(fileTypes)
+    filterImageByType({pageIndex, fileTypes})
   },[fileTypes])
   
   React.useEffect(() => {
-    filterImageByMinSize(fileSizeMin)
+    filterImageByMinSize({pageIndex, fileSizeMin})
   },[fileSizeMin])
 
   React.useEffect(() => {
-    filterImageByMaxSize(fileSizeMax)
+    filterImageByMaxSize({pageIndex, fileSizeMax})
   },[fileSizeMax])
   
   React.useEffect(() => {
-    filterImageByName(filePatterns)
+    filterImageByName({pageIndex, filePatterns})
   },[filePatterns])
   
 
@@ -86,7 +87,7 @@ function ImageCardContainer(props) {
 
   return (
     // <SectionWithFullHeightFlex className="SectionWithFullHeightFlexFlex ImageListPanel">
-    <BorderedBox display="flex" alignContent="center" alignItems="flex-start" flexGrow="1" minWidth="auto" flexBasis="0" overflow="auto">
+    <BorderedBox display={hidden ? 'none':'flex'} alignContent="center" alignItems="flex-start" flexGrow="1" minWidth="auto" flexBasis="0" overflow="auto">
 
         {/* <StyledReactSortable 
           list={filteredImages} 
