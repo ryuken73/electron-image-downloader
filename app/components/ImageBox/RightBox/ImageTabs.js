@@ -6,6 +6,12 @@ import Box from '@material-ui/core/Box';
 import BorderedBox from '../../template/BorderedBox';
 import ImageListPanel from './ImageListPanel';
 import { Typography } from '@material-ui/core';
+import styled from 'styled-components';
+
+const StyledAppBar = styled(AppBar)`
+    max-width: 1000px;
+    min-width: 900px;
+`
 
 function TabPanel(props){
     console.log('render TabPanel:', props)
@@ -42,7 +48,7 @@ function ImageTabs(props) {
     };
     return (
         <BorderedBox  alignContent="center" alignItems="flex-start" flexGrow="1" minWidth="auto" flexBasis="0" overflow="auto">
-            <AppBar position="static" color="default">
+            <StyledAppBar position="static" color="default">
                 <Tabs
                     value={currentTab}
                     onChange={onChange}
@@ -57,7 +63,7 @@ function ImageTabs(props) {
                     })}
 
                 </Tabs>
-            </AppBar>
+            </StyledAppBar>
             {[...pageImages].map(pageImage => {
                 const [pageIndex, imageData] = pageImage;
                 return <TabPanel value={currentTab} key={pageIndex} index={pageIndex}  {...props} imageData={imageData}></TabPanel>                 
