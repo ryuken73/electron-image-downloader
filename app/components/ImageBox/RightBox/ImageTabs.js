@@ -25,15 +25,6 @@ function TabPanel(props){
             imageData = {imageData}
         >
         </ImageListPanel>
-        // <Typography
-        //     component="div"
-        //     role="tabpanel"
-        //     hidden={value !== index}
-        // >
-        //     {value === index && <Box p={3}>
-        //         {imageData.map(child => <p>{child.tmpFname}</p>)}
-        //     </Box>}
-        // </Typography>
     )
 }
 

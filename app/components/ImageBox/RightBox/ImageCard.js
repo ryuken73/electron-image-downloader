@@ -28,7 +28,8 @@ const styles = makeStyles({
         margin : "3px"
     },
     image: {
-        margin: '5px'
+        margin: '5px',
+        maxWidth: '500px'
     }
 })
 
