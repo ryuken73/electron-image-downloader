@@ -5,6 +5,7 @@ const chromeBrowser = require('../browser');
 // action types
 // const ADD_IMAGE_DATA = 'imageList/ADD_IMAGE_DATA';
 const SET_PAGE_IMAGES = 'imageList/SET_PAGE_IMAGES';
+const SET_PAGE_TITLES = 'imageList/SET_PAGE_TITLES';
 const SET_CURRENT_TAB = 'imageList/SET_CURRENT_TAB';
 const FILTER_IMAGES_BY_TYPE = 'imageList/FILTER_IMAGES_BY_TYPE';
 const FILTER_IMAGES_BY_MINSIZE = 'imageList/FILTER_IMAGES_BY_MINSIZE';
@@ -14,8 +15,9 @@ const FILTER_IMAGES_BY_NAME = 'imageList/FILTER_IMAGES_BY_NAME';
 // action creator
 // export const addImageData = createAction(ADD_IMAGE_DATA);
 // export const setImageData = createAction(SET_IMAGE_DATA);
-export const setPageImages = createAction(SET_PAGE_IMAGES)
-export const setCurrentTab = createAction(SET_CURRENT_TAB)
+export const setPageImages = createAction(SET_PAGE_IMAGES);
+export const setPageTitles = createAction(SET_PAGE_TITLES);
+export const setCurrentTab = createAction(SET_CURRENT_TAB);
 export const filterImageByType = createAction(FILTER_IMAGES_BY_TYPE);
 export const filterImageByMinSize = createAction(FILTER_IMAGES_BY_MINSIZE);
 export const filterImageByMaxSize = createAction(FILTER_IMAGES_BY_MAXSIZE);
@@ -81,9 +83,15 @@ export const addImageData = (imageInfo) => async (dispatch, getState) => {
     dispatch(setPageImages({pageIndex, images}))
 }
 
+export const changePageTitle = ({pageIndex, title}) => (disptach, getState) => {
+    console.log(`### in changePageTitle:`, title);
+    dispatch(setPageTitles({pageIndex, title}));
+}
+
 const initialState = {
     currentTab: 0,
-    pageImages: new Map()
+    pageImages: new Map(),
+    pageTitles: new Map()
 }
 
 // reducer
@@ -117,6 +125,16 @@ export default handleActions({
         return {
             ...state,
             pageImages
+        }
+    },
+    [SET_PAGE_TITLES]: (state, action) => {
+        console.log('%%%%%%%%%%%%%%%% change page', action.payload);
+        const {pageIndex, title} = action.payload;
+        const pageTitles = new Map(state.pageTitles);
+        pageTitles.set(pageIndex, title);
+        return {
+            ...state,
+            pageTitles
         }
     },
     [SET_CURRENT_TAB]: (state, action) => {

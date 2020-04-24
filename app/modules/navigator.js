@@ -1,5 +1,5 @@
 import {createAction, handleActions} from 'redux-actions';
-import {addImageData} from './imageList'
+import {addImageData, setPageTitles} from './imageList'
 const chromeBrowser = require('../browser/Browser');
 
 // action types
@@ -25,6 +25,10 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
     browser.registerPageEventHandler('saveFile', imageInfo => {
         console.log('saved:',imageInfo);
         dispatch(addImageData(imageInfo));
+    })
+    browser.registerBrowserEventHandler('pageChanged', ({pageIndex, title}) => {
+        console.log('pageChanged:',pageIndex, title);        
+        dispatch(setPageTitles({pageIndex, title}));
     })
     await browser.launch(launchUrl);
     browser.on('disconnected', () => {

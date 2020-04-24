@@ -118,6 +118,7 @@ class Browser extends EventEmitter {
         this.pages = new Map();
         this.pageIndex = 0;
         this.pageEventHandler = new Map();
+        this.browserEventHandler = new Map();
         this.trackFilters = null;
     }
     _nextPageIndex = () => this.pageIndex++;
@@ -138,6 +139,10 @@ class Browser extends EventEmitter {
     _setPageEventHandler = page => [...this.pageEventHandler].map(([event, handler]) => {
         console.log(event, handler)
         page.on(event, handler)
+    })
+    _setDefaultBrowserEventHandler = () => [...this.browserEventHandler].map(([event, handler]) => {
+        console.log(event, handler)
+        this.on(event, handler)
     })
 
     _requestHandler = page => request => {console.log('request on');page.requestMap.set(request, page.getNextRequestIndex());}
@@ -254,7 +259,9 @@ class Browser extends EventEmitter {
             const pageIndex = this._initPage(page); 
             console.log(`*** new target created : ${pageIndex}`);
             this.trackFilters && this._startTrackPage(this.trackFilters, pageIndex);
-        } );
+        });
+
+        this._setDefaultBrowserEventHandler();
         const pages = await this.browser.pages();
         const page = head(pages);
         const pageIndex = this._initPage(page);
@@ -262,9 +269,24 @@ class Browser extends EventEmitter {
         console.time('goto');
         await page.goto(url);  
         console.timeEnd('goto');
+
+        this.browser.on('targetchanged', async target => {
+            if(target.type() !== 'page') return;
+            try {
+                const page = await target.page();
+                const title = await page.title();
+                console.log(`*************page change : ${title}`);
+                const pageIndex = this._getPageIndex(page);
+                console.log(`*** target changed : ${pageIndex}`);
+                this.emit('pageChanged', {pageIndex, title});
+            } catch (err) {
+                console.error(err);
+            }
+        })
     }
     registerPageEventHandler = (event, handler) => this.pageEventHandler.set(event, handler);
-    
+    registerBrowserEventHandler = (event, handler) => this.browserEventHandler.set(event, handler);
+
     startTrack = (trackFilter, pageIndex) => {   
         console.log('start track:',this.pages.has(pageIndex))     
         pageIndex === undefined ? 

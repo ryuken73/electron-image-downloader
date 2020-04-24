@@ -32,7 +32,7 @@ function TabPanel(props){
 function ImageTabs(props) { 
     console.log('!!!!!!!!!!!!!!!',props);
     
-    const {currentTab, pageImages} = props;
+    const {currentTab, pageImages, pageTitles} = props;
     const {setCurrentTab} = props.ImageActions;
     const onChange = (event, newValue) => {
         setCurrentTab(newValue)
@@ -49,8 +49,9 @@ function ImageTabs(props) {
                     aria-label="scrollable auto tabs"
                 >
                     {[...pageImages].map(pageImage => {
-                        const pageIndex = pageImage[0];
-                        return <Tab label={pageIndex} key={pageIndex} aria-controls={`tabpanel-${pageIndex}`}></Tab>                      
+                        const [pageIndex, imageData] = pageImage;
+                        const title = pageTitles.get(pageIndex);
+                        return <Tab key={pageIndex} label={title + ` [${imageData.length}]`} key={pageIndex} aria-controls={`tabpanel-${pageIndex}`}></Tab>                      
                     })}
 
                 </Tabs>

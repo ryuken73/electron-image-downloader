@@ -9,6 +9,7 @@ function mapStateToProps(state) {
   return {
     // imageData: state.imageList.imageData,
     pageImages: state.imageList.pageImages,
+    pageTitles: state.imageList.pageTitles,
     currentTab: state.imageList.currentTab,
     fileTypes: state.displayFilters.fileTypes,
     fileSizeMin: state.displayFilters.fileSizeMin,
