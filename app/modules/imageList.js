@@ -87,7 +87,7 @@ export const changePageTitle = ({pageIndex, title}) => (disptach, getState) => {
 }
 
 const initialState = {
-    currentTab: 0,
+    // currentTab: 0,
     pageImages: new Map(),
     pageTitles: new Map()
 }

@@ -97,7 +97,8 @@ class Browser extends EventEmitter {
         this.browserEventHandler = new Map();
         this.trackFilters = null;
     }
-    _nextPageIndex = () => this.pageIndex++;
+    // _nextPageIndex = () => this.pageIndex++;
+    _nextPageIndex = () => (new Date()).getTime()
     _addPageList = page => {
         const nextIndex = this._nextPageIndex();
         this.pages.set(nextIndex, page);
@@ -245,6 +246,8 @@ class Browser extends EventEmitter {
         console.time('goto');
         await page.goto(url);  
         console.timeEnd('goto');
+        const title = await page.title();
+        this.emit('pageChanged', {pageIndex, title});
 
         this.browser.on('targetchanged', async target => {
             if(target.type() !== 'page') return;

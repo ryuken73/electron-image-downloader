@@ -1,5 +1,5 @@
 import {createAction, handleActions} from 'redux-actions';
-import {addImageData, setPageTitles} from './imageList'
+import {addImageData, setCurrentTab, setPageTitles} from './imageList'
 const chromeBrowser = require('../browser/Browser');
 
 // action types
@@ -21,6 +21,7 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
     const state = getState();
     const {launchUrl} = state.navigator;
     const {browserWidth:width, browserHeight:height} = state.browserOptions;
+    // make new Browser instance
     const browser = chromeBrowser.initBrowser({width, height});
     browser.registerPageEventHandler('saveFile', imageInfo => {
         console.log('saved:',imageInfo);
@@ -29,7 +30,9 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
     browser.registerBrowserEventHandler('pageChanged', ({pageIndex, title}) => {
         console.log('pageChanged:',pageIndex, title);        
         dispatch(setPageTitles({pageIndex, title}));
+        dispatch(setCurrentTab(pageIndex));
     })
+    // open first page and goto url
     await browser.launch(launchUrl);
     browser.on('disconnected', () => {
         console.log('browser closed')

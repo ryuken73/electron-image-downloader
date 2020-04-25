@@ -51,7 +51,7 @@ function ImageTabs(props) {
                     {[...pageImages].map(pageImage => {
                         const [pageIndex, imageData] = pageImage;
                         const title = pageTitles.get(pageIndex);
-                        return <Tab key={pageIndex} label={title + ` [${imageData.length}]`} key={pageIndex} aria-controls={`tabpanel-${pageIndex}`}></Tab>                      
+                        return <Tab key={pageIndex} value={pageIndex} label={title + ` [${imageData.length}]`} aria-controls={`tabpanel-${pageIndex}`}></Tab>                      
                     })}
 
                 </Tabs>
