@@ -78,30 +78,6 @@ const mkFname = async (page, requestUrl, request) => {
     }
 }
 
-// const mkFname = async (page, requestUrl, request) => {
-//     try {
-        
-//         const index = page.requestMap.get(request);
-
-//         const requestedFname = getFirstStringBySep({str:getLastStringBySep({str: requestUrl, sep: '/'}), sep:'?'});
-//         const extname = path.extname(requestedFname);
-//         if(extname === ''){
-//             console.log('No file extension. skip....');
-//             return {};
-//         }        
-//         const filename = `${index}${extname}`;
-//         console.log(`${filename}`)
-//         await checkDirExists({dirname:SAVE_DIRECTORY});
-        
-//         const tmpName = path.join(SAVE_DIRECTORY, filename);
-//         console.log(tmpName)
-//         return {tmpName, index};
-//     } catch (err) {
-//         console.error('something wrong:', err);
-//         return {};
-//     }
-// }
-
 class Browser extends EventEmitter {
     constructor(options){
         super();

@@ -13,8 +13,6 @@ const FILTER_IMAGES_BY_MAXSIZE = 'imageList/FILTER_IMAGES_BY_MAXSIZE';
 const FILTER_IMAGES_BY_NAME = 'imageList/FILTER_IMAGES_BY_NAME';
 
 // action creator
-// export const addImageData = createAction(ADD_IMAGE_DATA);
-// export const setImageData = createAction(SET_IMAGE_DATA);
 export const setPageImages = createAction(SET_PAGE_IMAGES);
 export const setPageTitles = createAction(SET_PAGE_TITLES);
 export const setCurrentTab = createAction(SET_CURRENT_TAB);
@@ -96,27 +94,6 @@ const initialState = {
 
 // reducer
 export default handleActions({
-    // [ADD_IMAGE_DATA]: (state, action) => {
-    //     console.log(state, action)
-    //     const imageInfo = action.payload;
-    //     const {pageIndex} = imageInfo;
-    //     console.log(`*************${imageInfo}`)
-    //     const newImageData = [
-    //         ...state.imageData,
-    //         mkImageItem(imageInfo)
-    //     ]
-    //     return {
-    //         ...state,
-    //         imageData: newImageData
-    //     }
-    // },
-    // [SET_IMAGE_DATA]: (state, action) => {
-    //     const newImageData = action.payload;
-    //     return {
-    //         ...state,
-    //         imageData: newImageData
-    //     }
-    // },
     [SET_PAGE_IMAGES]: (state, action) => {
         console.log('%%%%%%%%%%%%%%%%', action.payload);
         const {pageIndex, images} = action.payload;

@@ -67,11 +67,6 @@ export default function NavigatorPanel(props) {
             >
                 <FiberManualRecordIcon color={trackIconMode} fontSize="small" />
             </SmallPaddingIconButton>                   
-            {/* <ToggleImageButton
-                mode={trackMode}
-                onClick={onClickTrack}
-                disabled={trackIconDisabled}
-            ></ToggleImageButton> */}
         </Box>
     )
 }

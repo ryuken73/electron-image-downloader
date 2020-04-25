@@ -7,7 +7,6 @@ import * as imageActions from '../modules/imageList';
 function mapStateToProps(state) {
   console.log('mapStateToProps:',state)
   return {
-    // imageData: state.imageList.imageData,
     pageImages: state.imageList.pageImages,
     pageTitles: state.imageList.pageTitles,
     currentTab: state.imageList.currentTab,

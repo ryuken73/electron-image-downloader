@@ -25,11 +25,4 @@ const checkDirExists = ({dirname, retryCount=0, MAX_RETRY_COUNT=2}) => {
     })
 }
 
-// test code
-// const directory = 'd:/temp3/111/222';
-
-// checkDirExists({dirname:directory})
-// .then(result => console.log('done'))
-// .catch(err => console.error(err))
-
 module.exports = checkDirExists;

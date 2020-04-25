@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import BorderedBox from '../../template/BorderedBox';
 import NavigatorContainer from '../../../containers/NavigatorContainer';
 import BrowserOptionsContainer from '../../../containers/BrowserOptionsContainer';
-// import Navigator from './Navigator';
-// import FilterPanel from '../control/FilterPanel';
-// import BrowserOptions from './BrowserOptions';
 import SectionWithFullHeight from '../../template/SectionWithFullHeight';
 
 export default class LeftBox extends Component {

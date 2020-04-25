@@ -15,9 +15,4 @@ const checkDirWritable = ({dirname}) => {
     })
 }
 
-// const dir = 'd:/temp1';
-// checkDirWritable({dirname: dir})
-// .then(() => console.log('writable'))
-// .catch((err) => console.error(err))
-
 module.exports = checkDirWritable;
