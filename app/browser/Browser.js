@@ -3,6 +3,7 @@ const { EventEmitter } = require('events');
 const path = require('path');
 const checkDirExists = require('./checkDirExist');
 const saveFile = require('./saveFile');
+const deleteFile = require('./deleteFile');
 const imageUtil = require('./imageUtil');
 
 const config = require('./config.json');
@@ -104,6 +105,14 @@ class Browser extends EventEmitter {
         this.pages.set(nextIndex, page);
         page._indexNumber = nextIndex;
         return nextIndex;
+    }
+    _delPageFromList = pageIndex => {
+        this.pages.delete(pageIndex);
+    }
+    _getRemovedPageIndex = remainPages => {
+        const beforePages = this.pages.values();
+        const removedPage = [...beforePages].find(page => !remainPages.includes(page))
+        return this._getPageIndex(removedPage);
     }
     _getPageIndex = page => page._indexNumber;
     _setPageViewport = page => page.setViewport({width:this.width, height:this.height});
@@ -255,16 +264,30 @@ class Browser extends EventEmitter {
             if(target.type() !== 'page') return;
             try {
                 const page = await target.page();
-                const title = await page.title();
-                console.log(`************* url changed : ${title}`);
                 const pageIndex = this._getPageIndex(page);
-                console.log(`*** target changed : ${pageIndex}`);
+
+                console.log(`************* page changed : ${page} ${pageIndex}`);
                 this.emit('titleChanged', {pageIndex, title});
             } catch (err) {
                 console.error(err);
             }
         })
+        this.browser.on('targetdestroyed', async target => {
+            console.log('page closed');
+            try {
+                const remainPages = await this.browser.pages();
+                const removedPageIndex = this._getRemovedPageIndex(remainPages)
+                this._delPageFromList(removedPageIndex);
+                this.emit('pageClosed', removedPageIndex);
+            } catch (err) {
+                console.error(err);
+            }
+        })
 
+    }
+
+    delFile = async (fname) => {
+        return await deleteFile(fname);
     }
     registerPageEventHandler = (event, handler) => this.pageEventHandler.set(event, handler);
     registerBrowserEventHandler = (event, handler) => this.browserEventHandler.set(event, handler);

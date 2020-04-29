@@ -1,5 +1,5 @@
 import {createAction, handleActions} from 'redux-actions';
-import {addImageData, setCurrentTab, addPage, setPageTitles} from './imageList'
+import {addImageData, setCurrentTab, addPage, delPage, setPageTitles} from './imageList'
 const chromeBrowser = require('../browser/Browser');
 
 // action types
@@ -33,6 +33,20 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
         dispatch(addPage({pageIndex})); 
         dispatch(setPageTitles({pageIndex, title}));
         // dispatch(setCurrentTab(pageIndex));
+    })
+    browser.registerBrowserEventHandler('pageClosed', removedPageIndex => {
+        console.log('pageClosed:', removedPageIndex);    
+        const {pageImages} = getState().imageList;
+        const imageData = pageImages.get(removedPageIndex);
+        const deleteFileJobs = imageData.map(async image => {
+            const fname = image.tmpSrc;
+            return await browser.delFile(fname);
+        })
+        Promise.all(deleteFileJobs)
+        .then(results => {
+            console.log('delete all images from closed tab');
+            dispatch(delPage(removedPageIndex));
+        })
     })
     browser.registerBrowserEventHandler('titleChanged', ({pageIndex, title}) => {
         console.log('titleChanged:',pageIndex, title);        

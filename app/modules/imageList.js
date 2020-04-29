@@ -5,6 +5,7 @@ const chromeBrowser = require('../browser');
 // action types
 // const ADD_IMAGE_DATA = 'imageList/ADD_IMAGE_DATA';
 const ADD_PAGE = 'imageList/ADD_PAGE';
+const DEL_PAGE = 'imageList/DEL_PAGE';
 const SET_PAGE_IMAGES = 'imageList/SET_PAGE_IMAGES';
 const SET_PAGE_TITLES = 'imageList/SET_PAGE_TITLES';
 const SET_CURRENT_TAB = 'imageList/SET_CURRENT_TAB';
@@ -15,6 +16,7 @@ const FILTER_IMAGES_BY_NAME = 'imageList/FILTER_IMAGES_BY_NAME';
 
 // action creator
 export const addPage = createAction(ADD_PAGE);
+export const delPage = createAction(DEL_PAGE);
 export const setPageImages = createAction(SET_PAGE_IMAGES);
 export const setPageTitles = createAction(SET_PAGE_TITLES);
 export const setCurrentTab = createAction(SET_CURRENT_TAB);
@@ -106,6 +108,19 @@ export default handleActions({
         pageTitles.set(pageIndex, initialTitle);
         return {
             ...state,
+            pageTitles
+        }
+    },
+    [DEL_PAGE]: (state, action) => {
+        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        const pageIndex = action.payload;
+        const pageTitles = new Map(state.pageTitles);
+        const pageImages = new Map(state.pageImages);
+        pageImages.delete(pageIndex);
+        pageTitles.delete(pageIndex);
+        return {
+            ...state,
+            pageImages,
             pageTitles
         }
     },
