@@ -48,10 +48,11 @@ function ImageTabs(props) {
                     scrollButtons="auto"
                     aria-label="scrollable auto tabs"
                 >
-                    {[...pageImages].map(pageImage => {
-                        const [pageIndex, imageData] = pageImage;
-                        const title = pageTitles.get(pageIndex);
-                        return <Tab key={pageIndex} value={pageIndex} label={title + ` [${imageData.length}]`} aria-controls={`tabpanel-${pageIndex}`}></Tab>                      
+                    {[...pageTitles].map(pageTitle => {
+                        const [pageIndex, title] = pageTitle;
+                        const imageData = pageImages.get(pageIndex) || [];
+                        const imageCount = imageData.length || 0;
+                        return <Tab key={pageIndex} value={pageIndex} label={title + ` [${imageCount}]`} aria-controls={`tabpanel-${pageIndex}`}></Tab>                      
                     })}
 
                 </Tabs>

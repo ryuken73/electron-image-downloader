@@ -4,6 +4,7 @@ const chromeBrowser = require('../browser');
 
 // action types
 // const ADD_IMAGE_DATA = 'imageList/ADD_IMAGE_DATA';
+const ADD_PAGE = 'imageList/ADD_PAGE';
 const SET_PAGE_IMAGES = 'imageList/SET_PAGE_IMAGES';
 const SET_PAGE_TITLES = 'imageList/SET_PAGE_TITLES';
 const SET_CURRENT_TAB = 'imageList/SET_CURRENT_TAB';
@@ -13,6 +14,7 @@ const FILTER_IMAGES_BY_MAXSIZE = 'imageList/FILTER_IMAGES_BY_MAXSIZE';
 const FILTER_IMAGES_BY_NAME = 'imageList/FILTER_IMAGES_BY_NAME';
 
 // action creator
+export const addPage = createAction(ADD_PAGE);
 export const setPageImages = createAction(SET_PAGE_IMAGES);
 export const setPageTitles = createAction(SET_PAGE_TITLES);
 export const setCurrentTab = createAction(SET_CURRENT_TAB);
@@ -79,6 +81,8 @@ export const addImageData = (imageInfo) => async (dispatch, getState) => {
         mkImageItem(imageInfo)
     ]
     dispatch(setPageImages({pageIndex, images}))
+    // const throttledDispatch = utils.fp.throttle(1000, dispatch);
+    // throttledDispatch(setPageImages({pageIndex, images}));
 }
 
 export const changePageTitle = ({pageIndex, title}) => (disptach, getState) => {
@@ -94,6 +98,17 @@ const initialState = {
 
 // reducer
 export default handleActions({
+    [ADD_PAGE]: (state, action) => {
+        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        const {pageIndex} = action.payload;
+        const pageTitles = new Map(state.pageTitles);
+        const initialTitle = pageIndex;
+        pageTitles.set(pageIndex, initialTitle);
+        return {
+            ...state,
+            pageTitles
+        }
+    },
     [SET_PAGE_IMAGES]: (state, action) => {
         console.log('%%%%%%%%%%%%%%%%', action.payload);
         const {pageIndex, images} = action.payload;

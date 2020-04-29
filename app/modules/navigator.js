@@ -1,5 +1,5 @@
 import {createAction, handleActions} from 'redux-actions';
-import {addImageData, setCurrentTab, setPageTitles} from './imageList'
+import {addImageData, setCurrentTab, addPage, setPageTitles} from './imageList'
 const chromeBrowser = require('../browser/Browser');
 
 // action types
@@ -27,8 +27,15 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
         console.log('saved:',imageInfo);
         dispatch(addImageData(imageInfo));
     })
-    browser.registerBrowserEventHandler('pageChanged', ({pageIndex, title}) => {
-        console.log('pageChanged:',pageIndex, title);        
+    browser.registerBrowserEventHandler('pageAdded', ({pageIndex, title}) => {
+        console.log('pageAdded:',pageIndex);  
+        dispatch(setCurrentTab(pageIndex));
+        dispatch(addPage({pageIndex})); 
+        dispatch(setPageTitles({pageIndex, title}));
+        // dispatch(setCurrentTab(pageIndex));
+    })
+    browser.registerBrowserEventHandler('titleChanged', ({pageIndex, title}) => {
+        console.log('titleChanged:',pageIndex, title);        
         dispatch(setPageTitles({pageIndex, title}));
         dispatch(setCurrentTab(pageIndex));
     })

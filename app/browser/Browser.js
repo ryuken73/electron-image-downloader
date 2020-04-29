@@ -233,8 +233,10 @@ class Browser extends EventEmitter {
         this.browser.on('targetcreated', async target => {
             if(target.type() !== 'page') return;
             const page = await target.page();
+            const title = await page.title();
             const pageIndex = this._initPage(page); 
             console.log(`*** new target created : ${pageIndex}`);
+            this.emit('pageAdded', {pageIndex, title});
             this.trackFilters && this._startTrackPage(this.trackFilters, pageIndex);
         });
 
@@ -247,21 +249,22 @@ class Browser extends EventEmitter {
         await page.goto(url);  
         console.timeEnd('goto');
         const title = await page.title();
-        this.emit('pageChanged', {pageIndex, title});
-
+        this.emit('pageAdded', {pageIndex, title});
+        
         this.browser.on('targetchanged', async target => {
             if(target.type() !== 'page') return;
             try {
                 const page = await target.page();
                 const title = await page.title();
-                console.log(`*************page change : ${title}`);
+                console.log(`************* url changed : ${title}`);
                 const pageIndex = this._getPageIndex(page);
                 console.log(`*** target changed : ${pageIndex}`);
-                this.emit('pageChanged', {pageIndex, title});
+                this.emit('titleChanged', {pageIndex, title});
             } catch (err) {
                 console.error(err);
             }
         })
+
     }
     registerPageEventHandler = (event, handler) => this.pageEventHandler.set(event, handler);
     registerBrowserEventHandler = (event, handler) => this.browserEventHandler.set(event, handler);

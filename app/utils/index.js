@@ -11,7 +11,42 @@ const number = {
     }
 }
 
+const fp = {
+    throttle(duration, fn){
+        console.log(duration, fn)
+        let timer = null;
+        return (...args) => {
+            if(!timer){
+                timer = setTimeout(() => {
+                    console.log(`throttled:`, args)
+                    fn(...args);
+                    timer = null;
+                }, duration)
+            }
+        }
+    },
+    times(fn, {count=10, sleep=0}){
+        let processed = 0;
+        return (...args) => {
+            const timer = setInterval(() => {
+                console.log(processed);
+                if(processed > count) {
+                    clearInterval(timer);
+                    return
+                }
+                fn(...args)
+                processed++
+            , sleep})
+        }
+
+    }
+}
 
 module.exports = {
-    number
+    number,
+    fp
 }
+
+// const trottled = fp.throttle(100, console.log);
+// const looplog = fp.times(trottled, {count:100, sleep:100});
+// looplog('ryuken')
