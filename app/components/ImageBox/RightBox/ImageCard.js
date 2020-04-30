@@ -34,22 +34,22 @@ const styles = makeStyles({
 })
 
 function ImageCard(props) {
-    // console.log('re-render', props.image)
+    console.log('######################### re-render', props.image)
     const classes = styles(props);
     const {container, imageName, smallBtn, smallCheckBox, image} = classes;
-    const {index, tmpFname, tmpSrc, metadata, checked, show} = props.image;
+    const {index, imageFname, imageSrc, metadata, checked, show} = props.image;
     const {sizeKB, reqUrl} = metadata;
     const {toggleCheck, onClickSave, onClickRemove} = props;
     return (
         <Paper className={container} elevation={3} > 
             <Box bgcolor="aliceblue">
                 <Checkbox className={smallCheckBox} checked={checked} onChange={toggleCheck(index)}></Checkbox>
-                <Typography className={imageName} variant="caption">{tmpFname} [{sizeKB}KB]</Typography>
+                <Typography className={imageName} variant="caption">{imageFname} [{sizeKB}KB]</Typography>
             </Box>   
             <Box className="handle" display="flex" flexDirection="row" width="1">
                 <Box bgcolor="black" display="flex" justifyContent="center" flex="1">
                     <Tooltip title={reqUrl}>
-                        <img className={image} alt="poster" src={tmpSrc} style={{height:'80px'}}></img>
+                        <img className={image} alt="poster" src={imageSrc} style={{height:'80px'}}></img>
                     </Tooltip>
                 </Box>
             </Box>

@@ -30,6 +30,11 @@ function ImageCardContainer(props) {
   const {filterImageByMaxSize, filterImageByName} = props.ImageActions;
   const onStart = () => {};
 
+  imageData.forEach(image => {
+    image.imageFname = image.tmpFname.replace(/^\d{13}_/,'');
+    image.imageSrc = image.tmpSrc;
+  })
+
   React.useEffect(() => {
     filterImageByType({pageIndex, fileTypes})
   },[fileTypes])
@@ -47,70 +52,17 @@ function ImageCardContainer(props) {
   },[filePatterns])
   
 
-  // const formatFilter = (format) => {
-  //   if(fileTypes.includes('all')) return true;
-  //   return fileTypes.includes(format);
-  // }
-  // const sizeFilter = (size) => {console.log(`*****${size}`); return ((fileSizeMin < size) && (size < fileSizeMax));}
-  // const nameFilter = (name) => {
-  //   console.log(`*****${name}`);
-  //   const blnakRemoved = filePatterns.filter(pattern => pattern !== '');
-  //   if(blnakRemoved.includes('*')) return true;
-  //   const results = blnakRemoved.map(filename => {
-  //     console.log(name)
-  //     console.log(filename)
-  //     return name.includes(filename)
-  //   })
-  //   return results.some(result => result === true);
-  // }
-  // const filteredImages = imageData
-  // .filter(image => formatFilter(image.metadata.format))
-  // .filter(image => sizeFilter(image.metadata.size))
-  // .filter(image => nameFilter(image.tmpFname));
-
-
-
-  // const onStart = evt => {
-  //     console.log('drag started', evt.oldIndex);
-  // }
-
-  // const toggleCheck = (index) => {
-  //   return () => {
-  //     const newState = [...state];
-  //     // const targetImage = newState.filter(image => image.index === index).shift();
-  //     // targetImage.checked = !targetImage.checked;
-  //     const targetImageIndex = newState.findIndex(image => image.index === index);
-  //     newState[targetImageIndex].checked = !newState[targetImageIndex].checked;
-  //     setState(newState);
-  //   }
-  // }
-
   return (
     // <SectionWithFullHeightFlex className="SectionWithFullHeightFlexFlex ImageListPanel">
     <BorderedBox display={hidden ? 'none':'flex'} alignContent="center" alignItems="flex-start" flexGrow="1" border="0" minWidth="auto" flexBasis="0" overflow="auto">
-
-        {/* <StyledReactSortable 
-          list={filteredImages} 
-          setList={setImageData}
-          chosenClass={"chosen"}
-          animation={150}
-          onEnd={onEnd}
-          invertSwap={true}
-          onStart={onStart} 
-          handle=".handle"
-        > */}
         <Box display="flex" flexDirection="row" flexWrap="wrap" width={1} overflow="auto">
           {imageData.map(image => (
             <ImageCard key={image.index} order={image.index} image={image} toggleCheck={toggleCheck}></ImageCard>
           ))}
         </Box>
-
-
         {/* </StyledReactSortable> */}
       </BorderedBox>
     // {/* //  </SectionWithFullHeightFlex> */}
-    
-
   );
 }
 
