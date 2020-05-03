@@ -9,18 +9,18 @@ import {SmallPaddingFormControlLabel} from './smallComponents';
 
 
 export default function OptionRadioButton(props) {
-    const {title, currentValue, onRadioChange} = props;
+    const {subTitle, currentValue, onRadioChange, titlewidth="20%"} = props;
     const {formLabels} = props;
     const optionRadio = {
-        title: <Typography variant="body1">{title}</Typography>,
+        title: <Typography variant="body1">{subTitle}</Typography>,
         content:  (
             <React.Fragment>
                 <FormControl component="fieldset">
                     <RadioGroup aria-label="radioButton" name="radioButton" onChange={onRadioChange} value={currentValue}>
                         <Box display="flex">
-                            {formLabels.map(formLabel => {
+                            {formLabels.map((formLabel,index)=> {
                                 const {disabled, value, label} = formLabel;
-                                return <SmallPaddingFormControlLabel disabled={disabled} value={value} control={<Radio />} label={label} />
+                                return <SmallPaddingFormControlLabel key={index} disabled={disabled} value={value} control={<Radio />} label={label} />
                             })}
                         </Box>
                     </RadioGroup>
@@ -31,6 +31,7 @@ export default function OptionRadioButton(props) {
     return (
         <BorderedList 
             title={optionRadio.title} 
+            titlewidth={titlewidth}
             content={optionRadio.content} 
             mb={0}
         ></BorderedList>

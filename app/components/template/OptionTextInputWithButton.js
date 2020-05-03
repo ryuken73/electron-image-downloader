@@ -5,8 +5,9 @@ import BorderedList from './BorderedList';
 import {SmallMarginTextField} from './smallComponents';
 
 
-export default function OptionTextInput(props) {
-    const {subTitle, subTitleWidth:titlewidth="20%", inputWidth:width, value, onChangeText, iconButton} = props;
+export default function OptionTextInputWithButton(props) {
+    const {subTitle, width, value, onChangeText, titlewidth="20%", iconButton} = props;
+    console.log(iconButton)
     const optionText = {
         title: <Typography variant="body1">{subTitle}</Typography>,
         content:  (
@@ -15,8 +16,7 @@ export default function OptionTextInput(props) {
                     variant="outlined"
                     margin="dense"
                     value={value}
-                    onChange={onChangeText}   
-                    fullWidth                     
+                    onChange={onChangeText}                        
                 ></SmallMarginTextField> 
                 {iconButton}
             </Box>

@@ -12,10 +12,24 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
+import OptionTextInput from './template/OptionTextInput';
+import OptionRadioButton from './template/OptionRadioButton';
+import FolderIcon  from '@material-ui/icons/Folder';
+import {SmallPaddingIconButton} from './template/smallComponents';
+
 
 export default function OptionDialog(props) {
-  const [open, setOpen] = React.useState(true);
+  // const [open, setOpen] = React.useState(true);
+  const {dialogOpen, homeUrl, saveDir, tempDir} = props;
+  const {deleteOnClose, deleteOnStart, deleteAfterSave} = props;
+  const {setDialogOpen, setHomeUrl, setSaveDir, setTempDir} = props.OptionDialogActions;
+  const {setDeleteOnClose, setDeleteOnStart, setDeleteAfterSave} = props.OptionDialogActions;
   const [scroll, setScroll] = React.useState('paper');
+  const {defaultUrl='https://www.naver.com', saveDirectory='c:/image', tempDirectory='c:/temp'} = props;
+  const {deleteWhenClosed='yes', deleteWhenStarted='yes', deleteWhenSaved='yes'} = props;
+  const INPUT_WIDTH='400px'
+  const SUBTITLE_WIDTH='25%';
+
 
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
@@ -23,60 +37,61 @@ export default function OptionDialog(props) {
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setDialogOpen(false);
   };
 
   const onDeleteOnCloseChange = () => {};
-  const deleteOnClose = () => {};
-  const disabled = false;
+  const onClickSelectSaveDirectory = () => {};
+  const onClickSelectTempDirectory = () => {};
 
-  const DeleteOnTabClose = {
-    title: <Typography variant="body1">delete images when tab closed</Typography>,
-    content: (
-        <React.Fragment>
-            <FormControl component="fieldset">
-                <RadioGroup aria-label="deleteOnClose" name="trackindeleteOnClosegTab" onChange={onDeleteOnCloseChange} value={deleteOnClose}>
-                    <Box display="flex">
-                        <SmallPaddingFormControlLabel disabled={disabled} value={true} control={<Radio />} label="YES" />
-                        <SmallPaddingFormControlLabel disabled={disabled} value={false} control={<Radio />} label="NO" />
-                    </Box>
-                </RadioGroup>
-            </FormControl>
-        </React.Fragment>
-    )
-  }
+  const SaveDirectoryButton =
+   (<SmallPaddingIconButton 
+        onClick={onClickSelectSaveDirectory} 
+        aria-label="select save directory button"
+      >
+        <FolderIcon fontSize="small" />
+    </SmallPaddingIconButton>)
+
+
+  const TempDirectoryButton = 
+     (<SmallPaddingIconButton 
+        onClick={onClickSelectTempDirectory} 
+        aria-label="select temp directory button"
+      >
+        <FolderIcon fontSize="small" />
+    </SmallPaddingIconButton>)
+
+  
+  
+
+  const disabled = false;
+  const boolLabels = [
+    {value: true, label: 'YES'},
+    {value: false, label: 'NO'}
+  ]
+
   return (
     <Dialog
-      open={open}
+      open={dialogOpen}
       onClose={handleClose}
       scroll={scroll}
       aria-labelledby="scroll-dialog-title"
       aria-describedby="scroll-dialog-description"
+      fullWidth
     >
-    <DialogTitle id="scroll-dialog-title">Subscribe</DialogTitle>
+    <DialogTitle id="scroll-dialog-title">Image Downloader Options</DialogTitle>
     <DialogContent dividers={scroll === 'paper'}>
       <DialogContentText
         id="scroll-dialog-description"
         tabIndex={-1}
       >
-        <Box flexBasis="80px" textAlign="center">
-            <Typography 
-                variant="body1"
-            >주소:</Typography>
-        </Box>
-        <SmallMarginTextField
-            variant="outlined"
-            margin="dense"
-            pt="10px"
-            pb="10px"
-            autoFocus
-            fullWidth
-            placeholder="https://naver.com"
-            value="default url"
-            // onChange={onChange}
-            // disabled={urlInputDisabled}
-        >
-        </SmallMarginTextField>  
+        <OptionTextInput subTitle='Home Address' bgcolor='white' subTitleWidth={SUBTITLE_WIDTH} inputWidth={INPUT_WIDTH} value={homeUrl}></OptionTextInput>
+        <OptionTextInput subTitle='Save Directory' subTitleWidth={SUBTITLE_WIDTH} inputWidth={INPUT_WIDTH} value={saveDir} iconButton={SaveDirectoryButton}></OptionTextInput>
+        <OptionTextInput subTitle='Temp Directory' subTitleWidth={SUBTITLE_WIDTH} inputWidth={INPUT_WIDTH} value={tempDir} iconButton={TempDirectoryButton}></OptionTextInput>
+        <OptionRadioButton subTitle="Delete on tab close" titlewidth={SUBTITLE_WIDTH} currentValue={deleteOnClose} formLabels={boolLabels}></OptionRadioButton>
+        <OptionRadioButton subTitle="Delete on startup" titlewidth={SUBTITLE_WIDTH} currentValue={deleteOnStart} formLabels={boolLabels}></OptionRadioButton>
+        <OptionRadioButton subTitle="Delete after save file" titlewidth={SUBTITLE_WIDTH} currentValue={deleteAfterSave} formLabels={boolLabels}></OptionRadioButton>
+        
       </DialogContentText>
     </DialogContent>
     <DialogActions>

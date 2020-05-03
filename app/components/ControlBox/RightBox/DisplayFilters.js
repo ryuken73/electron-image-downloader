@@ -9,6 +9,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import BorderedList from '../../template/BorderedList';
 import {SmallMarginTextField}  from '../../template/smallComponents';
+import OptionSelectList from '../../template/OptionSelectList';
 import OptionTextInput from '../../template/OptionTextInput';
 
 export default function DisplayFilters(props) {
@@ -32,30 +33,7 @@ export default function DisplayFilters(props) {
             actionFunctions[type](event.target.value);
         }
     }    
-    const optionFileType = {
-        title: <Typography variant="body1">File-Type</Typography>,
-        content: (
-            <React.Fragment>
-                <FormControl style={{minWidth:"300px"}}>
-                    {/* <InputLabel id="content-type-label">Age</InputLabel> */}
-                    <Select
-                    labelId="content-type-select-label" 
-                    variant="outlined"
-                    margin="dense"
-                    value={fileTypes}
-                    multiple
-                    onChange={onChange('fileTypes')}
-                    >
-                        <MenuItem value={"all"}>*</MenuItem>
-                        <MenuItem value={"jpeg"}>jpg</MenuItem>
-                        <MenuItem value={"png"}>png</MenuItem>
-                        <MenuItem value={"gif"}>gif</MenuItem>
-                    </Select>
-                </FormControl>
-            </React.Fragment>
-        )
-    }
-    
+   
     const optionFileSize = {
         title: <Typography variant="body1">File-Size</Typography>,
         content: (
@@ -83,36 +61,28 @@ export default function DisplayFilters(props) {
         )
     }
     
-    const optionFilePatterns = {
-        title: <Typography variant="body1">Name-Pattern</Typography>,
-        content: (
-            <Box width="120px">
-                <SmallMarginTextField 
-                    variant="outlined"
-                    margin="dense"
-                    value={filePatterns}
-                    onChange={onChange('filePatterns')}                        
-                ></SmallMarginTextField> 
-            </Box>
-        ) 
-    }
-
-
     return (
         <Box display="flex" flexDirection="column" width={1}> 
             <Typography variant="body1">Display Filter</Typography>
-            <BorderedList 
-                title={optionFileType.title} 
-                content={optionFileType.content} 
-                mb={0}
-            ></BorderedList>
+            <OptionSelectList 
+                subTitle='File-Type'
+                minWidth='300px'
+                fileTypes={fileTypes}
+                menuItems={[
+                    {value:'all', label:'*'},
+                    {value:'jpeg', label:'jpg'},
+                    {value:'png', label:'png'},
+                    {value:'gif', label:'gif'}
+                ]}
+                onChangeSelect={onChange('fileTypes')} 
+            ></OptionSelectList>
             <BorderedList 
                 title={optionFileSize.title} 
                 content={optionFileSize.content} 
                 mb={0}
             ></BorderedList>
             <OptionTextInput 
-                title='Name-Pattern'
+                subTitle='Name-Pattern'
                 width='120px'
                 value={filePatterns}
                 onChangeText={onChange('filePatterns')}            
