@@ -9,8 +9,11 @@ import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
 const StyledAppBar = styled(AppBar)`
-    max-width: 1000px;
-    min-width: 900px;
+    //  max-width: 100%;
+    // min-width: 900px;
+`
+const StyledTab = styled(Tab)`
+    min-width: unset;
 `
 
 function TabPanel(props){
@@ -39,24 +42,26 @@ function ImageTabs(props) {
     };
     return (
         <BorderedBox  alignContent="center" alignItems="flex-start" flexGrow="1" minWidth="auto" flexBasis="0" overflow="auto">
-            <StyledAppBar position="static" color="default">
-                <Tabs
-                    value={currentTab}
-                    onChange={onChange}
-                    indicatorColor="primary"
-                    variant="scrollable"
-                    scrollButtons="auto"
-                    aria-label="scrollable auto tabs"
-                >
-                    {[...pageTitles].map(pageTitle => {
-                        const [pageIndex, title] = pageTitle;
-                        const imageData = pageImages.get(pageIndex) || [];
-                        const imageCount = imageData.length || 0;
-                        return <Tab key={pageIndex} value={pageIndex} label={title + ` [${imageCount}]`} aria-controls={`tabpanel-${pageIndex}`}></Tab>                      
-                    })}
+            <BorderedBox display='flex' alignContent="center" alignItems="flex-start" flexGrow="1" border="1" minWidth="auto" flexBasis="0" overflow="hidden">
+                <StyledAppBar position="static" color="default">
+                    <Tabs
+                        value={currentTab}
+                        onChange={onChange}
+                        indicatorColor="primary"
+                        variant="scrollable"
+                        scrollButtons="on"
+                        aria-label="scrollable auto tabs"
+                    >
+                        {[...pageTitles].map(pageTitle => {
+                            const [pageIndex, title] = pageTitle;
+                            const imageData = pageImages.get(pageIndex) || [];
+                            const imageCount = imageData.length || 0;
+                            return <StyledTab key={pageIndex} value={pageIndex} label={(title || 'new') + ` [${imageCount}]`} aria-controls={`tabpanel-${pageIndex}`}></StyledTab>                      
+                        })}
 
-                </Tabs>
-            </StyledAppBar>
+                    </Tabs>
+                </StyledAppBar>
+            </BorderedBox>
             {[...pageImages].map(pageImage => {
                 const [pageIndex, imageData] = pageImage;
                 return <TabPanel value={currentTab} key={pageIndex} index={pageIndex}  {...props} imageData={imageData}></TabPanel>                 

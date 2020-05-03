@@ -4,6 +4,7 @@ import BorderedBox from '../../template/BorderedBox';
 import TrackFilterContainer from '../../../containers/TrackFilterContainer';
 import DisplayFilterContainer from '../../../containers/DisplayFilterContainer';
 import SectionWithFullHeight from '../../template/SectionWithFullHeight';
+import Button from '@material-ui/core/Button';
 
 export default class LeftBox extends Component {
     render() {
@@ -15,6 +16,9 @@ export default class LeftBox extends Component {
                     </BorderedBox>
                     <BorderedBox display="flex" alignContent="center" flexGrow="1" width={0.5}>
                         <DisplayFilterContainer></DisplayFilterContainer>
+                    </BorderedBox>
+                    <BorderedBox display="flex" alignContent="center" flexGrow="1" width={0.1}>
+                        <Button fullWidth>Options</Button>
                     </BorderedBox>
                 </Box>
             </SectionWithFullHeight>     

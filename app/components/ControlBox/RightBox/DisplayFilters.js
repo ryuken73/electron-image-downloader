@@ -9,6 +9,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import BorderedList from '../../template/BorderedList';
 import {SmallMarginTextField}  from '../../template/smallComponents';
+import OptionTextInput from '../../template/OptionTextInput';
 
 export default function DisplayFilters(props) {
     const {fileTypes=["all"]} = props;
@@ -110,10 +111,12 @@ export default function DisplayFilters(props) {
                 content={optionFileSize.content} 
                 mb={0}
             ></BorderedList>
-            <BorderedList 
-                title={optionFilePatterns.title} 
-                content={optionFilePatterns.content}
-            ></BorderedList>
+            <OptionTextInput 
+                title='Name-Pattern'
+                width='120px'
+                value={filePatterns}
+                onChangeText={onChange('filePatterns')}            
+            ></OptionTextInput>
         </Box>
     )
 }

@@ -6,6 +6,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import {SmallMarginTextField}  from '../../template/smallComponents';
 import BorderedList from '../../template/BorderedList';
+import OptionRadioButton from '../../template/OptionRadioButton';
 import {SmallPaddingFormControlLabel} from '../../template/smallComponents';
 
 export default function BrowserOptions(props) {
@@ -52,22 +53,6 @@ export default function BrowserOptions(props) {
             </React.Fragment>   
         )
     }
-    
-    const optionNewWindow = {
-        title: <Typography variant="body1">Tracking Child Tab</Typography>,
-        content: (
-            <React.Fragment>
-                <FormControl component="fieldset">
-                    <RadioGroup aria-label="trackingTab" name="trackingTab" onChange={onTrackingChange} value={trackingTab}>
-                        <Box display="flex">
-                            <SmallPaddingFormControlLabel disabled={disabled} value="all" control={<Radio />} label="YES" />
-                            <SmallPaddingFormControlLabel disabled={disabled} value="initial" control={<Radio />} label="NO" />
-                        </Box>
-                    </RadioGroup>
-                </FormControl>
-            </React.Fragment>
-        )
-    }
 
     return (
         <Box display="flex" flexDirection="column" width={1}> 
@@ -77,10 +62,16 @@ export default function BrowserOptions(props) {
                 content={optionViewPort.content} 
                 mb={0}
             ></BorderedList>
-            <BorderedList 
-                title={optionNewWindow.title} 
-                content={optionNewWindow.content}
-            ></BorderedList>          
+            <OptionRadioButton
+                title="Tracking New Tab"
+                currentValue={trackingTab}
+                onRadioChange={onTrackingChange}
+                formLabels={[
+                    {disabled, value: 'all', label: 'YES'},
+                    {disabled, value: 'initial', label: 'NO'}
+                ]}
+            >
+            </OptionRadioButton>
         </Box>
     )
 }

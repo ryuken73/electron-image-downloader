@@ -4,6 +4,7 @@ import FullHeightContainer from './template/FullHeightContainer';
 import FirstChildSection from './template/FirstChildSection';
 import ControlBox from './ControlBox';
 import ImageBox from './ImageBox';
+import OptionDialog from './OptionDialog';
 
 const theme = createMuiTheme({
   typography: {
@@ -33,6 +34,7 @@ function App() {
         <FirstChildSection flexGrow="1" flexShrink="1" flexBasis="auto">
           <ImageBox></ImageBox>
         </FirstChildSection> 
+        <OptionDialog></OptionDialog>
       </FullHeightContainer>
     </ThemeProvider>
     // </Box>
