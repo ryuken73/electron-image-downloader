@@ -17,7 +17,7 @@ export const setUrlPattern = createAction(SET_URL_PATTERN);
 
 const initialState = { 
     contentTypes: ['image','jpg'],
-    contentSizeMin: 1024,
+    contentSizeMin: 10240,
     contentSizeMax: 10240000,
     urlPatterns: ['*']
 }

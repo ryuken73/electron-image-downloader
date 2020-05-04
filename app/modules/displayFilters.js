@@ -14,7 +14,7 @@ export const setFilePattern = createAction(SET_FILE_PATTERN);
 
 const initialState = { 
     fileTypes: ['all'],
-    fileSizeMin: 1024,
+    fileSizeMin: 10240,
     fileSizeMax: 10240000,
     filePatterns: ['*']
 }
