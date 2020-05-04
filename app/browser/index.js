@@ -36,12 +36,13 @@ const launchBrowser = async (url, width, height) => {
         devtools: false,
         executablePath: 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
         args: config.browserLaunchOptions ,
+        defaultViewport: null
     })
 
     const pages = await browser.pages();
     const currentPage = pages[0];  
 
-    await currentPage.setViewport({width:widthToNumber, height:heightToNumber});
+    // await currentPage.setViewport({width:widthToNumber, height:heightToNumber});
     return {browser, currentPage};
 
 }
