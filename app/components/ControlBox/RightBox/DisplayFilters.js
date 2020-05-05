@@ -85,7 +85,7 @@ export default function DisplayFilters(props) {
                 subTitle='Name-Pattern'
                 width='120px'
                 value={filePatterns}
-                onChangeText={onChange('filePatterns')}            
+                onChange={onChange('filePatterns')}            
             ></OptionTextInput>
         </Box>
     )

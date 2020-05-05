@@ -34,7 +34,7 @@ const launchBrowser = async (url, width, height) => {
     const browser = await puppeteer.launch({
         headless: false,
         devtools: false,
-        executablePath: 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
+        executablePath: 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',   
         args: config.browserLaunchOptions ,
         defaultViewport: null
     })

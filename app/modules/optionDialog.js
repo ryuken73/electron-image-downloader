@@ -17,7 +17,7 @@ export const setSaveDir = createAction(SET_SAVE_DIR);
 export const setTempDir = createAction(SET_TEMP_DIR);
 export const setDeleteOnClose = createAction(SET_DELETE_ON_CLOSE);
 export const setDeleteOnStart = createAction(SET_DELETE_ON_START);
-export const setDeleteAfterStart = createAction(SET_DELETE_AFTER_SAVE);
+export const setDeleteAfterSave = createAction(SET_DELETE_AFTER_SAVE);
 
 
 const initialState = { 
@@ -25,9 +25,9 @@ const initialState = {
     homeUrl: 'https://www.google.com',
     saveDir: path.join(__dirname, 'save'),
     tempDir: path.join(__dirname, 'temp'),
-    deleteOnClose: true,
-    deleteOnStart: true,
-    deleteAfterSave: true
+    deleteOnClose: 'YES',
+    deleteOnStart: 'YES',
+    deleteAfterSave: 'YES' 
 }
 
 // reducer
@@ -44,6 +44,13 @@ export default handleActions({
         return {
             ...state,
             homeUrl
+        }
+    },
+    [SET_SAVE_DIR]: (state, action) => {
+        const saveDir = action.payload
+        return {
+            ...state,
+            saveDir
         }
     },
     [SET_TEMP_DIR]: (state, action) => {

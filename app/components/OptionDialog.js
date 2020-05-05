@@ -17,19 +17,57 @@ import OptionRadioButton from './template/OptionRadioButton';
 import FolderIcon  from '@material-ui/icons/Folder';
 import {SmallPaddingIconButton} from './template/smallComponents';
 
+const { dialog } = require('electron').remote;
+
+const INPUT_WIDTH='400px'
+const SUBTITLE_WIDTH='25%';
+
+const OptionTextInputWithDefault = props => {
+  const {children} = props;
+  return <OptionTextInput subTitleWidth={SUBTITLE_WIDTH} inputWidth={INPUT_WIDTH} {...props}>{children}</OptionTextInput>
+}
+
+const boolLabels = [
+  {value: 'YES', label: 'YES'},
+  {value: 'NO', label: 'NO'}
+]
+
+const OptionRadioButtonWithDefault = props => {
+  const {children} = props;
+  return <OptionRadioButton titlewidth={SUBTITLE_WIDTH} formLabels={boolLabels} {...props}>{children}</OptionRadioButton>
+}
 
 export default function OptionDialog(props) {
   // const [open, setOpen] = React.useState(true);
+  console.log('######################## re-render OptionDialog', props)
   const {dialogOpen, homeUrl, saveDir, tempDir} = props;
   const {deleteOnClose, deleteOnStart, deleteAfterSave} = props;
   const {setDialogOpen, setHomeUrl, setSaveDir, setTempDir} = props.OptionDialogActions;
   const {setDeleteOnClose, setDeleteOnStart, setDeleteAfterSave} = props.OptionDialogActions;
   const [scroll, setScroll] = React.useState('paper');
-  const {defaultUrl='https://www.naver.com', saveDirectory='c:/image', tempDirectory='c:/temp'} = props;
-  const {deleteWhenClosed='yes', deleteWhenStarted='yes', deleteWhenSaved='yes'} = props;
-  const INPUT_WIDTH='400px'
-  const SUBTITLE_WIDTH='25%';
 
+  const [tempHomeUrl, setTempHomeUrl] = React.useState(homeUrl)
+
+  const onChangeTempUrl = (event) => {
+    setTempHomeUrl(event.target.value)
+  }
+
+  const actionFunctions = {
+    'homeUrl': setHomeUrl,
+    'saveDir': setSaveDir,
+    'tempDir': setTempDir,
+    'deleteOnClose': setDeleteOnClose,
+    'deleteOnStart': setDeleteOnStart,
+    'deleteAfterSave': setDeleteAfterSave,
+  }
+
+  const onChange = type => {
+    // console.log(type)
+    return event => {
+        console.log(type, event.target.value);
+        actionFunctions[type](event.target.value);
+    }
+  }   
 
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
@@ -40,12 +78,22 @@ export default function OptionDialog(props) {
     setDialogOpen(false);
   };
 
-  const onDeleteOnCloseChange = () => {};
-  const onClickSelectSaveDirectory = () => {};
-  const onClickSelectTempDirectory = () => {};
+  const onClickSelectSaveDirectory = () => {
+    dialog.showOpenDialog(({properties:['openDirectory']}), filePaths=> {
+      if(filePaths === undefined) return;
+      setSaveDir(filePaths[0]);      
+    })
+  };
+ 
+  const onClickSelectTempDirectory = () => {
+    dialog.showOpenDialog(({properties:['openDirectory']}), filePaths=> {
+      if(filePaths === undefined) return;
+      setTempDir(filePaths[0]);      
+    })
+  };
 
-  const SaveDirectoryButton =
-   (<SmallPaddingIconButton 
+  const SaveDirectoryButton = (
+    <SmallPaddingIconButton 
         onClick={onClickSelectSaveDirectory} 
         aria-label="select save directory button"
       >
@@ -53,24 +101,16 @@ export default function OptionDialog(props) {
     </SmallPaddingIconButton>)
 
 
-  const TempDirectoryButton = 
-     (<SmallPaddingIconButton 
+  const TempDirectoryButton = (
+    <SmallPaddingIconButton 
         onClick={onClickSelectTempDirectory} 
         aria-label="select temp directory button"
       >
         <FolderIcon fontSize="small" />
     </SmallPaddingIconButton>)
 
-  
-  
-
-  const disabled = false;
-  const boolLabels = [
-    {value: true, label: 'YES'},
-    {value: false, label: 'NO'}
-  ]
-
   return (
+    
     <Dialog
       open={dialogOpen}
       onClose={handleClose}
@@ -85,12 +125,12 @@ export default function OptionDialog(props) {
         id="scroll-dialog-description"
         tabIndex={-1}
       >
-        <OptionTextInput subTitle='Home Address' bgcolor='white' subTitleWidth={SUBTITLE_WIDTH} inputWidth={INPUT_WIDTH} value={homeUrl}></OptionTextInput>
-        <OptionTextInput subTitle='Save Directory' subTitleWidth={SUBTITLE_WIDTH} inputWidth={INPUT_WIDTH} value={saveDir} iconButton={SaveDirectoryButton}></OptionTextInput>
-        <OptionTextInput subTitle='Temp Directory' subTitleWidth={SUBTITLE_WIDTH} inputWidth={INPUT_WIDTH} value={tempDir} iconButton={TempDirectoryButton}></OptionTextInput>
-        <OptionRadioButton subTitle="Delete on tab close" titlewidth={SUBTITLE_WIDTH} currentValue={deleteOnClose} formLabels={boolLabels}></OptionRadioButton>
-        <OptionRadioButton subTitle="Delete on startup" titlewidth={SUBTITLE_WIDTH} currentValue={deleteOnStart} formLabels={boolLabels}></OptionRadioButton>
-        <OptionRadioButton subTitle="Delete after save file" titlewidth={SUBTITLE_WIDTH} currentValue={deleteAfterSave} formLabels={boolLabels}></OptionRadioButton>
+        <OptionTextInputWithDefault subTitle='Home Address' bgcolor='white' value={tempHomeUrl} onChange={onChangeTempUrl}></OptionTextInputWithDefault>
+        <OptionTextInputWithDefault subTitle='Save Directory' value={saveDir} onChange={onChange('saveDir')} iconButton={SaveDirectoryButton}></OptionTextInputWithDefault>
+        <OptionTextInputWithDefault subTitle='Temp Directory' value={tempDir} onChange={onChange('tempDir')} iconButton={TempDirectoryButton}></OptionTextInputWithDefault>
+        <OptionRadioButtonWithDefault subTitle="Delete on tab close" currentValue={deleteOnClose} onRadioChange={onChange('deleteOnClose')}></OptionRadioButtonWithDefault>
+        <OptionRadioButtonWithDefault subTitle="Delete on startup" currentValue={deleteOnStart} onRadioChange={onChange('deleteOnStart')}></OptionRadioButtonWithDefault>
+        <OptionRadioButtonWithDefault subTitle="Delete after save file" currentValue={deleteAfterSave} onRadioChange={onChange('deleteAfterSave')}></OptionRadioButtonWithDefault>
         
       </DialogContentText>
     </DialogContent>

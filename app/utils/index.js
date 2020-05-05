@@ -39,12 +39,34 @@ const fp = {
             , sleep})
         }
 
-    }
+    },    
+}
+
+const browserStorage = {
+    storage : null,
+    storageAvailable : (type) => {
+        try {
+            const storage = window[type];
+            const TEST_TEXT = 'setItem test';
+            storage.setItem(testText, TEST_TEXT);
+            storage.removeItem(testText);
+            return true;
+        } catch (err) {
+            console.error(err);
+            return false;
+        }
+    },
+    create : type => this.storage = window[type],
+    get : key => this.storage.getItem(key),
+    set : (key, value) => this.storage.setItem(key, value),
+    delete : key => this.storage.removeItem(key),
+    clear: () => this.storage.clear()
 }
 
 module.exports = {
     number,
-    fp
+    fp,
+    browserStorage
 }
 
 // const trottled = fp.throttle(100, console.log);

@@ -6,7 +6,7 @@ import {SmallMarginTextField} from './smallComponents';
 
 
 export default function OptionTextInput(props) {
-    const {subTitle, subTitleWidth:titlewidth="20%", inputWidth:width, value, onChangeText, iconButton} = props;
+    const {subTitle, subTitleWidth:titlewidth="20%", inputWidth:width, value, iconButton} = props;
     const optionText = {
         title: <Typography variant="body1">{subTitle}</Typography>,
         content:  (
@@ -15,8 +15,8 @@ export default function OptionTextInput(props) {
                     variant="outlined"
                     margin="dense"
                     value={value}
-                    onChange={onChangeText}   
-                    fullWidth                     
+                    fullWidth      
+                    {...props}               
                 ></SmallMarginTextField> 
                 {iconButton}
             </Box>

@@ -10,7 +10,7 @@
  *
  * @flow
  */
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -102,4 +102,21 @@ app.on('ready', async () => {
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
+
+  ipcMain.on('select-directory', (event,arg) => {
+    console.log(arg);
+    dialog.showOpenDialog(mainWindow, {properties:['openDirectory']})
+    .then(result => {
+      if(result.canceled) {
+        event.sender.send('selected-directory', null);
+        return
+      }
+      const directory = result.filePaths;
+      event.sender.send('selected-directory', directory)
+    })
+    .catch(err => {
+      console.error(err);
+    })
+    
+  })
 });
