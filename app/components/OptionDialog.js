@@ -16,6 +16,7 @@ import OptionTextInput from './template/OptionTextInput';
 import OptionRadioButton from './template/OptionRadioButton';
 import FolderIcon  from '@material-ui/icons/Folder';
 import {SmallPaddingIconButton} from './template/smallComponents';
+import utils from '../utils';
 
 const { dialog } = require('electron').remote;
 
@@ -37,6 +38,22 @@ const OptionRadioButtonWithDefault = props => {
   return <OptionRadioButton titlewidth={SUBTITLE_WIDTH} formLabels={boolLabels} {...props}>{children}</OptionRadioButton>
 }
 
+const setOptionsOnLocalStorage = (options) => {
+  const {homeUrl, saveDir, tempDir} = options;
+  const {deleteOnClose, deleteOnStart, deleteAfterSave} = options;
+  const storageType = 'localStorage';
+  const LOCAL_STORAGE_AVAILABLE = utils.browserStorage.storageAvailable(storageType);
+  if(!LOCAL_STORAGE_AVAILABLE) return false;  
+  utils.browserStorage.create(storageType);
+  utils.browserStorage.set('homeUrl', homeUrl);
+  utils.browserStorage.set('saveDir', saveDir);
+  utils.browserStorage.set('tempDir', tempDir);
+  utils.browserStorage.set('deleteOnClose', deleteOnClose);
+  utils.browserStorage.set('deleteOnStart', deleteOnStart);
+  utils.browserStorage.set('deleteAfterSave', deleteAfterSave);
+  return true;
+} 
+
 export default function OptionDialog(props) {
   // const [open, setOpen] = React.useState(true);
   console.log('######################## re-render OptionDialog', props)
@@ -46,11 +63,11 @@ export default function OptionDialog(props) {
   const {setDeleteOnClose, setDeleteOnStart, setDeleteAfterSave} = props.OptionDialogActions;
   const [scroll, setScroll] = React.useState('paper');
 
-  const [tempHomeUrl, setTempHomeUrl] = React.useState(homeUrl)
+  // const [tempHomeUrl, setTempHomeUrl] = React.useState(homeUrl)
 
-  const onChangeTempUrl = (event) => {
-    setTempHomeUrl(event.target.value)
-  }
+  // const onChangeTempUrl = (event) => {
+  //   setTempHomeUrl(event.target.value)
+  // }
 
   const actionFunctions = {
     'homeUrl': setHomeUrl,
@@ -92,6 +109,11 @@ export default function OptionDialog(props) {
     })
   };
 
+  const onClickSaveBtn = () => {
+    setOptionsOnLocalStorage(props);
+    handleClose();
+  }
+
   const SaveDirectoryButton = (
     <SmallPaddingIconButton 
         onClick={onClickSelectSaveDirectory} 
@@ -125,12 +147,12 @@ export default function OptionDialog(props) {
         id="scroll-dialog-description"
         tabIndex={-1}
       >
-        <OptionTextInputWithDefault subTitle='Home Address' bgcolor='white' value={tempHomeUrl} onChange={onChangeTempUrl}></OptionTextInputWithDefault>
-        <OptionTextInputWithDefault subTitle='Save Directory' value={saveDir} onChange={onChange('saveDir')} iconButton={SaveDirectoryButton}></OptionTextInputWithDefault>
-        <OptionTextInputWithDefault subTitle='Temp Directory' value={tempDir} onChange={onChange('tempDir')} iconButton={TempDirectoryButton}></OptionTextInputWithDefault>
-        <OptionRadioButtonWithDefault subTitle="Delete on tab close" currentValue={deleteOnClose} onRadioChange={onChange('deleteOnClose')}></OptionRadioButtonWithDefault>
-        <OptionRadioButtonWithDefault subTitle="Delete on startup" currentValue={deleteOnStart} onRadioChange={onChange('deleteOnStart')}></OptionRadioButtonWithDefault>
-        <OptionRadioButtonWithDefault subTitle="Delete after save file" currentValue={deleteAfterSave} onRadioChange={onChange('deleteAfterSave')}></OptionRadioButtonWithDefault>
+        <OptionTextInputWithDefault subtitle='Home Address' bgcolor='white' value={homeUrl} onChange={onChange('homeUrl')}></OptionTextInputWithDefault>
+        <OptionTextInputWithDefault subtitle='Save Directory' value={saveDir} onChange={onChange('saveDir')} iconButton={SaveDirectoryButton}></OptionTextInputWithDefault>
+        <OptionTextInputWithDefault subtitle='Temp Directory' value={tempDir} onChange={onChange('tempDir')} iconButton={TempDirectoryButton}></OptionTextInputWithDefault>
+        <OptionRadioButtonWithDefault subtitle="Delete on tab close" currentValue={deleteOnClose} onRadioChange={onChange('deleteOnClose')}></OptionRadioButtonWithDefault>
+        <OptionRadioButtonWithDefault subtitle="Delete on startup" currentValue={deleteOnStart} onRadioChange={onChange('deleteOnStart')}></OptionRadioButtonWithDefault>
+        <OptionRadioButtonWithDefault subtitle="Delete after save file" currentValue={deleteAfterSave} onRadioChange={onChange('deleteAfterSave')}></OptionRadioButtonWithDefault>
         
       </DialogContentText>
     </DialogContent>
@@ -138,7 +160,7 @@ export default function OptionDialog(props) {
       <Button onClick={handleClose} color="primary">
         Cancel
       </Button>
-      <Button onClick={handleClose} color="primary">
+      <Button onClick={onClickSaveBtn} color="primary">
         Save
       </Button>
     </DialogActions>

@@ -6,9 +6,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import BorderedList from './BorderedList';
 
 export default function OptionSelectList(props) {
-    const {subTitle, minWidth, fileTypes, menuItems, onChangeSelect, titlewidth="20%"} = props;
+    const {subtitle, minWidth, fileTypes, menuItems, onChangeSelect, titlewidth="20%"} = props;
     const optionSelect = {
-        title: <Typography variant="body1">{subTitle}</Typography>,
+        title: <Typography variant="body1">{subtitle}</Typography>,
         content: (
             <React.Fragment>
                 <FormControl style={{minWidth:minWidth}}>

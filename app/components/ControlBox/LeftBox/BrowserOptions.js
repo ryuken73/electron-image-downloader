@@ -63,7 +63,7 @@ export default function BrowserOptions(props) {
                 mb={0}
             ></BorderedList>
             <OptionRadioButton
-                subTitle="Tracking New Tab"
+                subtitle="Tracking New Tab"
                 currentValue={trackingTab}
                 onRadioChange={onTrackingChange}
                 formLabels={[

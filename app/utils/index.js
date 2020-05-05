@@ -48,8 +48,8 @@ const browserStorage = {
         try {
             const storage = window[type];
             const TEST_TEXT = 'setItem test';
-            storage.setItem(testText, TEST_TEXT);
-            storage.removeItem(testText);
+            storage.setItem('testText', TEST_TEXT);
+            storage.removeItem('testText');
             return true;
         } catch (err) {
             console.error(err);

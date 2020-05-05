@@ -65,7 +65,7 @@ export default function DisplayFilters(props) {
         <Box display="flex" flexDirection="column" width={1}> 
             <Typography variant="body1">Display Filter</Typography>
             <OptionSelectList 
-                subTitle='File-Type'
+                subtitle='File-Type'
                 minWidth='300px'
                 fileTypes={fileTypes}
                 menuItems={[
@@ -82,7 +82,7 @@ export default function DisplayFilters(props) {
                 mb={0}
             ></BorderedList>
             <OptionTextInput 
-                subTitle='Name-Pattern'
+                subtitle='Name-Pattern'
                 width='120px'
                 value={filePatterns}
                 onChange={onChange('filePatterns')}            

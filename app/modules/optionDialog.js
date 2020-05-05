@@ -9,6 +9,7 @@ const SET_TEMP_DIR = 'optionDialog/SET_TEMP_DIR';
 const SET_DELETE_ON_CLOSE = 'optionDialog/SET_DELETE_ON_CLOSE';
 const SET_DELETE_ON_START = 'optionDialog/SET_DELETE_ON_START';
 const SET_DELETE_AFTER_SAVE = 'optionDialog/SET_DELETE_AFTER_SAVE';
+const SET_ALL_OPTIONS = 'optionDialog/SET_ALL_OPTIONS';
 
 // action creator
 export const setDialogOpen = createAction(SET_DIALOG_OPEN);
@@ -18,11 +19,12 @@ export const setTempDir = createAction(SET_TEMP_DIR);
 export const setDeleteOnClose = createAction(SET_DELETE_ON_CLOSE);
 export const setDeleteOnStart = createAction(SET_DELETE_ON_START);
 export const setDeleteAfterSave = createAction(SET_DELETE_AFTER_SAVE);
+export const setAllOptions = createAction(SET_ALL_OPTIONS);
 
 
 const initialState = { 
     dialogOpen: false,
-    homeUrl: 'https://www.google.com',
+    homeUrl: 'https://www.google1.com',
     saveDir: path.join(__dirname, 'save'),
     tempDir: path.join(__dirname, 'temp'),
     deleteOnClose: 'YES',
@@ -81,4 +83,11 @@ export default handleActions({
             deleteAfterSave
         }
     },
+    [SET_ALL_OPTIONS]: (state, action) => {
+        const options = action.payload;
+        return {
+            ...state,
+            ...options
+        }
+    },    
 }, initialState);

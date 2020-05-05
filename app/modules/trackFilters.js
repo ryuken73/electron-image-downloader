@@ -1,7 +1,4 @@
 import {createAction, handleActions} from 'redux-actions';
-import {toggleTrackAsync} from './navigator';
-const chromeBrowser = require('../browser');
-const {screen} = require('electron');
 
 // action types
 const SET_CONTENT_TYPE = 'trackFilters/SET_CONTENT_TYPE';

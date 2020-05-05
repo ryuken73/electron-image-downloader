@@ -1,5 +1,4 @@
 import {createAction, handleActions} from 'redux-actions';
-const chromeBrowser = require('../browser');
 const {screen} = require('electron');
 
 // action types

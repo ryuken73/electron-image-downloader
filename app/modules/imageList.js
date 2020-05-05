@@ -1,6 +1,5 @@
 import {createAction, handleActions} from 'redux-actions';
 const utils = require('../utils');
-const chromeBrowser = require('../browser');
 
 // action types
 // const ADD_IMAGE_DATA = 'imageList/ADD_IMAGE_DATA';

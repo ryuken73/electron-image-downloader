@@ -9,10 +9,10 @@ import {SmallPaddingFormControlLabel} from './smallComponents';
 
 
 export default function OptionRadioButton(props) {
-    const {subTitle, currentValue, onRadioChange, titlewidth="20%"} = props;
+    const {subtitle, currentValue, onRadioChange, titlewidth="20%"} = props;
     const {formLabels} = props;
     const optionRadio = {
-        title: <Typography variant="body1">{subTitle}</Typography>,
+        title: <Typography variant="body1">{subtitle}</Typography>,
         content:  (
             <React.Fragment>
                 <FormControl component="fieldset">
