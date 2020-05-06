@@ -8,7 +8,7 @@ import BorderedList from './BorderedList';
 export default function OptionSelectList(props) {
     const {subtitle, minWidth, fileTypes, menuItems, onChangeSelect, titlewidth="20%"} = props;
     const optionSelect = {
-        title: <Typography variant="body1">{subtitle}</Typography>,
+        title: <Typography component={'span'} variant="body1">{subtitle}</Typography>,
         content: (
             <React.Fragment>
                 <FormControl style={{minWidth:minWidth}}>

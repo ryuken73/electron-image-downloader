@@ -12,7 +12,7 @@ export default function OptionRadioButton(props) {
     const {subtitle, currentValue, onRadioChange, titlewidth="20%"} = props;
     const {formLabels} = props;
     const optionRadio = {
-        title: <Typography variant="body1">{subtitle}</Typography>,
+        title: <Typography component={'span'} variant="body1">{subtitle}</Typography>,
         content:  (
             <React.Fragment>
                 <FormControl component="fieldset">
