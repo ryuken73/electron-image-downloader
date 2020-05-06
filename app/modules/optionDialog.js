@@ -1,5 +1,6 @@
 const path = require('path');
 import {createAction, handleActions} from 'redux-actions';
+import DEFAULT_OPTIONS from '../config/options'; 
 
 // action types
 const SET_DIALOG_OPEN = 'optionDialog/SET_DIALOG_OPEN';
@@ -22,16 +23,10 @@ export const setDeleteAfterSave = createAction(SET_DELETE_AFTER_SAVE);
 export const setAllOptions = createAction(SET_ALL_OPTIONS);
 
 
-const initialState = { 
+const initialState = {
     dialogOpen: false,
-    homeUrl: 'https://www.google1.com',
-    saveDir: path.join(__dirname, 'save'),
-    tempDir: path.join(__dirname, 'temp'),
-    deleteOnClose: 'YES',
-    deleteOnStart: 'YES',
-    deleteAfterSave: 'YES' 
-}
-
+    ...DEFAULT_OPTIONS
+};
 // reducer
 export default handleActions({
     [SET_DIALOG_OPEN]: (state, action) => {

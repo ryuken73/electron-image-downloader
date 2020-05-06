@@ -1,16 +1,10 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import utils from '../../../utils';
-import path from 'path';
+import options from '../../../config/options'; 
 
-const DEFAULT_OPTIONS = {
-    homeUrl: 'https://www.google.com',
-    saveDir: path.join(__dirname, 'save'),
-    tempDir: path.join(__dirname, 'temp'),
-    deleteOnClose: 'YES',
-    deleteOnStart: 'YES',
-    deleteAfterSave: 'YES' 
-}
+
+const DEFAULT_OPTIONS = {...options};
 
 const getOptionsFromLocalStorage = () => {
     const storageType = 'localStorage';

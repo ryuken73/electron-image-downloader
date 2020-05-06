@@ -17,6 +17,7 @@ import OptionRadioButton from './template/OptionRadioButton';
 import FolderIcon  from '@material-ui/icons/Folder';
 import {SmallPaddingIconButton} from './template/smallComponents';
 import utils from '../utils';
+import DEFAULT_OPTIONS from '../config/options'; 
 
 const { dialog } = require('electron').remote;
 
@@ -60,7 +61,7 @@ export default function OptionDialog(props) {
   const {dialogOpen, homeUrl, saveDir, tempDir} = props;
   const {deleteOnClose, deleteOnStart, deleteAfterSave} = props;
   const {setDialogOpen, setHomeUrl, setSaveDir, setTempDir} = props.OptionDialogActions;
-  const {setDeleteOnClose, setDeleteOnStart, setDeleteAfterSave} = props.OptionDialogActions;
+  const {setDeleteOnClose, setDeleteOnStart, setDeleteAfterSave, setAllOptions} = props.OptionDialogActions;
   const [scroll, setScroll] = React.useState('paper');
 
   // const [tempHomeUrl, setTempHomeUrl] = React.useState(homeUrl)
@@ -114,6 +115,10 @@ export default function OptionDialog(props) {
     handleClose();
   }
 
+  const resetOptions = () => {
+    setAllOptions(DEFAULT_OPTIONS)
+  }
+
   const SaveDirectoryButton = (
     <SmallPaddingIconButton 
         onClick={onClickSelectSaveDirectory} 
@@ -141,7 +146,9 @@ export default function OptionDialog(props) {
       aria-describedby="scroll-dialog-description"
       fullWidth
     >
-    <DialogTitle id="scroll-dialog-title">Image Downloader Options</DialogTitle>
+    <DialogTitle id="scroll-dialog-title">
+      Image Downloader Options
+    </DialogTitle>
     <DialogContent dividers={scroll === 'paper'}>
       <DialogContentText
         id="scroll-dialog-description"
@@ -157,6 +164,9 @@ export default function OptionDialog(props) {
       </DialogContentText>
     </DialogContent>
     <DialogActions>
+      <Button style={{marginRight:'auto'}} onClick={resetOptions} color="primary">
+        Default
+      </Button>
       <Button onClick={handleClose} color="primary">
         Cancel
       </Button>
