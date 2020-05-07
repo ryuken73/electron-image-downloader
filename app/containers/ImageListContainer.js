@@ -14,6 +14,8 @@ function mapStateToProps(state) {
     fileSizeMin: state.displayFilters.fileSizeMin,
     fileSizeMax: state.displayFilters.fileSizeMax,
     filePatterns: state.displayFilters.filePatterns,
+    imagePreviewOpen: state.imageList.imagePreviewOpen,
+    imagePreviewSrc: state.imageList.imagePreviewSrc,
   }
 }
 

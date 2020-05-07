@@ -12,6 +12,8 @@ const FILTER_IMAGES_BY_TYPE = 'imageList/FILTER_IMAGES_BY_TYPE';
 const FILTER_IMAGES_BY_MINSIZE = 'imageList/FILTER_IMAGES_BY_MINSIZE';
 const FILTER_IMAGES_BY_MAXSIZE = 'imageList/FILTER_IMAGES_BY_MAXSIZE';
 const FILTER_IMAGES_BY_NAME = 'imageList/FILTER_IMAGES_BY_NAME';
+const SET_IMAGE_PREVIEW_OPEN = 'imageList/SET_IMAGE_PREVIEW_OPEN';
+const SET_IMAGE_PREVIEW_SRC = 'imageList/SET_IMAGE_PREVIEW_SRC';
 
 // action creator
 export const addPage = createAction(ADD_PAGE);
@@ -23,7 +25,8 @@ export const filterImageByType = createAction(FILTER_IMAGES_BY_TYPE);
 export const filterImageByMinSize = createAction(FILTER_IMAGES_BY_MINSIZE);
 export const filterImageByMaxSize = createAction(FILTER_IMAGES_BY_MAXSIZE);
 export const filterImageByName = createAction(FILTER_IMAGES_BY_NAME);
-
+export const setImagePreviewOpen = createAction(SET_IMAGE_PREVIEW_OPEN);
+export const setImagePreviewSrc = createAction(SET_IMAGE_PREVIEW_SRC);
 
 const imageDefault = {
     index: null,
@@ -32,7 +35,10 @@ const imageDefault = {
     metadata: {},
     dragStart: false,
     checked: false,
-    show:true
+    show: true,
+    imagePreviewOpen:false,
+    imagePreviewSrc:''
+
 }
 
 const mkImageItem = (imageInfo) => {
@@ -86,9 +92,42 @@ export const addImageData = (imageInfo) => async (dispatch, getState) => {
     // throttledDispatch(setPageImages({pageIndex, images}));
 }
 
-export const changePageTitle = ({pageIndex, title}) => (disptach, getState) => {
+export const changePageTitle = ({pageIndex, title}) => (dispatch, getState) => {
     console.log(`### in changePageTitle:`, title);
     dispatch(setPageTitles({pageIndex, title}));
+}
+
+const firstElement = array => array[0];
+const lastElement = array => array[array.length - 1];
+const getCurrentImageData = (state, compareFunction) => {
+    const pageIndex = state.imageList.currentTab;
+    const imageData = state.imageList.pageImages.get(pageIndex) || [];
+    return [...imageData].sort(compareFunction);
+}
+const getCurrentImageIndex = state => {
+    const pageIndex = state.imageList.currentTab;
+    const imageData = state.imageList.pageImages.get(pageIndex) || [];
+    const currentSrc = state.imageList.imagePreviewSrc;
+    return imageData.find(image => image.tmpSrc === currentSrc).index;
+}
+
+export const setNextImage = () => (dispatch, getState) => {
+    const state = getState();
+    console.log(`### in setNextImage:`, state.imageList);
+    const currentImageDataSorted = getCurrentImageData(state, (a,b) => a.index - b.index);
+    const currentImageIndex = getCurrentImageIndex(state);
+    const nextImage = currentImageDataSorted.find(image => image.index > currentImageIndex) || firstElement(currentImageDataSorted);
+    dispatch(setImagePreviewSrc(nextImage.tmpSrc));
+}
+
+export const setPrevImage = () => (dispatch, getState) => {
+    const state = getState();
+    console.log(`### in setNextImage:`, state.imageList);
+    const currentImageDataSorted = getCurrentImageData(state, (a,b) => b.index - a.index);
+    const currentImageIndex = getCurrentImageIndex(state);
+    const prevImage = currentImageDataSorted.find(image => image.index < currentImageIndex) || firstElement(currentImageDataSorted);
+    console.log(prevImage)
+    dispatch(setImagePreviewSrc(prevImage.tmpSrc));
 }
 
 const initialState = {
@@ -221,5 +260,21 @@ export default handleActions({
             ...state,
             pageImages
         }
-    },        
+    },    
+    [SET_IMAGE_PREVIEW_OPEN]: (state, action) => {
+        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        const imagePreviewOpen = action.payload;
+        return {
+            ...state,
+            imagePreviewOpen
+        }
+    },
+    [SET_IMAGE_PREVIEW_SRC]: (state, action) => {
+        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        const imagePreviewSrc = action.payload;
+        return {
+            ...state,
+            imagePreviewSrc
+        }
+    },    
 }, initialState);

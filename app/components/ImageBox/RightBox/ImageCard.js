@@ -40,6 +40,14 @@ function ImageCard(props) {
     const {index, imageFname, imageSrc, metadata, checked, show} = props.image;
     const {sizeKB, reqUrl} = metadata;
     const {toggleCheck, onClickSave, onClickRemove} = props;
+    const {setImagePreviewOpen, setImagePreviewSrc} = props;
+
+    const onClickImage = (event) => {
+        setImagePreviewOpen(true);
+        setImagePreviewSrc(imageSrc);
+
+    }
+
     return (
         <Paper className={container} elevation={3} > 
             <Box bgcolor="aliceblue">
@@ -49,7 +57,7 @@ function ImageCard(props) {
             <Box className="handle" display="flex" flexDirection="row" width="1">
                 <Box bgcolor="black" display="flex" justifyContent="center" flex="1">
                     <Tooltip title={reqUrl}>
-                        <img className={image} alt="poster" src={imageSrc} style={{height:'80px'}}></img>
+                        <img className={image} alt="poster" src={imageSrc} style={{height:'80px'}} onClick={onClickImage}></img>
                     </Tooltip>
                 </Box>
             </Box>
