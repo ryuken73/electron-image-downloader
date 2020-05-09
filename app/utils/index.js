@@ -11,6 +11,16 @@ const number = {
     }
 }
 
+const clone = {
+    replaceElement(array, index, newElement){
+        return [
+            ...array.slice(0, index),
+            newElement,
+            ...array.slice(index+1)
+        ]
+    }
+}
+
 const fp = {
     throttle(duration, fn){
         console.log(duration, fn)
@@ -66,6 +76,7 @@ const browserStorage = {
 module.exports = {
     number,
     fp,
+    clone,
     browserStorage
 }
 

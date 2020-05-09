@@ -38,7 +38,7 @@ function ImageCardContainer(props) {
   console.log('&&&&&&&&&&&&&&&&&&&&&', hidden, imageData)
   const {fileTypes, fileSizeMin, fileSizeMax, filePatterns} = props;
   const {imagePreviewOpen, imagePreviewSrc} = props;
-  const {setImageData} = props.ImageActions;
+  const {setImageToggleChecked} = props.ImageActions;
   const {filterImageByType, filterImageByMinSize} = props.ImageActions;
   const {filterImageByMaxSize, filterImageByName} = props.ImageActions;
   const {setImagePreviewOpen, setImagePreviewSrc} = props.ImageActions;
@@ -66,12 +66,27 @@ function ImageCardContainer(props) {
     filterImageByName({pageIndex, filePatterns})
   },[filePatterns])
 
+  // React.useEffect(() => {
+  //   filterImageByType({pageIndex, fileTypes})
+  //   filterImageByMinSize({pageIndex, fileSizeMin})
+  //   filterImageByMaxSize({pageIndex, fileSizeMax})
+  //   filterImageByName({pageIndex, filePatterns})
+  // },[imageData])
+
   const handleClose = () => {
     setImagePreviewOpen(false);
   }
 
   const setNextImageInPage = () => () => {
     setNextImage();
+  }
+
+  const toggleCheckImage = (pageIndex) => {
+    // return imageIndex => {
+    //   console.log(pageIndex, imageIndex);
+    //   setImageToggleChecked({pageIndex, imageIndex});
+    // }
+    // return ()  => {}
   }
 
   return (
@@ -83,7 +98,9 @@ function ImageCardContainer(props) {
             key={image.index} 
             order={image.index} 
             image={image} 
-            toggleCheck={toggleCheck} 
+            // toggleCheckImage={toggleCheckImage(pageIndex)} 
+            // toggleCheckImage={toggleCheckImage} 
+            setImageToggleChecked={setImageToggleChecked}
             setImagePreviewOpen={setImagePreviewOpen} 
             setImagePreviewSrc={setImagePreviewSrc}
           ></ImageCard>

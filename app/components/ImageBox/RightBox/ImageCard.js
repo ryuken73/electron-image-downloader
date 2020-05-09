@@ -39,19 +39,21 @@ function ImageCard(props) {
     const {container, imageName, smallBtn, smallCheckBox, image} = classes;
     const {index, imageFname, imageSrc, metadata, checked, show} = props.image;
     const {sizeKB, reqUrl} = metadata;
-    const {toggleCheck, onClickSave, onClickRemove} = props;
+    const {setImageToggleChecked, onClickSave, onClickRemove} = props;
     const {setImagePreviewOpen, setImagePreviewSrc} = props;
 
     const onClickImage = (event) => {
         setImagePreviewOpen(true);
         setImagePreviewSrc(imageSrc);
-
     }
 
+    const onClickCheckBox = (event) => {
+        setImageToggleChecked(index);
+    }
     return (
         <Paper className={container} elevation={3} > 
             <Box bgcolor="aliceblue">
-                <Checkbox className={smallCheckBox} checked={checked} onChange={toggleCheck(index)}></Checkbox>
+                <Checkbox className={smallCheckBox} checked={checked} onChange={onClickCheckBox}></Checkbox>
                 <Typography className={imageName} variant="caption">{imageFname} [{sizeKB}KB]</Typography>
             </Box>   
             <Box className="handle" display="flex" flexDirection="row" width="1">
