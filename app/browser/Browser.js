@@ -265,8 +265,9 @@ class Browser extends EventEmitter {
             try {
                 const page = await target.page();
                 const pageIndex = this._getPageIndex(page);
+                const title = await page.title();
 
-                console.log(`************* page changed : ${page} ${pageIndex}`);
+                console.log(`************* page changed : ${page} ${pageIndex} ${title}`);
                 this.emit('titleChanged', {pageIndex, title});
             } catch (err) {
                 console.error(err);

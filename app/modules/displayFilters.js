@@ -16,7 +16,7 @@ const initialState = {
     fileTypes: ['all'],
     fileSizeMin: 10240,
     fileSizeMax: 10240000,
-    filePatterns: ['*']
+    filePatterns: ['*'] 
 }
 
 // reducer

@@ -53,31 +53,6 @@ const mkImageItem = (imageInfo) => {
     }
 }
 
-const filterImageDataBy = ({imageData, fileTypes, fileSizeMin, fileSizeMax, filePatterns}) => {
-  const formatFilter = (format) => {
-    if(fileTypes.includes('all')) return true;
-    return fileTypes.includes(format);
-  }
-  const sizeFilter = (size) => {console.log(`*****${size}`); return ((fileSizeMin < size) && (size < fileSizeMax));}
-  const nameFilter = (name) => {
-    console.log(`*****${name}`);
-    const blnakRemoved = filePatterns.filter(pattern => pattern !== '');
-    if(blnakRemoved.includes('*')) return true;
-    const results = blnakRemoved.map(filename => {
-      console.log(name)
-      console.log(filename)
-      return name.includes(filename)
-    })
-    return results.some(result => result === true);
-  }
-  const filteredImages = imageData
-  .filter(image => formatFilter(image.metadata.format))
-  .filter(image => sizeFilter(image.metadata.size))
-  .filter(image => nameFilter(image.tmpFname));
-
-  return filteredImages;
-}
-
 export const addImageData = (imageInfo) => async (dispatch, getState) => {
     console.log(`#### in addImageData:`, imageInfo)
     const state = getState();
@@ -98,11 +73,11 @@ export const changePageTitle = ({pageIndex, title}) => (dispatch, getState) => {
 }
 
 const firstElement = array => array[0];
-const lastElement = array => array[array.length - 1];
+
 const getCurrentImageData = (state, compareFunction) => {
     const pageIndex = state.imageList.currentTab;
     const imageData = state.imageList.pageImages.get(pageIndex) || [];
-    return [...imageData].sort(compareFunction);
+    return [...imageData].sort(compareFunction).filter(image => image.show);
 }
 const getCurrentImageIndex = state => {
     const pageIndex = state.imageList.currentTab;

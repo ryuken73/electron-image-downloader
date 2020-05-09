@@ -11,6 +11,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import path from 'path';
 
 const StyledReactSortable = styled(ReactSortable)`
@@ -65,38 +66,6 @@ function ImageCardContainer(props) {
     filterImageByName({pageIndex, filePatterns})
   },[filePatterns])
 
-  // const getNextImage = fname => {
-  //   const sortedImageData = [...imageData].sort((a,b) => a.index - b.index);
-  //   console.log(sortedImageData)
-  //   const currentImage = sortedImageData.find(image => image.tmpFname === fname);
-  //   const currentIndex = currentImage.index;
-  //   const nextImage = sortedImageData.find(image => image.index > currentIndex);
-  //   return nextImage === undefined ? firstElement(sortedImageData) : nextImage;
-  // }
-
-  // const getPrevImage = fname => {
-  //   const sortedImageData = [...imageData].sort((a,b) => b.index - a.index);
-  //   console.log(sortedImageData)
-
-  //   const currentImage = sortedImageData.find(image => image.tmpFname === fname);
-  //   const currentIndex = currentImage.index;
-  //   const prevImage = sortedImageData.find(image => image.index < currentIndex);
-  //   return prevImage === undefined ? lastElement(sortedImageData) : prevImage;
-  // }
-
-  // const setPrevImage = () => {
-  //   const fname = path.basename(imagePreviewSrc);
-  //   const prevImage = getPrevImage(fname);
-  //   setImagePreviewSrc(prevImage.tmpSrc);
-  // }
-
-  // const setNextImage = () => {
-  //   const fname = path.basename(imagePreviewSrc);
-  //   const nextImage = getNextImage(fname);
-  //   console.log(nextImage.tmpSrc)
-  //   setImagePreviewSrc(nextImage.tmpSrc);
-  // }
-
   const handleClose = () => {
     setImagePreviewOpen(false);
   }
@@ -132,7 +101,7 @@ function ImageCardContainer(props) {
                     id="scroll-dialog-description"
                     tabIndex={-1}
                 >
-                    <img src={imagePreviewSrc} style={{height:'600px'}}></img>
+                    <img src={imagePreviewSrc} style={{maxHeight:'700px'}}></img>
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
