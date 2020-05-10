@@ -1,4 +1,5 @@
 const fs = require('fs');
+const mkdirp = require('mkdirp');
 
 const number = {
     group1000(number){
@@ -26,6 +27,43 @@ const clone = {
 const file = {
     async delete(fname){
         return fs.promises.unlink(fname);
+    },
+    checkDirWritable({dirname}){
+        return new Promise((resolve, reject) => {
+            fs.access(dirname, fs.constants.W_OK, function(err) {
+                if(err){
+                  console.error(`cannot write ${dirname}`);
+                  reject(err);
+                  return;
+                }          
+                console.log(`can write ${dirname}`);
+                resolve(true);
+                return;
+            });
+        })
+    },
+    checkDirExists({dirname, retryCount=0, MAX_RETRY_COUNT=2}){
+        return new Promise( async (resolve, reject) => {
+            try {
+                if(retryCount < MAX_RETRY_COUNT){
+                    console.log(`check directory exists [${dirname}][retry count=${retryCount}]`);
+                    const success = await file.checkDirWritable({dirname});
+                    if(success){
+                        resolve(true);
+                        return;
+                    }
+                }
+                console.error(`directory existence check failure [${dirname}]`);
+                reject(`MAX_RETRY_COUNT exceed [${MAX_RETRY_COUNT}]`);            
+            } catch (err) {
+                if(err.errno === -4058) {
+                    retryCount++;
+                    console.error(`directory not writable or not exist. try make directory [${dirname}]`);
+                    await mkdirp(dirname);
+                    await file.checkDirExists({dirname, retryCount, MAX_RETRY_COUNT});
+                }
+            }
+        })
     }
 }
 

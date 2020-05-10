@@ -1,13 +1,20 @@
 const puppeteer = require('puppeteer');
 const { EventEmitter } = require('events');
 const path = require('path');
-const checkDirExists = require('./checkDirExist');
 const saveFile = require('./saveFile');
 const imageUtil = require('./imageUtil');
 const utils = require('../utils');
 
+// to set TEMP DIRECTORY for saving images;
+const defaultOptions = require('../config/options');
+const mkOptionStore = require('../config/getOption');
+
+const storageType = 'localStorage';
+const optionProvider = utils.browserStorage.storageAvailable(storageType) ? utils.browserStorage : new Map();
+const getOption = mkOptionStore(defaultOptions, optionProvider); 
+const SAVE_DIRECTORY = getOption('tempDir');
+
 const config = require('./config.json');
-const SAVE_DIRECTORY = 'c:/temp/image';
 
 const toNumber = (value, defaultValue) => {
     return isNaN(Number(value)) ? defaultValue : Number(value);
@@ -68,7 +75,7 @@ const mkFname = async (page, requestUrl, request) => {
         }        
         const filename = `${index}${extname}`;
         console.log(`${filename}`)
-        await checkDirExists({dirname:SAVE_DIRECTORY});
+        await utils.file.checkDirExists({dirname:SAVE_DIRECTORY});
         
         const tmpName = path.join(SAVE_DIRECTORY, filename);
         console.log(tmpName)
@@ -154,7 +161,7 @@ class Browser extends EventEmitter {
             const requestFname = getFirstStringBySep({str:getLastStringBySep({str: requestUrl, sep: '/'}), sep:'?'});
             const extname = path.extname(requestFname);
             const filename = `${pageIndex}_${requestIndex}${extname}`;
-            await checkDirExists({dirname:SAVE_DIRECTORY});           
+            await utils.file.checkDirExists({dirname:SAVE_DIRECTORY});           
             const tmpName = path.join(SAVE_DIRECTORY, filename);
         
             if(!tmpName) {
