@@ -45,7 +45,7 @@ const setOptionsOnLocalStorage = (options) => {
   const storageType = 'localStorage';
   const LOCAL_STORAGE_AVAILABLE = utils.browserStorage.storageAvailable(storageType);
   if(!LOCAL_STORAGE_AVAILABLE) return false;  
-  utils.browserStorage.create(storageType);
+  // utils.browserStorage.use(storageType);
   utils.browserStorage.set('homeUrl', homeUrl);
   utils.browserStorage.set('saveDir', saveDir);
   utils.browserStorage.set('tempDir', tempDir);

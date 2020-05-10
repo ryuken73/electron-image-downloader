@@ -299,10 +299,6 @@ export default handleActions({
         console.log('%%%%%%%%%%%%%%%%', action.payload);
         const {pageIndex, imageIndex} = action.payload;
         const imageData = [...state.pageImages.get(pageIndex)];
-        // const image = imageData.find(image => image.index === imageIndex);
-        // const newImage = {...image, checked};
-        // const imageArrayIndex = imageData.findIndex(image => image.index === imageIndex);
-        // const newImageData = utils.clone.replaceElement(imageData, imageArrayIndex, newImage);
         const newImageData = imageData.filter(image => image.index !== imageIndex);
 
         const pageImages = new Map(state.pageImages);

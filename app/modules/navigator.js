@@ -1,6 +1,10 @@
 import {createAction, handleActions} from 'redux-actions';
 import {addImageData, setCurrentTab, addPage, delPage, setPageTitles} from './imageList'
+import utils from '../utils';
+import options from '../config/options';
 const chromeBrowser = require('../browser/Browser');
+
+const DEFAULT_OPTIONS = {...options};
 
 // action types
 const SET_URL = 'navigator/SET_URL';
@@ -81,10 +85,15 @@ export const toggleTrackAsync = () => async (dispatch, getState) => {
     dispatch(toggleTrack(TrackRequested));
 }
 
+const storageType = 'localStorage';
+const defaultUrl = utils.browserStorage.storageAvailable(storageType) ?
+                   utils.browserStorage.get('homeUrl') : DEFAULT_OPTIONS.homeUrl;
+
+console.log(defaultUrl)
 
 // initial state
 const initialState = {
-    launchUrl: 'https://www.google.com',
+    launchUrl: defaultUrl,
     browser: null,
     page: null,
     tracking: false,

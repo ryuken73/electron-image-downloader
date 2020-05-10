@@ -10,7 +10,7 @@ const getOptionsFromLocalStorage = () => {
     const storageType = 'localStorage';
     const LOCAL_STORAGE_AVAILABLE = utils.browserStorage.storageAvailable(storageType);
     if(!LOCAL_STORAGE_AVAILABLE) return DEFAULT_OPTIONS;  
-    utils.browserStorage.create(storageType);
+    // utils.browserStorage.use(storageType);
     const homeUrl = utils.browserStorage.get('homeUrl') || DEFAULT_OPTIONS.homeUrl;
     const saveDir = utils.browserStorage.get('saveDir') || DEFAULT_OPTIONS.saveDir;
     const tempDir = utils.browserStorage.get('tempDir') || DEFAULT_OPTIONS.tempDir;
