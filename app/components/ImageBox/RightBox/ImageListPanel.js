@@ -43,6 +43,7 @@ function ImageCardContainer(props) {
   const {filterImageByMaxSize, filterImageByName} = props.ImageActions;
   const {setImagePreviewOpen, setImagePreviewSrc} = props.ImageActions;
   const {setNextImage, setPrevImage} = props.ImageActions;
+  const {delImage} = props.ImageActions;
   const onStart = () => {};
 
   imageData.forEach(image => {
@@ -98,6 +99,7 @@ function ImageCardContainer(props) {
             key={image.index} 
             order={image.index} 
             image={image} 
+            delImage={delImage}
             // toggleCheckImage={toggleCheckImage(pageIndex)} 
             // toggleCheckImage={toggleCheckImage} 
             setImageToggleChecked={setImageToggleChecked}

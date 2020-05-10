@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const number = {
     group1000(number){
         return new Intl.NumberFormat().format(number)
@@ -18,6 +20,12 @@ const clone = {
             newElement,
             ...array.slice(index+1)
         ]
+    }
+}
+
+const file = {
+    async delete(fname){
+        return fs.promises.unlink(fname);
     }
 }
 
@@ -74,10 +82,11 @@ const browserStorage = {
 }
 
 module.exports = {
-    number,
-    fp,
+    browserStorage,
     clone,
-    browserStorage
+    fp,
+    file,
+    number,
 }
 
 // const trottled = fp.throttle(100, console.log);

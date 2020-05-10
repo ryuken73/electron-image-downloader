@@ -15,6 +15,8 @@ const FILTER_IMAGES_BY_NAME = 'imageList/FILTER_IMAGES_BY_NAME';
 const SET_IMAGE_PREVIEW_OPEN = 'imageList/SET_IMAGE_PREVIEW_OPEN';
 const SET_IMAGE_PREVIEW_SRC = 'imageList/SET_IMAGE_PREVIEW_SRC';
 const SET_IMAGE_CHECKBOX = 'imageList/SET_IMAGE_CHECKBOX';
+const DEL_IMAGE_FORM_IMAGELIST = 'imageList/DEL_IMAGE_FORM_IMAGELIST';
+const DEL_IMAGE_FROM_TMPDIR = 'imageList/DEL_IMAGE_FROM_TMPDIR';
 
 // action creator
 export const addPage = createAction(ADD_PAGE);
@@ -29,6 +31,8 @@ export const filterImageByName = createAction(FILTER_IMAGES_BY_NAME);
 export const setImagePreviewOpen = createAction(SET_IMAGE_PREVIEW_OPEN);
 export const setImagePreviewSrc = createAction(SET_IMAGE_PREVIEW_SRC);
 export const setImageCheckbox = createAction(SET_IMAGE_CHECKBOX);
+export const delImageFromImagelist = createAction(DEL_IMAGE_FORM_IMAGELIST);
+export const delImageFromTmpdir = createAction(DEL_IMAGE_FROM_TMPDIR);
 
 const imageDefault = {
     index: null,
@@ -113,6 +117,18 @@ export const setImageToggleChecked = (imageIndex) => (dispatch, getState) => {
     const clickedImage = state.imageList.pageImages.get(pageIndex).find(image => image.index === imageIndex);
     const checked = !clickedImage.checked;
     dispatch(setImageCheckbox({pageIndex, imageIndex, checked}));
+}
+
+export const delImage = (imageIndex) => async (dispatch, getState) => {
+    const state = getState();
+    const pageIndex = state.imageList.currentTab;
+    const targetImage = state.imageList.pageImages.get(pageIndex).find(image => image.index === imageIndex);
+    try {
+        await utils.file.delete(targetImage.tmpSrc);
+    } catch(err) {
+        console.error(err);
+    }
+    dispatch(delImageFromImagelist({pageIndex, imageIndex}));
 }
 
 const initialState = {
@@ -279,4 +295,21 @@ export default handleActions({
             pageImages
         }
     },  
+    [DEL_IMAGE_FORM_IMAGELIST]: (state, action) => {
+        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        const {pageIndex, imageIndex} = action.payload;
+        const imageData = [...state.pageImages.get(pageIndex)];
+        // const image = imageData.find(image => image.index === imageIndex);
+        // const newImage = {...image, checked};
+        // const imageArrayIndex = imageData.findIndex(image => image.index === imageIndex);
+        // const newImageData = utils.clone.replaceElement(imageData, imageArrayIndex, newImage);
+        const newImageData = imageData.filter(image => image.index !== imageIndex);
+
+        const pageImages = new Map(state.pageImages);
+        pageImages.set(pageIndex, newImageData);
+        return {
+            ...state,
+            pageImages
+        }
+    }
 }, initialState);

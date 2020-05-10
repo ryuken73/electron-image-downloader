@@ -41,6 +41,7 @@ function ImageCard(props) {
     const {sizeKB, reqUrl} = metadata;
     const {setImageToggleChecked, onClickSave, onClickRemove} = props;
     const {setImagePreviewOpen, setImagePreviewSrc} = props;
+    const {delImage} = props;
 
     const onClickImage = (event) => {
         setImagePreviewOpen(true);
@@ -50,6 +51,11 @@ function ImageCard(props) {
     const onClickCheckBox = (event) => {
         setImageToggleChecked(index);
     }
+
+    const onClickDeleteBtn = (event) => {
+        delImage(index);
+    }
+
     return (
         <Paper className={container} elevation={3} > 
             <Box bgcolor="aliceblue">
@@ -65,7 +71,7 @@ function ImageCard(props) {
             </Box>
             <Box display="flex" flexDirection="row" justifyContent="center" width={1}>
                 <Button className={smallBtn} onClick={onClickSave} variant="contained">Save</Button>  
-                <Button className={smallBtn} onClick={onClickRemove} variant="contained" >Remove</Button>  
+                <Button className={smallBtn} onClick={onClickDeleteBtn} variant="contained" >Remove</Button>  
             </Box>
         </Paper>
     ) 

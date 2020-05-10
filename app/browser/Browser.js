@@ -3,8 +3,8 @@ const { EventEmitter } = require('events');
 const path = require('path');
 const checkDirExists = require('./checkDirExist');
 const saveFile = require('./saveFile');
-const deleteFile = require('./deleteFile');
 const imageUtil = require('./imageUtil');
+const utils = require('../utils');
 
 const config = require('./config.json');
 const SAVE_DIRECTORY = 'c:/temp/image';
@@ -288,7 +288,7 @@ class Browser extends EventEmitter {
     }
 
     delFile = async (fname) => {
-        return await deleteFile(fname);
+        return await utils.file.delete(fname);
     }
     registerPageEventHandler = (event, handler) => this.pageEventHandler.set(event, handler);
     registerBrowserEventHandler = (event, handler) => this.browserEventHandler.set(event, handler);
