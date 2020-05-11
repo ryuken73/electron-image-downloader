@@ -9,6 +9,9 @@ function mapStateToProps(state) {
   return {
     filePrefix: state.savePanel.filePrefix,
     saveDirectory: state.savePanel.saveDirectory,
+    pageSaveDirectory: state.savePanel.pageSaveDirectory,
+    currentTab: state.imageList.currentTab,
+    pageTitles: state.imageList.pageTitles
   }
 }
 

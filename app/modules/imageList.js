@@ -143,7 +143,7 @@ export default handleActions({
         console.log('%%%%%%%%%%%%%%%%', action.payload);
         const {pageIndex} = action.payload;
         const pageTitles = new Map(state.pageTitles);
-        const initialTitle = pageIndex;
+        const initialTitle = '';
         pageTitles.set(pageIndex, initialTitle);
         return {
             ...state,

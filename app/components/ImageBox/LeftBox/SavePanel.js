@@ -7,25 +7,33 @@ import Button from '@material-ui/core/Button';
 import SectionWithFullHeightFlex from '../../template/SectionWithFullHeightFlex';
 
 const { dialog } = require('electron').remote;
+const path = require('path');
 
 export default function SavePanel(props) {
     console.log('######################## re-render SavePenel', props)
-    const {filePrefix, saveDirectory} = props;
-    const {setSaveDirectory, deleteFilesSelected} = props.SavePanelAction;
+    const {filePrefix, saveDirectory, pageSaveDirectory, currentTab, pageTitles} = props;
+    const {setPageSaveDirectory, deleteFilesSelected} = props.SavePanelAction;
     const {setAllImageCheck} = props.ImageListAction;
-    console.log(saveDirectory)
+    console.log(saveDirectory, pageSaveDirectory);
+
+    React.useEffect(() => {
+        const tabTitle = pageTitles.get(currentTab).replace(/[\\/:*?\"<>|]/g,"") || '';
+        console.log(saveDirectory, tabTitle)
+        const newDirectory = path.join(saveDirectory, tabTitle);
+        setPageSaveDirectory(newDirectory);
+    }, [pageTitles, currentTab])
 
     const onSaveDirectoryChange = (event) => {
-        setSaveDirectory(saveDirectory)
+        setPageSaveDirectory(event.target.value)
     }
 
     const onClickSelectSaveDirectory = () => {
         dialog.showOpenDialog(({properties:['openDirectory']}), filePaths=> {
           if(filePaths === undefined) return;
-          setSaveDirectory(filePaths[0]);      
+          setPageSaveDirectory(filePaths[0]);      
         })
     };
-
+    
     const onClickSetAllChecked = (event) => {
         setAllImageCheck(true);
     }
@@ -39,7 +47,7 @@ export default function SavePanel(props) {
                             <TextField
                                 variant="outlined"
                                 margin="dense"
-                                value={saveDirectory}
+                                value={pageSaveDirectory}
                                 onChange={onSaveDirectoryChange}
                             ></TextField>
                         <Button variant={"contained"} onClick={onClickSelectSaveDirectory}>Choose</Button>

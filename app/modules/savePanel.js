@@ -11,11 +11,11 @@ const saveDirectory = utils.browserStorage.storageAvailable(storageType) ?
 // action types
 
 const SET_FILE_PREFIX = 'savePanel/SET_FILE_PREFIX';
-const SET_SAVE_DIRECTORY = 'savePanel/SET_SAVE_DIRECTORY';
+const SET_PAGE_SAVE_DIRECTORY = 'savePanel/SET_PAGE_SAVE_DIRECTORY';
 
 // action creator
 export const setFilePrefix = createAction(SET_FILE_PREFIX);
-export const setSaveDirectory = createAction(SET_SAVE_DIRECTORY);
+export const setPageSaveDirectory = createAction(SET_PAGE_SAVE_DIRECTORY);
 
 export const deleteFilesSelected = () => (dispatch, getState)=> {
     const state = getState();
@@ -35,7 +35,8 @@ export const deleteFilesSelected = () => (dispatch, getState)=> {
 
 const initialState = { 
     filePrefix: '',
-    saveDirectory
+    saveDirectory,
+    pageSaveDirectory: saveDirectory
 }
 
 // reducer
@@ -47,11 +48,11 @@ export default handleActions({
             filePrefix
         }
     },
-    [SET_SAVE_DIRECTORY]: (state, action) => {
-        const saveDirectory = action.payload;
+    [SET_PAGE_SAVE_DIRECTORY]: (state, action) => {
+        const pageSaveDirectory = action.payload;
         return {
             ...state,
-            saveDirectory
+            pageSaveDirectory
         }
     } 
 }, initialState);

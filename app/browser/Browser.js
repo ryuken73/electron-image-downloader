@@ -249,6 +249,7 @@ class Browser extends EventEmitter {
         this.browser.on('targetcreated', async target => {
             if(target.type() !== 'page') return;
             const page = await target.page();
+            // await page.waitForNavigation({waitUntil:'domcontentloaded'});
             const title = await page.title();
             const pageIndex = this._initPage(page); 
             console.log(`*** new target created : ${pageIndex}`);
@@ -271,7 +272,10 @@ class Browser extends EventEmitter {
             if(target.type() !== 'page') return;
             try {
                 const page = await target.page();
+                // await page.waitForNavigation({waitUntil:'domcontentloaded'});
+
                 const pageIndex = this._getPageIndex(page);
+
                 const title = await page.title();
 
                 console.log(`************* page changed : ${page} ${pageIndex} ${title}`);
