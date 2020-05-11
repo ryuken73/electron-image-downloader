@@ -273,11 +273,8 @@ class Browser extends EventEmitter {
             try {
                 const page = await target.page();
                 // await page.waitForNavigation({waitUntil:'domcontentloaded'});
-
                 const pageIndex = this._getPageIndex(page);
-
                 const title = await page.title();
-
                 console.log(`************* page changed : ${page} ${pageIndex} ${title}`);
                 this.emit('titleChanged', {pageIndex, title});
             } catch (err) {
@@ -285,7 +282,7 @@ class Browser extends EventEmitter {
             }
         })
         this.browser.on('targetdestroyed', async target => {
-            console.log('page closed');
+            console.log('page closed: ', target.type);
             try {
                 const remainPages = await this.browser.pages();
                 const removedPageIndex = this._getRemovedPageIndex(remainPages)

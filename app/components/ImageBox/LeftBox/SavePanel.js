@@ -17,9 +17,10 @@ export default function SavePanel(props) {
     console.log(saveDirectory, pageSaveDirectory);
 
     React.useEffect(() => {
-        const tabTitle = pageTitles.get(currentTab).replace(/[\\/:*?\"<>|]/g,"") || '';
-        console.log(saveDirectory, tabTitle)
-        const newDirectory = path.join(saveDirectory, tabTitle);
+        const tabTitle = pageTitles.get(currentTab) || '';
+        const tabTitleForPath = tabTitle.replace(/[\\/:*?\"<>|]/g,"") || '';
+        console.log(saveDirectory, tabTitleForPath)
+        const newDirectory = path.join(saveDirectory, tabTitleForPath);
         setPageSaveDirectory(newDirectory);
     }, [pageTitles, currentTab])
 
