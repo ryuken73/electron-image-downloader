@@ -15,8 +15,8 @@ const FILTER_IMAGES_BY_NAME = 'imageList/FILTER_IMAGES_BY_NAME';
 const SET_IMAGE_PREVIEW_OPEN = 'imageList/SET_IMAGE_PREVIEW_OPEN';
 const SET_IMAGE_PREVIEW_SRC = 'imageList/SET_IMAGE_PREVIEW_SRC';
 const SET_IMAGE_CHECKBOX = 'imageList/SET_IMAGE_CHECKBOX';
+const SET_ALL_IMAGE_CHECK = 'imageList/SET_ALL_IMAGE_CHECK';
 const DEL_IMAGE_FORM_IMAGELIST = 'imageList/DEL_IMAGE_FORM_IMAGELIST';
-const DEL_IMAGE_FROM_TMPDIR = 'imageList/DEL_IMAGE_FROM_TMPDIR';
 
 // action creator
 export const addPage = createAction(ADD_PAGE);
@@ -31,8 +31,8 @@ export const filterImageByName = createAction(FILTER_IMAGES_BY_NAME);
 export const setImagePreviewOpen = createAction(SET_IMAGE_PREVIEW_OPEN);
 export const setImagePreviewSrc = createAction(SET_IMAGE_PREVIEW_SRC);
 export const setImageCheckbox = createAction(SET_IMAGE_CHECKBOX);
+export const setAllImageCheck = createAction(SET_ALL_IMAGE_CHECK);
 export const delImageFromImagelist = createAction(DEL_IMAGE_FORM_IMAGELIST);
-export const delImageFromTmpdir = createAction(DEL_IMAGE_FROM_TMPDIR);
 
 const imageDefault = {
     index: null,
@@ -290,6 +290,20 @@ export default handleActions({
         const pageImages = new Map(state.pageImages);
         pageImages.set(pageIndex, newImageData);
         console.log(imageData, newImageData);
+        return {
+            ...state,
+            pageImages
+        }
+    },  
+    [SET_ALL_IMAGE_CHECK]: (state, action) => {
+        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        const checked = action.payload;
+        const pageIndex = state.currentTab;
+        const imageData = [...state.pageImages.get(pageIndex)];
+        const newImageData = imageData.map(image => ({...image, checked}));
+        
+        const pageImages = new Map(state.pageImages);
+        pageImages.set(pageIndex, newImageData);
         return {
             ...state,
             pageImages

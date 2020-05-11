@@ -1,54 +1,57 @@
 import {createAction, handleActions} from 'redux-actions';
+import {delImageFromImagelist} from './imageList';
+import utils from '../utils';
+import options from '../config/options';
+
+const DEFAULT_OPTIONS = {...options};
+const storageType = 'localStorage';
+const saveDirectory = utils.browserStorage.storageAvailable(storageType) ?
+                      utils.browserStorage.get('saveDir') : DEFAULT_OPTIONS.saveDir;
 
 // action types
-const SELECT_ALL_IMAGES = 'savePanel/SELECT_ALL_IMAGES';
-const SAVE_SELECTED = 'savePanel/SAVE_SELECTED';
-const DELETE_SELECTED = 'savePanel/DELETE_SELECTED';
+
+const SET_FILE_PREFIX = 'savePanel/SET_FILE_PREFIX';
+const SET_SAVE_DIRECTORY = 'savePanel/SET_SAVE_DIRECTORY';
 
 // action creator
-export const setFileTypes = createAction(SET_FILE_TYPE);
-export const setFileSizeMin = createAction(SET_FILE_SIZE_MIN);
-export const setFileSizeMax = createAction(SET_FILE_SIZE_MAX);
-export const setFilePattern = createAction(SET_FILE_PATTERN);
+export const setFilePrefix = createAction(SET_FILE_PREFIX);
+export const setSaveDirectory = createAction(SET_SAVE_DIRECTORY);
+
+export const deleteFilesSelected = () => (dispatch, getState)=> {
+    const state = getState();
+    const pageIndex = state.imageList.currentTab;
+    const checkedImage = state.imageList.pageImages.get(pageIndex).filter(image => image.checked);
+    const deleteJobs = checkedImage.map(async image => {
+        return await utils.file.delete(image.tmpSrc);
+    })
+    Promise.all(deleteJobs)
+    .then(results =>{
+        console.log('all checked file deleted!')
+        checkedImage.forEach(image => dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index})))
+    })
+    .catch((err) => console.error(err));
+}
+
 
 const initialState = { 
-    fileTypes: ['all'],
-    fileSizeMin: 1024,
-    fileSizeMax: 10240000,
-    filePatterns: ['*']
+    filePrefix: '',
+    saveDirectory
 }
 
 // reducer
 export default handleActions({
-    [SET_FILE_TYPE]: (state, action) => {
-        const fileTypes = action.payload;
+    [SET_FILE_PREFIX]: (state, action) => {
+        const filePrefix = action.payload;
         return {
             ...state,
-            fileTypes
+            filePrefix
         }
     },
-    [SET_FILE_SIZE_MIN]: (state, action) => {
-        const fileSizeMin = Number(action.payload);
-        if(isNaN(fileSizeMin)) return {...state};
+    [SET_SAVE_DIRECTORY]: (state, action) => {
+        const saveDirectory = action.payload;
         return {
             ...state,
-            fileSizeMin
+            saveDirectory
         }
-    },
-    [SET_FILE_SIZE_MAX]: (state, action) => {
-        const fileSizeMax = Number(action.payload);
-        if(isNaN(fileSizeMax)) return {...state};
-        return {
-            ...state,
-            fileSizeMax
-        }
-    },
-    [SET_FILE_PATTERN]: (state, action) => {
-        const filePatterns = action.payload;
-        console.log('***********',filePatterns)
-        return {
-            ...state,
-            filePatterns
-        }
-    },    
+    } 
 }, initialState);

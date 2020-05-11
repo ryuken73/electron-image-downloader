@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 // import Paper from '@material-ui/core/Paper';
 import BorderedBox from '../template/BorderedBox';
 import Box from '@material-ui/core/Box';
-import LeftBox from './LeftBox/SavePanel';
+import SavePanelContainer from '../../containers/SavePanelContainer';
 // import ImageListPanel from './RightBox/ImageListPanel';
 import ImageListContainer from '../../containers/ImageListContainer';
 // import ImageTabs from './RightBox/ImageTabs';
@@ -13,7 +13,7 @@ export default class ImageBox extends Component {
     render() {
         return (
             <Box className="ImageBox" display="flex" flexDirection="row" flexGrow="1">
-                <LeftBox></LeftBox>
+                <SavePanelContainer></SavePanelContainer>
                 <ImageListContainer></ImageListContainer>
             </Box>
         )
