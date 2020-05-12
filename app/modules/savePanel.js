@@ -3,6 +3,8 @@ import {delImageFromImagelist} from './imageList';
 import utils from '../utils';
 import options from '../config/options';
 
+const path = require('path');
+
 const DEFAULT_OPTIONS = {...options};
 const storageType = 'localStorage';
 const saveDirectory = utils.browserStorage.storageAvailable(storageType) ?
@@ -27,6 +29,28 @@ export const deleteFilesSelected = () => (dispatch, getState)=> {
     Promise.all(deleteJobs)
     .then(results =>{
         console.log('all checked file deleted!')
+        checkedImage.forEach(image => dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index})))
+    })
+    .catch((err) => console.error(err));
+}
+
+export const saveFilesSelected = () => (dispatch, getState)=> {
+    const state = getState();
+    const pageIndex = state.imageList.currentTab;
+    const checkedImage = state.imageList.pageImages.get(pageIndex).filter(image => image.checked);
+    const pageSaveDirectory = state.savePanel.pageSaveDirectory;
+    const saveJobs = checkedImage.map(async image => {
+        const srcFileName = image.tmpFname;
+        const srcFullName = image.tmpSrc;
+        const dstFullName = path.join(pageSaveDirectory, srcFileName);
+        console.log(srcFullName, dstFullName);
+        const copyFunction = state.optionDialog.deleteAfterSave ? utils.file.move : utils.file.copy;
+        return await copyFunction(srcFullName, dstFullName);
+    })
+    console.log(saveJobs);
+    Promise.all(saveJobs)
+    .then(results =>{
+        console.log('all checked file saved!')
         checkedImage.forEach(image => dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index})))
     })
     .catch((err) => console.error(err));

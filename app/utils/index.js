@@ -1,5 +1,6 @@
 const fs = require('fs');
 const mkdirp = require('mkdirp');
+const path = require('path');
 
 const number = {
     group1000(number){
@@ -28,6 +29,33 @@ const file = {
     async delete(fname){
         return fs.promises.unlink(fname);
     },
+    async move(srcFile, dstFile){
+        const dstDirectory = path.dirname(dstFile);
+        const dstDirExists = await file.checkDirExists({dirname:dstDirectory});
+        console.log(`dstDirExists : ${dstDirExists}`);
+
+        try {
+            console.log(`dstDirExists : ${dstDirExists}`);
+            await fs.promises.rename(srcFile, dstFile); 
+            return true            
+        } catch (error) {
+            console.error(error);
+            if(error.code === 'EXDEV'){
+                await fs.promises.copyFile(srcFile, dstFile);
+                await fs.promises.unlink(srcFile);
+                return true;
+            } else {
+                throw error;
+            }
+        }
+    },
+    async copy(srcFile, dstFile){
+        const dstDirectory = path.dirname();
+        const dstDirExists = await file.checkDirExists({dirname:dstDirectory});
+        if(dstDirExists) return fs.promises.copyFile(srcFile, dstFile);
+        return Promise.reject();
+
+    },
     checkDirWritable({dirname}){
         return new Promise((resolve, reject) => {
             fs.access(dirname, fs.constants.W_OK, function(err) {
@@ -49,6 +77,7 @@ const file = {
                     console.log(`check directory exists [${dirname}][retry count=${retryCount}]`);
                     const success = await file.checkDirWritable({dirname});
                     if(success){
+                        console.log('end checkDirExists');
                         resolve(true);
                         return;
                     }
@@ -60,7 +89,8 @@ const file = {
                     retryCount++;
                     console.error(`directory not writable or not exist. try make directory [${dirname}]`);
                     await mkdirp(dirname);
-                    await file.checkDirExists({dirname, retryCount, MAX_RETRY_COUNT});
+                    const result = await file.checkDirExists({dirname, retryCount, MAX_RETRY_COUNT});
+                    resolve(true);
                 }
             }
         })

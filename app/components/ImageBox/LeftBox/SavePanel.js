@@ -11,8 +11,8 @@ const path = require('path');
 
 export default function SavePanel(props) {
     console.log('######################## re-render SavePenel', props)
-    const {filePrefix, saveDirectory, pageSaveDirectory, currentTab, pageTitles} = props;
-    const {setPageSaveDirectory, deleteFilesSelected} = props.SavePanelAction;
+    const {deleteAfterSave, saveDirectory, pageSaveDirectory, currentTab, pageTitles} = props;
+    const {setPageSaveDirectory, deleteFilesSelected, saveFilesSelected} = props.SavePanelAction;
     const {setAllImageCheck} = props.ImageListAction;
     console.log(saveDirectory, pageSaveDirectory);
 
@@ -39,6 +39,10 @@ export default function SavePanel(props) {
         setAllImageCheck(true);
     }
 
+    const onClickSavelAllChecked = event => {
+        saveFilesSelected();
+    }
+
     return (
         <SectionWithFullHeightFlex className="SectionWithFullHeightFlex ImageBox" flexGrow="0" width="20px" >
             <BorderedBox display="flex" alignContent="center" flexGrow="1">
@@ -62,7 +66,7 @@ export default function SavePanel(props) {
                     </Box>
                     <Box mt="auto" display="flex" height="150px" justifyContent="space-around" flexShrink="0" flexDirection="column" mx="10px" mb="30px">
                         <Button variant={"contained"} onClick={onClickSetAllChecked}>Select All</Button>
-                        <Button variant={"contained"} >Save Selected</Button>
+                        <Button variant={"contained"} onClick={onClickSavelAllChecked}>Save Selected</Button>
                         <Button variant={"contained"} onClick={deleteFilesSelected}>Delete Selected</Button>
                     </Box>            
                 </Box>

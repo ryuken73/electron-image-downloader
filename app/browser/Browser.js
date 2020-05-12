@@ -159,7 +159,8 @@ class Browser extends EventEmitter {
             const pageIndex = this._getPageIndex(page);
             const requestIndex = page.requestMap.get(request);
             const requestFname = getFirstStringBySep({str:getLastStringBySep({str: requestUrl, sep: '/'}), sep:'?'});
-            const extname = path.extname(requestFname);
+            const metadata = await imageUtil.getMetadata(buff);
+            const extname = path.extname(requestFname) || `.${metadata.format}`;
             const filename = `${pageIndex}_${requestIndex}${extname}`;
             await utils.file.checkDirExists({dirname:SAVE_DIRECTORY});           
             const tmpName = path.join(SAVE_DIRECTORY, filename);
@@ -170,7 +171,7 @@ class Browser extends EventEmitter {
                 return;
             }
             console.log(`[${pageIndex}][${requestIndex}][${tmpName}]allowed...saving...`);
-            const metadata = await imageUtil.getMetadata(buff);
+            // const metadata = await imageUtil.getMetadata(buff);
             const tmpFname = path.basename(tmpName);
             metadata.reqIndex = requestIndex;
             metadata.reqUrl = requestUrl;
