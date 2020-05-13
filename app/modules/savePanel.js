@@ -1,5 +1,5 @@
 import {createAction, handleActions} from 'redux-actions';
-import {delImageFromImagelist} from './imageList';
+import {delImageFromImagelist, setImageSaved} from './imageList';
 import utils from '../utils';
 import options from '../config/options';
 
@@ -45,7 +45,11 @@ export const saveFilesSelected = () => (dispatch, getState)=> {
         const dstFullName = path.join(pageSaveDirectory, srcFileName);
         console.log(srcFullName, dstFullName);
         const copyFunction = state.optionDialog.deleteAfterSave ? utils.file.move : utils.file.copy;
-        return await copyFunction(srcFullName, dstFullName);
+        await copyFunction(srcFullName, dstFullName);
+        // TODO : too many dispatch makes application slow! first
+        // dispatch(setImageSaved({pageIndex, imageIndex: image.index}));
+        // dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index}));
+        return
     })
     console.log(saveJobs);
     Promise.all(saveJobs)

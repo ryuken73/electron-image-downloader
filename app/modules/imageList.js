@@ -15,6 +15,7 @@ const FILTER_IMAGES_BY_NAME = 'imageList/FILTER_IMAGES_BY_NAME';
 const SET_IMAGE_PREVIEW_OPEN = 'imageList/SET_IMAGE_PREVIEW_OPEN';
 const SET_IMAGE_PREVIEW_SRC = 'imageList/SET_IMAGE_PREVIEW_SRC';
 const SET_IMAGE_CHECKBOX = 'imageList/SET_IMAGE_CHECKBOX';
+const SET_IMAGE_SAVED = 'imageList/SET_IMAGE_SAVED';
 const SET_ALL_IMAGE_CHECK = 'imageList/SET_ALL_IMAGE_CHECK';
 const DEL_IMAGE_FORM_IMAGELIST = 'imageList/DEL_IMAGE_FORM_IMAGELIST';
 
@@ -31,6 +32,7 @@ export const filterImageByName = createAction(FILTER_IMAGES_BY_NAME);
 export const setImagePreviewOpen = createAction(SET_IMAGE_PREVIEW_OPEN);
 export const setImagePreviewSrc = createAction(SET_IMAGE_PREVIEW_SRC);
 export const setImageCheckbox = createAction(SET_IMAGE_CHECKBOX);
+export const setImageSaved = createAction(SET_IMAGE_SAVED);
 export const setAllImageCheck = createAction(SET_ALL_IMAGE_CHECK);
 export const delImageFromImagelist = createAction(DEL_IMAGE_FORM_IMAGELIST);
 
@@ -43,7 +45,8 @@ const imageDefault = {
     checked: false,
     show: true,
     imagePreviewOpen:false,
-    imagePreviewSrc:''
+    imagePreviewSrc:'',
+    saved: false
 
 }
 
@@ -284,6 +287,23 @@ export default handleActions({
         const imageData = [...state.pageImages.get(pageIndex)];
         const image = imageData.find(image => image.index === imageIndex);
         const newImage = {...image, checked};
+        const imageArrayIndex = imageData.findIndex(image => image.index === imageIndex);
+        const newImageData = utils.clone.replaceElement(imageData, imageArrayIndex, newImage);
+
+        const pageImages = new Map(state.pageImages);
+        pageImages.set(pageIndex, newImageData);
+        console.log(imageData, newImageData);
+        return {
+            ...state,
+            pageImages
+        }
+    },  
+    [SET_IMAGE_SAVED]: (state, action) => {
+        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        const {pageIndex, imageIndex} = action.payload;
+        const imageData = [...state.pageImages.get(pageIndex)];
+        const image = imageData.find(image => image.index === imageIndex);
+        const newImage = {...image, saved: true};
         const imageArrayIndex = imageData.findIndex(image => image.index === imageIndex);
         const newImageData = utils.clone.replaceElement(imageData, imageArrayIndex, newImage);
 
