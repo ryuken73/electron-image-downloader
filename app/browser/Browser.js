@@ -278,6 +278,14 @@ class Browser extends EventEmitter {
                 const title = await page.title();
                 console.log(`************* page changed : ${page} ${pageIndex} ${title}`);
                 this.emit('titleChanged', {pageIndex, title});
+                // sometimes, 'titleChange' emit empty string.
+                // so, need to wait for title element 
+                page
+                .waitForSelector('title')
+                .then(async () => {
+                    const title = await page.title();
+                    this.emit('titleChanged', {pageIndex, title})
+                });
             } catch (err) {
                 console.error(err);
             }
