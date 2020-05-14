@@ -146,11 +146,15 @@ export default handleActions({
         console.log('%%%%%%%%%%%%%%%%', action.payload);
         const {pageIndex} = action.payload;
         const pageTitles = new Map(state.pageTitles);
+        const pageImages = new Map(state.pageImages);
         const initialTitle = '';
+        const initialImageData = [];
         pageTitles.set(pageIndex, initialTitle);
+        pageImages.set(pageIndex, initialImageData);
         return {
             ...state,
-            pageTitles
+            pageTitles,
+            pageImages
         }
     },
     [DEL_PAGE]: (state, action) => {
