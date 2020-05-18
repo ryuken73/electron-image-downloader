@@ -141,8 +141,9 @@ class Browser extends EventEmitter {
     _requestHandler = page => request => {console.log('request on');page.requestMap.set(request, page.getNextRequestIndex());}
     _responseHandler = (page, trackFilters) => async response => {
         try {
-            console.log(`size of request Map: ${page.requestMap.size}`);
-            console.log(trackFilters)
+            const pageIndex = this._getPageIndex(page);
+            console.log(`size of request Map[${pageIndex}]: ${page.requestMap.size}`);
+            // console.log(trackFilters)
             // trackFilters : filter functions(typeFilter, sizeFilter, nameFilter)
             const request = response.request();
             const status = response.status();
@@ -156,7 +157,6 @@ class Browser extends EventEmitter {
                 page.requestMap.delete(request);
                 return;
             }
-            const pageIndex = this._getPageIndex(page);
             const requestIndex = page.requestMap.get(request);
             const requestFname = getFirstStringBySep({str:getLastStringBySep({str: requestUrl, sep: '/'}), sep:'?'});
             const metadata = await imageUtil.getMetadata(buff);
@@ -251,11 +251,14 @@ class Browser extends EventEmitter {
             if(target.type() !== 'page') return;
             const page = await target.page();
             // await page.waitForNavigation({waitUntil:'domcontentloaded'});
+            console.log('request paused!')
+            await page.setRequestInterception(true);
             const title = await page.title();
             const pageIndex = this._initPage(page); 
             console.log(`*** new target created : ${pageIndex}`);
             this.emit('pageAdded', {pageIndex, title});
             this.trackFilters && this._startTrackPage(this.trackFilters, pageIndex);
+            await page.setRequestInterception(false);
         });
 
         this._setDefaultBrowserEventHandler();
