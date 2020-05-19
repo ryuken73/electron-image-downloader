@@ -43,18 +43,31 @@ function ImageCard(props) {
     const {setImagePreviewOpen, setImagePreviewSrc} = props;
     const {delImage} = props;
 
-    const onClickImage = (event) => {
+    // const onClickImage = (event) => {
+    //     setImagePreviewOpen(true);
+    //     setImagePreviewSrc(imageSrc);
+    // }
+
+    // const onClickCheckBox = (event) => {
+    //     setImageToggleChecked(index);
+    // }
+
+    // const onClickDeleteBtn = (event) => {
+    //     delImage(index);
+    // }
+
+    const onClickImage = React.useCallback(() => {
         setImagePreviewOpen(true);
         setImagePreviewSrc(imageSrc);
-    }
+    },[imageSrc])
 
-    const onClickCheckBox = (event) => {
+    const onClickCheckBox = React.useCallback(() => {
         setImageToggleChecked(index);
-    }
+    },[index])
 
-    const onClickDeleteBtn = (event) => {
-        delImage(index);
-    }
+    const onClickDeleteBtn = React.useCallback(() => {
+        delImage(index); 
+    },[index])
 
     return (
         <Paper className={container} elevation={3} > 

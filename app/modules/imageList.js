@@ -58,6 +58,8 @@ const mkImageItem = (imageInfo) => {
         index: imageInfo.metadata.reqIndex,
         tmpFname: imageInfo.tmpFname,
         tmpSrc: imageInfo.tmpSrc,
+        imageSrc: imageInfo.tmpSrc,
+        imageFname: imageInfo.tmpFname.replace(/^\d{13}_/,''),
         metadata: imageInfo.metadata
     }
 }

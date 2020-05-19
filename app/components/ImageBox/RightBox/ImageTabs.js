@@ -37,9 +37,13 @@ function ImageTabs(props) {
     
     const {currentTab, pageImages, pageTitles} = props;
     const {setCurrentTab} = props.ImageActions;
-    const onChange = (event, newValue) => {
-        setCurrentTab(newValue)
-    };
+    // const onChange = (event, newValue) => {
+    //     setCurrentTab(newValue)
+    // };
+    const onChange = React.useCallback((event, newValue) => {
+        setCurrentTab(newValue);
+    }, [setCurrentTab]);
+
     return (
         <BorderedBox  alignContent="center" alignItems="flex-start" flexGrow="1" minWidth="auto" flexBasis="0" overflow="auto">
             <BorderedBox display='flex' alignContent="center" alignItems="flex-start" flexGrow="1" border="1" minWidth="auto" flexBasis="0" overflow="hidden">

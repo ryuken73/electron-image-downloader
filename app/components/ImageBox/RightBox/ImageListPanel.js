@@ -46,10 +46,11 @@ function ImageCardContainer(props) {
   const {delImage} = props.ImageActions;
   const onStart = () => {};
 
-  imageData.forEach(image => {
-    image.imageFname = image.tmpFname.replace(/^\d{13}_/,'');
-    image.imageSrc = image.tmpSrc;
-  })
+  // imageData.forEach(image => {
+  //   console.log('rename fname')
+  //   image.imageFname = image.tmpFname.replace(/^\d{13}_/,'');
+  //   image.imageSrc = image.tmpSrc;
+  // })
 
   React.useEffect(() => {
     filterImageByType({pageIndex, fileTypes})
