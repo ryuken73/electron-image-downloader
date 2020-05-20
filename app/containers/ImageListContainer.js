@@ -1,15 +1,19 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-// import ImageListPanel from '../components/ImageBox/RightBox/ImageListPanel';
-import ImageTabs from '../components/ImageBox/RightBox/ImageTabs';
+import ImageListPanel from '../components/ImageBox/RightBox/ImageListPanel';
+// import ImageTabs from '../components/ImageBox/RightBox/ImageTabs';
 import * as imageActions from '../modules/imageList';
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   console.log('mapStateToProps:',state)
+  const pageImages = state.imageList.pageImages;
+  const {pageIndex, hidden} = ownProps;
+  const imageData = pageImages.get(pageIndex) || [];
+  
   return {
-    pageImages: state.imageList.pageImages,
-    pageTitles: state.imageList.pageTitles,
-    currentTab: state.imageList.currentTab,
+    pageIndex,
+    imageData,
+    hidden,
     fileTypes: state.displayFilters.fileTypes,
     fileSizeMin: state.displayFilters.fileSizeMin,
     fileSizeMax: state.displayFilters.fileSizeMax,
@@ -23,4 +27,4 @@ function mapDispatchToProps(dispatch) {
   return {ImageActions: bindActionCreators(imageActions, dispatch)};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ImageTabs);
+export default connect(mapStateToProps, mapDispatchToProps)(ImageListPanel);

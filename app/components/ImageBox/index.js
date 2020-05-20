@@ -5,7 +5,8 @@ import BorderedBox from '../template/BorderedBox';
 import Box from '@material-ui/core/Box';
 import SavePanelContainer from '../../containers/SavePanelContainer';
 // import ImageListPanel from './RightBox/ImageListPanel';
-import ImageListContainer from '../../containers/ImageListContainer';
+// import ImageListContainer from '../../containers/ImageListContainer';
+import ImageTabsContainer from '../../containers/ImageTabsContainer';
 // import ImageTabs from './RightBox/ImageTabs';
 import SectionWithFullHeight from '../template/SectionWithFullHeight';
 
@@ -14,7 +15,7 @@ export default class ImageBox extends Component {
         return (
             <Box className="ImageBox" display="flex" flexDirection="row" flexGrow="1">
                 <SavePanelContainer></SavePanelContainer>
-                <ImageListContainer></ImageListContainer>
+                <ImageTabsContainer></ImageTabsContainer>
             </Box>
         )
     } 

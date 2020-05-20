@@ -4,7 +4,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import BorderedBox from '../../template/BorderedBox';
-import ImageListPanel from './ImageListPanel';
+// import ImageListPanel from './ImageListPanel';
+import ImageListContainer from '../../../containers/ImageListContainer';
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
@@ -18,16 +19,14 @@ const StyledTab = styled(Tab)`
 
 function TabPanel(props){
     console.log('render TabPanel:', props)
-    const {value, index, imageData} = props;
+    const {value, index} = props;
     const hidden = (value === index) ? false : true;
     return (
-        <ImageListPanel
+        <ImageListContainer
             pageIndex = {index}
-            {...props}
             hidden = {hidden}
-            imageData = {imageData}
         >
-        </ImageListPanel>
+        </ImageListContainer>
     )
 }
 
