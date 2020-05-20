@@ -36,9 +36,7 @@ function ImageTabs(props) {
     
     const {currentTab, pageImages, pageTitles} = props;
     const {setCurrentTab} = props.ImageActions;
-    // const onChange = (event, newValue) => {
-    //     setCurrentTab(newValue)
-    // };
+
     const onChange = React.useCallback((event, newValue) => {
         setCurrentTab(newValue);
     }, [setCurrentTab]);
@@ -67,7 +65,7 @@ function ImageTabs(props) {
             </BorderedBox>
             {[...pageImages].map(pageImage => {
                 const [pageIndex, imageData] = pageImage;
-                return <TabPanel value={currentTab} key={pageIndex} index={pageIndex}  {...props} imageData={imageData}></TabPanel>                 
+                return <TabPanel value={currentTab} key={pageIndex} index={pageIndex}></TabPanel>                 
 
             }
             )}

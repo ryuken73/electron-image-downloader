@@ -64,12 +64,6 @@ export default function OptionDialog(props) {
   const {setDeleteOnClose, setDeleteOnStart, setDeleteAfterSave, setAllOptions} = props.OptionDialogActions;
   const [scroll, setScroll] = React.useState('paper');
 
-  // const [tempHomeUrl, setTempHomeUrl] = React.useState(homeUrl)
-
-  // const onChangeTempUrl = (event) => {
-  //   setTempHomeUrl(event.target.value)
-  // }
-
   const actionFunctions = {
     'homeUrl': setHomeUrl,
     'saveDir': setSaveDir,

@@ -43,19 +43,6 @@ function ImageCard(props) {
     const {setImagePreviewOpen, setImagePreviewSrc} = props;
     const {delImage} = props;
 
-    // const onClickImage = (event) => {
-    //     setImagePreviewOpen(true);
-    //     setImagePreviewSrc(imageSrc);
-    // }
-
-    // const onClickCheckBox = (event) => {
-    //     setImageToggleChecked(index);
-    // }
-
-    // const onClickDeleteBtn = (event) => {
-    //     delImage(index);
-    // }
-
     const onClickImage = React.useCallback(() => {
         setImagePreviewOpen(true);
         setImagePreviewSrc(imageSrc);

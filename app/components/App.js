@@ -25,20 +25,17 @@ const theme = createMuiTheme({
 
 function App() {
   return (
-    // <Box diaplay="flex" flexDirection="column" height="1">
     <ThemeProvider theme={theme}>
       <FullHeightContainer>
         <FirstChildSection flexGrow="0">
           <ControlBox></ControlBox>
         </FirstChildSection> 
-        {/* <FirstChildSection> */}
         <FirstChildSection flexGrow="1" flexShrink="1" flexBasis="auto">
           <ImageBox></ImageBox>
         </FirstChildSection> 
         <OptionDialogContainer></OptionDialogContainer>
       </FullHeightContainer>
     </ThemeProvider>
-    // </Box>
   );
 }
 

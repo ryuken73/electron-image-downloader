@@ -46,12 +46,6 @@ function ImageCardContainer(props) {
   const {delImage} = props.ImageActions;
   const onStart = () => {};
 
-  // imageData.forEach(image => {
-  //   console.log('rename fname')
-  //   image.imageFname = image.tmpFname.replace(/^\d{13}_/,'');
-  //   image.imageSrc = image.tmpSrc;
-  // })
-
   React.useEffect(() => {
     filterImageByType({pageIndex, fileTypes})
   },[fileTypes])
@@ -67,13 +61,6 @@ function ImageCardContainer(props) {
   React.useEffect(() => {
     filterImageByName({pageIndex, filePatterns})
   },[filePatterns])
-
-  // React.useEffect(() => {
-  //   filterImageByType({pageIndex, fileTypes})
-  //   filterImageByMinSize({pageIndex, fileSizeMin})
-  //   filterImageByMaxSize({pageIndex, fileSizeMax})
-  //   filterImageByName({pageIndex, filePatterns})
-  // },[imageData])
 
   const handleClose = () => {
     setImagePreviewOpen(false);
