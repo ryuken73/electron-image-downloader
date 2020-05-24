@@ -130,21 +130,22 @@ const fp = {
 
 const browserStorage = {
     storage : null,
-    storageAvailable : (type) => {
+    // storageAvailable : (type) => {
+    init : (type) => {
         try {
             const storage = window[type];
             const TEST_TEXT = 'setItem test';
             storage.setItem('testText', TEST_TEXT);
             storage.removeItem('testText');
             console.log(this)
-            browserStorage.use(type);
+            browserStorage._use(type);
             return true;
         } catch (err) {
             console.error(err);
             return false;
         }
     },
-    use : type => this.storage = window[type],
+    _use : type => this.storage = window[type],
     get : key => this.storage.getItem(key),
     set : (key, value) => this.storage.setItem(key, value),
     delete : key => this.storage.removeItem(key),

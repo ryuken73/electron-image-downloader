@@ -2,9 +2,19 @@ import {createAction, handleActions} from 'redux-actions';
 import {addImageData, setCurrentTab, addPage, delPage, setPageTitles} from './imageList'
 import utils from '../utils';
 import options from '../config/options';
+import optionStore from '../config/optionStore';
+
 const chromeBrowser = require('../browser/Browser');
 
+// initialize config store and expose related method
+// optionProvider.get(key) : return option from localStorage or default
+// optionProvider.set(key, value) : save option in localStorage or nothing do
+
 const DEFAULT_OPTIONS = {...options};
+
+const storageType = 'localStorage';
+const storage = utils.browserStorage.init(storageType) ? utils.browserStorage : new Map();
+export const optionProvider = optionStore(DEFAULT_OPTIONS, storage);
 
 // action types
 const SET_URL = 'navigator/SET_URL';
@@ -26,7 +36,8 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
     const {launchUrl} = state.navigator;
     const {browserWidth:width, browserHeight:height} = state.browserOptions;
     // make new Browser instance
-    const browser = chromeBrowser.initBrowser({width, height});
+    const tempDir = optionProvider.get('tempDir');
+    const browser = chromeBrowser.initBrowser({width, height, tempDir});
     browser.registerPageEventHandler('saveFile', imageInfo => {
         console.log('saved:',imageInfo);
         dispatch(addImageData(imageInfo));
@@ -85,9 +96,11 @@ export const toggleTrackAsync = () => async (dispatch, getState) => {
     dispatch(toggleTrack(TrackRequested));
 }
 
-const storageType = 'localStorage';
-const defaultUrl = utils.browserStorage.storageAvailable(storageType) ?
-                   utils.browserStorage.get('homeUrl') : DEFAULT_OPTIONS.homeUrl;
+// const storageType = 'localStorage';
+// const defaultUrl = utils.browserStorage.init(storageType) ?
+//                    utils.browserStorage.get('homeUrl') : DEFAULT_OPTIONS.homeUrl;
+
+const defaultUrl = optionProvider.get('homeUrl');
 
 console.log(defaultUrl)
 

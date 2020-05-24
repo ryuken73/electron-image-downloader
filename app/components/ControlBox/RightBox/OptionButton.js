@@ -1,24 +1,14 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import utils from '../../../utils';
-import defaultOptions from '../../../config/options'; 
-import mkOptionStore from '../../../config/getOption'; 
-
-
-
-const DEFAULT_OPTIONS = {...defaultOptions};
+import {optionProvider} from '../../../modules/navigator';
 
 const getOptionsFromLocalStorage = () => {
-    const storageType = 'localStorage';
-    const optionProvider = utils.browserStorage.storageAvailable(storageType) ? utils.browserStorage : new Map();
-    const getOption = mkOptionStore(DEFAULT_OPTIONS, optionProvider); 
-    const homeUrl = getOption('homeUrl');
-    const saveDir = getOption('saveDir');
-    const tempDir = getOption('tempDir');
-    const deleteOnClose = getOption('deleteOnClose');
-    const deleteOnStart = getOption('deleteOnStart');
-    const deleteAfterSave = getOption('deleteAfterSave');
-
+    const homeUrl = optionProvider.get('homeUrl');
+    const saveDir = optionProvider.get('saveDir');
+    const tempDir = optionProvider.get('tempDir');
+    const deleteOnClose = optionProvider.get('deleteOnClose');
+    const deleteOnStart = optionProvider.get('deleteOnStart');
+    const deleteAfterSave = optionProvider.get('deleteAfterSave');
     return {homeUrl, saveDir, tempDir, deleteOnClose, deleteOnStart, deleteAfterSave};
 } 
 

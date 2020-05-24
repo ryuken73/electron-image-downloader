@@ -1,4 +1,8 @@
 import {createAction, handleActions} from 'redux-actions';
+import utils from '../utils';
+import {optionProvider} from './navigator';
+
+
 
 // action types
 const SET_CONTENT_TYPE = 'trackFilters/SET_CONTENT_TYPE';
@@ -12,12 +16,18 @@ export const setContentSizeMin = createAction(SET_CONTENT_SIZE_MIN);
 export const setContentSizeMax = createAction(SET_CONTENT_SIZE_MAX);
 export const setUrlPattern = createAction(SET_URL_PATTERN);
 
-const initialState = { 
-    contentTypes: ['image','jpg'],
-    contentSizeMin: 10240,
-    contentSizeMax: 10240000,
-    urlPatterns: ['*']
-}
+// helper funciton
+
+const getOptionsFromLocalStorage = () => {
+    const contentTypes = optionProvider.get('contentTypes');
+    const contentSizeMin = optionProvider.get('contentSizeMin');
+    const contentSizeMax = optionProvider.get('contentSizeMax');
+    const urlPatterns = optionProvider.get('urlPatterns');
+
+    return {contentTypes, contentSizeMin, contentSizeMax, urlPatterns};
+} 
+
+const initialState = getOptionsFromLocalStorage();
 
 // reducer
 export default handleActions({

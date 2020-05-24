@@ -1,14 +1,10 @@
 import {createAction, handleActions} from 'redux-actions';
 import {delImageFromImagelist, setImageSaved} from './imageList';
 import utils from '../utils';
-import options from '../config/options';
+import {optionProvider} from './navigator';
 
 const path = require('path');
-
-const DEFAULT_OPTIONS = {...options};
-const storageType = 'localStorage';
-const saveDirectory = utils.browserStorage.storageAvailable(storageType) ?
-                      utils.browserStorage.get('saveDir') : DEFAULT_OPTIONS.saveDir;
+const saveDirectory = optionProvider.get('saveDir');
 
 // action types
 

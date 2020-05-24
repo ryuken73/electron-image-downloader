@@ -18,6 +18,7 @@ import FolderIcon  from '@material-ui/icons/Folder';
 import {SmallPaddingIconButton} from './template/smallComponents';
 import utils from '../utils';
 import DEFAULT_OPTIONS from '../config/options'; 
+import {optionProvider} from '../modules/navigator';
 
 const { dialog } = require('electron').remote;
 
@@ -42,16 +43,12 @@ const OptionRadioButtonWithDefault = props => {
 const setOptionsOnLocalStorage = (options) => {
   const {homeUrl, saveDir, tempDir} = options;
   const {deleteOnClose, deleteOnStart, deleteAfterSave} = options;
-  const storageType = 'localStorage';
-  const LOCAL_STORAGE_AVAILABLE = utils.browserStorage.storageAvailable(storageType);
-  if(!LOCAL_STORAGE_AVAILABLE) return false;  
-  // utils.browserStorage.use(storageType);
-  utils.browserStorage.set('homeUrl', homeUrl);
-  utils.browserStorage.set('saveDir', saveDir);
-  utils.browserStorage.set('tempDir', tempDir);
-  utils.browserStorage.set('deleteOnClose', deleteOnClose);
-  utils.browserStorage.set('deleteOnStart', deleteOnStart);
-  utils.browserStorage.set('deleteAfterSave', deleteAfterSave);
+  optionProvider.set('homeUrl', homeUrl);
+  optionProvider.set('saveDir', saveDir);
+  optionProvider.set('tempDir', tempDir);
+  optionProvider.set('deleteOnClose', deleteOnClose);
+  optionProvider.set('deleteOnStart', deleteOnStart);
+  optionProvider.set('deleteAfterSave', deleteAfterSave);
   return true;
 } 
 

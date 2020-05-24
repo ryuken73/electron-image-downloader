@@ -5,15 +5,6 @@ const saveFile = require('./saveFile');
 const imageUtil = require('./imageUtil');
 const utils = require('../utils');
 
-// to set TEMP DIRECTORY for saving images;
-const defaultOptions = require('../config/options');
-const mkOptionStore = require('../config/getOption');
-
-const storageType = 'localStorage';
-const optionProvider = utils.browserStorage.storageAvailable(storageType) ? utils.browserStorage : new Map();
-const getOption = mkOptionStore(defaultOptions, optionProvider); 
-const SAVE_DIRECTORY = getOption('tempDir');
-
 const config = require('./config.json');
 
 const toNumber = (value, defaultValue) => {
@@ -91,6 +82,7 @@ class Browser extends EventEmitter {
         super();
         this.width = toNumber(options.width, 800);
         this.height = toNumber(options.height, 600);
+        this.tempDir = options.tempDir;
         this.pageTimeout = toNumber(options.defaultTimeout, 60000);
         this.launchOptions = {
             headless: options.headless || false,
@@ -162,8 +154,8 @@ class Browser extends EventEmitter {
             const metadata = await imageUtil.getMetadata(buff);
             const extname = path.extname(requestFname) || `.${metadata.format}`;
             const filename = `${pageIndex}_${requestIndex}${extname}`;
-            await utils.file.checkDirExists({dirname:SAVE_DIRECTORY});           
-            const tmpName = path.join(SAVE_DIRECTORY, filename);
+            await utils.file.checkDirExists({dirname:this.tempDir});           
+            const tmpName = path.join(this.tempDir, filename);
         
             if(!tmpName) {
                 console.log('filename make failed! skip...');
