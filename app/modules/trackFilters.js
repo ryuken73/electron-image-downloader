@@ -2,8 +2,6 @@ import {createAction, handleActions} from 'redux-actions';
 import utils from '../utils';
 import {optionProvider} from './navigator';
 
-
-
 // action types
 const SET_CONTENT_TYPE = 'trackFilters/SET_CONTENT_TYPE';
 const SET_CONTENT_SIZE_MIN = 'trackFilters/SET_CONTENT_SIZE_MIN';
@@ -19,7 +17,9 @@ export const setUrlPattern = createAction(SET_URL_PATTERN);
 // helper funciton
 
 const getOptionsFromLocalStorage = () => {
-    const contentTypes = optionProvider.get('contentTypes');
+    const contentTypes = Array.isArray(optionProvider.get('contentTypes')) ?
+                         optionProvider.get('contentTypes') :
+                         JSON.parse(optionProvider.get('contentTypes'));
     const contentSizeMin = optionProvider.get('contentSizeMin');
     const contentSizeMax = optionProvider.get('contentSizeMax');
     const urlPatterns = optionProvider.get('urlPatterns');
@@ -33,6 +33,7 @@ const initialState = getOptionsFromLocalStorage();
 export default handleActions({
     [SET_CONTENT_TYPE]: (state, action) => {
         const contentTypes = action.payload;
+        optionProvider.set('contentTypes', JSON.stringify(contentTypes));
         return {
             ...state,
             contentTypes
@@ -41,6 +42,7 @@ export default handleActions({
     [SET_CONTENT_SIZE_MIN]: (state, action) => {
         const contentSizeMin = Number(action.payload);
         if(isNaN(contentSizeMin)) return {...state};
+        optionProvider.set('contentSizeMin', contentSizeMin);
         return {
             ...state,
             contentSizeMin
@@ -49,6 +51,7 @@ export default handleActions({
     [SET_CONTENT_SIZE_MAX]: (state, action) => {
         const contentSizeMax = Number(action.payload);
         if(isNaN(contentSizeMax)) return {...state};
+        optionProvider.set('contentSizeMax', contentSizeMax);
         return {
             ...state,
             contentSizeMax
@@ -57,6 +60,7 @@ export default handleActions({
     [SET_URL_PATTERN]: (state, action) => {
         const urlPatterns = action.payload;
         console.log('***********',urlPatterns)
+        optionProvider.set('urlPatterns', urlPatterns);
         return {
             ...state,
             urlPatterns
