@@ -46,6 +46,9 @@ function ImageCardContainer(props) {
   const {delImage} = props.ImageActions;
   const onStart = () => {};
 
+  const RIGHT_KEY = 39;
+  const LEFT_KEY = 37;
+
   React.useEffect(() => {
     filterImageByType({pageIndex, fileTypes})
   },[fileTypes])
@@ -64,6 +67,12 @@ function ImageCardContainer(props) {
 
   const handleClose = () => {
     setImagePreviewOpen(false);
+  }
+
+  const handleKeyDown = (event) => {
+    const key = event.keyCode;
+    key === RIGHT_KEY && setNextImage();
+    key === LEFT_KEY && setPrevImage();
   }
 
   const setNextImageInPage = () => () => {
@@ -100,6 +109,7 @@ function ImageCardContainer(props) {
             <Dialog
               open={imagePreviewOpen}
               onClose={handleClose}
+              onKeyDown={handleKeyDown}
               maxWidth={false}
             >
               <DialogTitle>Image Preview</DialogTitle>
