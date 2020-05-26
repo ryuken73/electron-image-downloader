@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import BorderedList from '../../template/BorderedList';
-import {SmallMarginTextField}  from '../../template/smallComponents';
+import {SmallMarginTextField, SmallPaddingSelect}  from '../../template/smallComponents';
 import OptionSelectList from '../../template/OptionSelectList';
 import OptionTextInput from '../../template/OptionTextInput';
 
@@ -75,6 +75,7 @@ export default function DisplayFilters(props) {
                     {value:'gif', label:'gif'}
                 ]}
                 onChangeSelect={onChange('fileTypes')} 
+                smallComponent={true}
             ></OptionSelectList>
             <BorderedList 
                 title={optionFileSize.title} 

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Select from '@material-ui/core/Select';
 
 const SmallPaddingIconButton = styled(IconButton)`
     padding: 5px;
@@ -25,9 +26,15 @@ const SmallPaddingFormControlLabel = styled(FormControlLabel)`
         padding-right: 5px;
     }
 `
-
+const SmallPaddingSelect = styled(Select)`
+    .MuiSelect-root {
+        padding-top: ${props => props.pt || "5px"};
+        padding-bottom: ${props => props.pb || "5px"};
+    }
+`
 export {
     SmallPaddingIconButton,
     SmallMarginTextField,
-    SmallPaddingFormControlLabel
+    SmallPaddingFormControlLabel,
+    SmallPaddingSelect
 }

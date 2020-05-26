@@ -4,15 +4,19 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import BorderedList from './BorderedList';
+import {SmallPaddingSelect}  from './smallComponents';
+
 
 export default function OptionSelectList(props) {
     const {subtitle, minWidth, fileTypes, menuItems, onChangeSelect, titlewidth="20%"} = props;
+    const {smallComponent} = props;
+    const SelectComponent = smallComponent ? SmallPaddingSelect : Select;
     const optionSelect = {
         title: <Typography component={'span'} variant="body1">{subtitle}</Typography>,
         content: (
             <React.Fragment>
                 <FormControl style={{minWidth:minWidth}}>
-                    <Select
+                    <SelectComponent
                         labelId="select-label" 
                         variant="outlined"
                         margin="dense"
@@ -24,7 +28,7 @@ export default function OptionSelectList(props) {
                             const {value, label} = menuItem;
                             return <MenuItem key={index} value={value}>{label}</MenuItem>
                         })}
-                    </Select>
+                    </SelectComponent>
                 </FormControl>
             </React.Fragment>
         )

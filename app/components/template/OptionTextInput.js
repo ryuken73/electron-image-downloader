@@ -27,7 +27,7 @@ export default function OptionTextInput(props) {
             title={optionText.title} 
             titlewidth={titlewidth}
             content={optionText.content}
-            border={0}
+            border={1}
             {...props}
         ></BorderedList>
     )

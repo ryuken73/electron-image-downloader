@@ -43,8 +43,6 @@ export default function NavigatorPanel(props) {
             <SmallMarginTextField
                 variant="outlined"
                 margin="dense"
-                pt="10px"
-                pb="10px"
                 autoFocus
                 fullWidth
                 placeholder="https://naver.com"

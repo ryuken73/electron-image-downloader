@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import BorderedList from '../../template/BorderedList';
-import {SmallMarginTextField}  from '../../template/smallComponents';
+import {SmallMarginTextField, SmallPaddingSelect}  from '../../template/smallComponents';
 
 export default function FilterPanel(props) {
     const {contentTypes=['image', 'jpg']} = props;
@@ -39,19 +39,19 @@ export default function FilterPanel(props) {
             <React.Fragment>
                 <FormControl style={{minWidth:"300px"}}>
                     {/* <InputLabel id="content-type-label">Age</InputLabel> */}
-                    <Select
-                    labelId="content-type-select-label" 
-                    variant="outlined"
-                    margin="dense"
-                    value={contentTypes}
-                    onChange={onChange('contentTypes')}
-                    multiple
-                    disabled={disabled}
+                    <SmallPaddingSelect
+                        labelId="content-type-select-label" 
+                        variant="outlined"
+                        margin="dense"
+                        value={contentTypes}
+                        onChange={onChange('contentTypes')}
+                        multiple
+                        disabled={disabled}
                     >
                         <MenuItem value={"image"}>image/*</MenuItem>
                         <MenuItem value={"jpg"}>image/jpeg</MenuItem>
                         <MenuItem value={"png"}>image/png</MenuItem>
-                    </Select>
+                    </SmallPaddingSelect>
                 </FormControl>
             </React.Fragment>
         )
