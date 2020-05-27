@@ -65,49 +65,24 @@ const mkImageItem = (imageInfo) => {
     }
 }
 
-// let actionsDelayed = [];
 const pageImagesLocal = new Map();
 
 const setPageImagesLocal = ({pageIndex, images}) => {
     pageImagesLocal.set(pageIndex, [...images]);
 }
 
-const addDelayedTo = imagesDelayed => (pageIndex, newImage, addLastImages) => {
-    const delayedImages = imagesDelayed.get(pageIndex);
-    if(Array.isArray(delayedImages)){
-        const newDelayedImages = [...delayedImages, newImage];
-        imagesDelayed.set(pageIndex,  newDelayedImages);
-    } else {
-        imagesDelayed.set(pageIndex, [newImage]);
-    }
+const delPageImagesLocal = ({pageIndex, imageIndex}) => {
+    const pageImages = pageImagesLocal.get(pageIndex);
+    const newImageData = pageImages.filter(image => image.index !== imageIndex);
+    pageImagesLocal.set(pageIndex, newImageData);
 
-    // todo : need to process last remaining delayed image (not triggered before new request)
-    // but below process not last items only, so make duplicate item.. need to be fixed
-    // const timer = setTimeout(() => {
-    //     const imageData = imagesDelayed.get(pageIndex);
-    //     addLastImages(pageIndex, imageData);
-    // },3000)
 }
-
-const clearDelayedFrom = imagesDelayed => pageIndex => {
-    imagesDelayed.set(pageIndex, []);
-}
-
-const getDelayedFrom = imagesDelayed => pageIndex => {
-    return imagesDelayed.get(pageIndex);
-}
-
-// const addDelayed = addDelayedTo(imagesDelayed);
-// const clearDelayed = clearDelayedFrom(imagesDelayed);
-// const getDelayed = getDelayedFrom(imagesDelayed);
 
 const addImageDataDispatch = (action, dispatch) => {
     dispatch(action);
 }
 
 const throttledDispatch = utils.fp.throttleButLastDebounce(1000, addImageDataDispatch);
-// const throttledDispatch = utils.fp.throttle(1000, addImageDataDispatch);
-// const debouncedDispatch = utils.fp.debounce(1000, addImageDataDispatch);
 
 export const addImageData = (imageInfo) => async (dispatch, getState) => {
     console.log(`#### in addImageData:`, imageInfo)
@@ -123,49 +98,6 @@ export const addImageData = (imageInfo) => async (dispatch, getState) => {
 
     setPageImagesLocal({pageIndex, images});
     throttledDispatch(setPageImages({pageIndex, images}), dispatch);
-    //dispatch(setPageImages({pageIndex, images}));
-    // dispatch(setPageImages({pageIndex, images}));
-
-    // const imageDataFromState = state.imageList.pageImages.get(pageIndex) || [];
-    // const imageDataFromDelayed = getDelayed(pageIndex) || [];
-    // const newImage = mkImageItem(imageInfo);
-    // const images = [
-    //     ...imageDataFromState,
-    //     ...imageDataFromDelayed,
-    //     newImage
-    // ]
-
-    // const currentAction = setPageImages({pageIndex, images});
-    // const skipped = throttledDispatch(currentAction, dispatch);
-
-    // const addLastImagesToDispatch = dispatch => (pageIndex, imageData) => {
-    //     dispatch(addLastImageData(pageIndex, imageData));
-    // }
-    // const addLastImages = addLastImagesToDispatch(dispatch);
-
-    // if(skipped === true){
-    //     console.log('delayed, ', imagesDelayed);
-    //     addDelayed(pageIndex, newImage, addLastImages);
-    // } else {
-    //     console.log('timer settled!');
-    //     clearDelayed(pageIndex);
-    // }
-    // dispatch(setPageImages({pageIndex, images}))
-    // const throttledDispatch = utils.fp.throttle(1000, dispatch);
-    // throttledDispatch(actionsToDispatch);
-}
-
-const addLastImageData = (pageIndex, imageData) => (dispatch, getState) => {
-    console.log(`#### in addLastImageData:`, imageData)
-    const state = getState();
-    // const {pageIndex} = imageInfo;
-    const imageDataFromState = state.imageList.pageImages.get(pageIndex) || [];
-    const imageDataFromDelayed = imageData || [];
-    const images = [
-        ...imageDataFromState,
-        ...imageDataFromDelayed,
-    ]
-    dispatch(setPageImages({pageIndex, images}));
 }
 
 export const changePageTitle = ({pageIndex, title}) => (dispatch, getState) => {
@@ -428,6 +360,8 @@ export default handleActions({
     [DEL_IMAGE_FORM_IMAGELIST]: (state, action) => {
         console.log('%%%%%%%%%%%%%%%%', action.payload);
         const {pageIndex, imageIndex} = action.payload;
+        delPageImagesLocal({pageIndex, imageIndex});
+
         const imageData = [...state.pageImages.get(pageIndex)];
         const newImageData = imageData.filter(image => image.index !== imageIndex);
 
