@@ -99,16 +99,43 @@ const file = {
 
 const fp = {
     throttle(duration, fn){
-        console.log(duration, fn)
         let timer = null;
         return (...args) => {
-            if(!timer){
+            if(timer === null){
                 timer = setTimeout(() => {
-                    console.log(`throttled:`, args)
                     fn(...args);
                     timer = null;
                 }, duration)
             }
+        }
+    },
+    debounce(duration, fn){
+        let timer = null;
+        return (...args) => {
+            if(timer) clearTimeout(timer);
+            timer = setTimeout(() => {
+                fn(...args);
+                timer = null;
+            }, duration)
+        }
+    },
+    throttleButLastDebounce(throttleDuration, fn){
+        let throttleTimer = null;
+        let debounceTimer = null;
+        return (...args) => {
+            if(debounceTimer) clearTimeout(debounceTimer);
+            if(throttleTimer === null){
+                throttleTimer = setTimeout(() => {
+                    fn(...args);
+                    throttleTimer = null;
+                }, throttleDuration)
+            } 
+            debounceTimer = setTimeout(() => {
+                fn(...args);
+                debounceTimer = null;
+            }, throttleDuration + 100)
+
+
         }
     },
     times(fn, {count=10, sleep=0}){
