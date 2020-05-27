@@ -62,8 +62,10 @@ export default function DisplayFilters(props) {
     }
     
     return (
-        <Box display="flex" flexDirection="column" width={1}> 
-            <Typography variant="body1">Display Filter</Typography>
+        <Box display="flex" flexDirection="column" width={1}>
+            <Box m="5px">
+                <Typography variant="body1">Display Filter</Typography>
+            </Box> 
             <OptionSelectList 
                 subtitle='File-Type'
                 minWidth='300px'

@@ -47,7 +47,7 @@ export default function SavePanel(props) {
     return (
         <SectionWithFullHeightFlex className="SectionWithFullHeightFlex ImageBox" flexGrow="0" width="1" >
             <BorderedBox display="flex" alignContent="center" flexGrow="1">
-                <Box display="flex" flexDirection="row" width="1" textAlign={"center"}>
+                <Box bgcolor="midnightblue" display="flex" flexDirection="row" width="1" textAlign={"center"}>
                     <Box display="flex" width="0.3" justifyContent="space-around" alignItems="baseline" flexShrink="0" flexDirection="row">
                         <Box width="150px">
                             <Typography variant={"body1"}>Save Directory</Typography>

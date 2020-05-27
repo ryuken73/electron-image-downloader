@@ -8,6 +8,8 @@ import {SmallMarginTextField}  from '../../template/smallComponents';
 import BorderedList from '../../template/BorderedList';
 import OptionRadioButton from '../../template/OptionRadioButton';
 import {SmallPaddingFormControlLabel} from '../../template/smallComponents';
+import deepPurple from '@material-ui/core/colors/deepPurple';
+
 
 export default function BrowserOptions(props) {
     console.log(props)
@@ -56,7 +58,9 @@ export default function BrowserOptions(props) {
 
     return (
         <Box display="flex" flexDirection="column" width={1}> 
-            <Typography variant="body1">Browser Options</Typography>
+            <Box m="5px">
+                <Typography variant="body1">Browser Options</Typography>
+            </Box>
             <BorderedList 
                 title={optionViewPort.title} 
                 content={optionViewPort.content} 

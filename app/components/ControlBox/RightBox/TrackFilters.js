@@ -103,8 +103,10 @@ export default function FilterPanel(props) {
 
 
     return (
-        <Box display="flex" flexDirection="column" width={1}> 
-            <Typography variant="body1">Tracking Filter</Typography>
+        <Box display="flex" flexDirection="column" width={1}>
+            <Box m="5px">
+                <Typography variant="body1">Tracking Filter</Typography>
+            </Box> 
             <BorderedList 
                 title={optionContentType.title} 
                 content={optionContentType.content} 

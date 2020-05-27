@@ -3,7 +3,7 @@ import BorderdBox from './BorderedBox';
 
 export default function BorderedList(props) {
     const {title, titlewidth="20%", content} = props;
-    const {alignItems="center", bgcolor, border=1} = props;
+    const {alignItems="center", bgcolor="midnightblue", border=1} = props;
 
     return (
         <BorderdBox display="flex" alignItems={alignItems} bgcolor={bgcolor} border={border}>

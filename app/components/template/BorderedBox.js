@@ -1,8 +1,10 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
+import deepPurple from '@material-ui/core/colors/deepPurple';
+import brown from '@material-ui/core/colors/brown';
 
 const defaultProps = {
-    bgcolor: 'lightgrey',
+    bgcolor: deepPurple[900],
     borderColor: 'black',
     m: "3px",
     border: 1,

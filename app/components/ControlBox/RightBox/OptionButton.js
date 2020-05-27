@@ -21,6 +21,6 @@ export default function OptionButton(props) {
         setDialogOpen(true);
     }
     return (
-        <Button fullWidth onClick={onClickOptionsBtn}>Options</Button> 
+        <Button color="primary" variant={"contained"} fullWidth onClick={onClickOptionsBtn}>Options</Button> 
     )
 }
