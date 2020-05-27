@@ -4,9 +4,13 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
 
 const SmallPaddingIconButton = styled(IconButton)`
     padding: 5px;
+`
+const SmallButton  = styled(Button)`
+    margin: 5px
 `
 
 const SmallMarginTextField = styled(TextField)`
@@ -36,5 +40,6 @@ export {
     SmallPaddingIconButton,
     SmallMarginTextField,
     SmallPaddingFormControlLabel,
-    SmallPaddingSelect
+    SmallPaddingSelect,
+    SmallButton
 }

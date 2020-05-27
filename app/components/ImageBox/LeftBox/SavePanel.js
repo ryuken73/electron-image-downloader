@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import SectionWithFullHeightFlex from '../../template/SectionWithFullHeightFlex';
+import {SmallButton, SmallMarginTextField} from '../../template/smallComponents'
 
 const { dialog } = require('electron').remote;
 const path = require('path');
@@ -44,30 +45,28 @@ export default function SavePanel(props) {
     }
 
     return (
-        <SectionWithFullHeightFlex className="SectionWithFullHeightFlex ImageBox" flexGrow="0" width="20px" >
+        <SectionWithFullHeightFlex className="SectionWithFullHeightFlex ImageBox" flexGrow="0" width="1" >
             <BorderedBox display="flex" alignContent="center" flexGrow="1">
-                <Box display="flex" flexDirection="column" width="1" textAlign={"center"}>
-                    <Box mt="20px" display="flex" height="120px" justifyContent="space-around" flexShrink="0" flexDirection="column" mx="10px" mb="10px">
-                        <Typography variant={"body1"}>Save Directory</Typography>
-                            <TextField
-                                variant="outlined"
-                                margin="dense"
-                                value={pageSaveDirectory}
-                                onChange={onSaveDirectoryChange}
-                            ></TextField>
-                        <Button variant={"contained"} onClick={onClickSelectSaveDirectory}>Choose</Button>
-                    </Box>
-                    <Box mt="20px" display="flex" height="80px" justifyContent="space-around" flexShrink="0" flexDirection="column" mx="10px" mb="10px">
-                        <Typography variant={"body1"}>File Name Prefix</Typography>
-                        <TextField 
+                <Box display="flex" flexDirection="row" width="1" textAlign={"center"}>
+                    <Box display="flex" width="0.3" justifyContent="space-around" alignItems="baseline" flexShrink="0" flexDirection="row">
+                        <Box width="150px">
+                            <Typography variant={"body1"}>Save Directory</Typography>
+                        </Box>
+                        <SmallMarginTextField
                             variant="outlined"
                             margin="dense"
-                        ></TextField>
+                            value={pageSaveDirectory}
+                            onChange={onSaveDirectoryChange}
+                            fullWidth
+                        ></SmallMarginTextField>
+                        <Box width="150px">
+                            <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSelectSaveDirectory}>Choose</SmallButton>
+                        </Box>
                     </Box>
-                    <Box mt="auto" display="flex" height="150px" justifyContent="space-around" flexShrink="0" flexDirection="column" mx="10px" mb="30px">
-                        <Button variant={"contained"} onClick={onClickSetAllChecked}>Select All</Button>
-                        <Button variant={"contained"} onClick={onClickSavelAllChecked}>Save Selected</Button>
-                        <Button variant={"contained"} onClick={deleteFilesSelected}>Delete Selected</Button>
+                    <Box display="flex" ml="auto" justifyContent="space-around" alignItems="center" flexShrink="0" flexDirection="row" >
+                        <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSetAllChecked}>Select All</SmallButton>
+                        <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSavelAllChecked}>Save Selected</SmallButton>
+                        <SmallButton size="small" color="primary" variant={"contained"} onClick={deleteFilesSelected}>Delete Selected</SmallButton>
                     </Box>            
                 </Box>
             </BorderedBox>

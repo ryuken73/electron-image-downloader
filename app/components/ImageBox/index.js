@@ -8,7 +8,7 @@ import SectionWithFullHeight from '../template/SectionWithFullHeight';
 export default class ImageBox extends Component {
     render() {
         return (
-            <Box className="ImageBox" display="flex" flexDirection="row" flexGrow="1">
+            <Box className="ImageBox" display="flex" flexDirection="column" flexGrow="1">
                 <SavePanelContainer></SavePanelContainer>
                 <ImageTabsContainer></ImageTabsContainer>
             </Box>
