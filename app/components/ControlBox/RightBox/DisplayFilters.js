@@ -60,6 +60,20 @@ export default function DisplayFilters(props) {
             </React.Fragment>
         )
     }
+
+    const optionTextMatching = {
+        title: <Typography variant="body1">Name-Pattern</Typography>,
+        content: (
+            <Box width="120px">
+                <SmallMarginTextField 
+                    variant="outlined"
+                    margin="dense"
+                    value={filePatterns}
+                    onChange={onChange('filePatterns')}
+                ></SmallMarginTextField> 
+            </Box>
+        ) 
+    }
     
     return (
         <Box display="flex" flexDirection="column" width={1}>
@@ -84,12 +98,16 @@ export default function DisplayFilters(props) {
                 content={optionFileSize.content} 
                 mb={0}
             ></BorderedList>
-            <OptionTextInput 
+            <BorderedList 
+                title={optionTextMatching.title} 
+                content={optionTextMatching.content}
+            ></BorderedList>
+            {/* <OptionTextInput 
                 subtitle='Name-Pattern'
                 width='120px'
                 value={filePatterns}
                 onChange={onChange('filePatterns')}            
-            ></OptionTextInput>
+            ></OptionTextInput> */}
         </Box>
     )
 }
