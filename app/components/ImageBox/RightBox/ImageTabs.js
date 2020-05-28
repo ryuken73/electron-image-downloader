@@ -42,7 +42,7 @@ function ImageTabs(props) {
     }, [setCurrentTab]);
 
     return (
-        <BorderedBox  alignContent="center" alignItems="flex-start" flexGrow="1" minWidth="auto" flexBasis="0" overflow="auto">
+        <BorderedBox  alignContent="center"  bgcolor="black" alignItems="flex-start" flexGrow="1" minWidth="auto" flexBasis="0" overflow="auto">
             <BorderedBox display='flex' alignContent="center" alignItems="flex-start" flexGrow="1" border="1" minWidth="auto" flexBasis="0" overflow="hidden">
                 <StyledAppBar position="static" color="primary">
                     <Tabs

@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import SectionWithFullHeightFlex from '../../template/SectionWithFullHeightFlex';
 import {SmallButton, SmallMarginTextField} from '../../template/smallComponents'
 
-const { dialog } = require('electron').remote;
+const { dialog, shell } = require('electron').remote;
 const path = require('path');
 
 export default function SavePanel(props) {
@@ -36,6 +36,9 @@ export default function SavePanel(props) {
         })
     };
     
+    const onClickLocateDirectory = () => {
+        shell.openItem(pageSaveDirectory);
+    }
     const onClickSetAllChecked = (event) => {
         setAllImageCheck(true);
     }
@@ -57,10 +60,15 @@ export default function SavePanel(props) {
                             margin="dense"
                             value={pageSaveDirectory}
                             onChange={onSaveDirectoryChange}
+                            pt="8px"
+                            pb="8px"
                             fullWidth
                         ></SmallMarginTextField>
                         <Box width="150px">
                             <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSelectSaveDirectory}>Choose</SmallButton>
+                        </Box>
+                        <Box width="150px">
+                            <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickLocateDirectory}>Locate</SmallButton>
                         </Box>
                     </Box>
                     <Box display="flex" ml="auto" justifyContent="space-around" alignItems="center" flexShrink="0" flexDirection="row" >

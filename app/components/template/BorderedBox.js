@@ -15,11 +15,15 @@ const defaultProps = {
   
 
 export default function BorderedBox(props) {
+    const combinedProps = {
+        ...defaultProps,
+        ...props
+    }
+    console.log(combinedProps);
     return (
         <Box
             className="BorderedBox"
-            {...defaultProps}
-            {...props}
+            {...combinedProps}
         >
         </Box>
     )

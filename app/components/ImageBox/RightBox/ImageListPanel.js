@@ -89,7 +89,7 @@ function ImageCardContainer(props) {
 
   return (
     // <SectionWithFullHeightFlex className="SectionWithFullHeightFlexFlex ImageListPanel">
-    <BorderedBox display={hidden ? 'none':'flex'} alignContent="center" alignItems="flex-start" flexGrow="1" border="0" minWidth="auto" flexBasis="0" overflow="auto">
+    <BorderedBox display={hidden ? 'none':'flex'} alignContent="center" alignItems="flex-start" flexGrow="1" border="0" minWidth="auto" flexBasis="0" overflow="auto" bgcolor="black">
       <Box display="flex" flexDirection="row" flexWrap="wrap" width={1} overflow="auto">
         {imageData.map(image => (
           <ImageCard 

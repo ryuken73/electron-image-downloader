@@ -64,7 +64,7 @@ export default function BrowserOptions(props) {
             <BorderedList 
                 title={optionViewPort.title} 
                 content={optionViewPort.content} 
-                mb={0}
+                mb={"0px"}                
             ></BorderedList>
             <OptionRadioButton
                 subtitle="Tracking New Tab"

@@ -6,7 +6,7 @@ export default function BorderedList(props) {
     const {alignItems="center", bgcolor="midnightblue", border=1} = props;
 
     return (
-        <BorderdBox display="flex" alignItems={alignItems} bgcolor={bgcolor} border={border}>
+        <BorderdBox display="flex" alignItems={alignItems} bgcolor={bgcolor} border={border} {...props}>
             <BorderdBox border={0} width={titlewidth} bgcolor={bgcolor}>
                 {title}
             </BorderdBox>
