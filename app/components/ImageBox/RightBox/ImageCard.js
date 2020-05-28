@@ -62,7 +62,7 @@ function ImageCard(props) {
         <Paper className={container} elevation={3} > 
             <Box bgcolor="aliceblue" >
                 <Checkbox className={smallCheckBox} checked={checked} onChange={onClickCheckBox}></Checkbox>
-                <Link className={imageName} variant="caption" onClick={onClickImage}>{imageFname} [{sizeKB}KB]</Link>
+                <Link href="#" className={imageName} variant="caption" onClick={onClickImage}>{imageFname} [{sizeKB}KB]</Link>
             </Box>   
             {imageShow && <Box className="handle" display="flex" flexDirection="row" width="1">
                 <Box bgcolor="black" display="flex" justifyContent="center" flex="1">
