@@ -118,7 +118,9 @@ const getCurrentImageIndex = state => {
     const pageIndex = state.imageList.currentTab;
     const imageData = state.imageList.pageImages.get(pageIndex) || [];
     const currentSrc = state.imageList.imagePreviewSrc;
-    return imageData.find(image => image.tmpSrc === currentSrc).index;
+    const currentImage = imageData.find(image => image.tmpSrc === currentSrc);
+    const currentImageIndex = currentImage ? currentImage.index : null;
+    return currentImageIndex;
 }
 
 export const setNextImage = () => (dispatch, getState) => {
@@ -126,6 +128,10 @@ export const setNextImage = () => (dispatch, getState) => {
     console.log(`### in setNextImage:`, state.imageList);
     const currentImageDataSorted = getCurrentImageData(state, (a,b) => a.index - b.index);
     const currentImageIndex = getCurrentImageIndex(state);
+    if(currentImageIndex === null){
+        dispatch(setImagePreviewOpen(false));
+        return
+    }
     const nextImage = currentImageDataSorted.find(image => image.index > currentImageIndex) || firstElement(currentImageDataSorted);
     // dispatch(setImagePreviewSrc(nextImage.tmpSrc));
     dispatch(setImagePreviewSrc({imageSrc:nextImage.tmpSrc, index:nextImage.index, imageFname: nextImage.imageFname}));
