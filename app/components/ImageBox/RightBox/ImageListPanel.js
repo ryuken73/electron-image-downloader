@@ -38,6 +38,7 @@ function ImageCardContainer(props) {
   console.log('&&&&&&&&&&&&&&&&&&&&&', hidden, imageData)
   const {fileTypes, fileSizeMin, fileSizeMax, filePatterns} = props;
   const {imagePreviewOpen, imagePreviewSrc} = props;
+  const {imageShow} = props;
   const {setImageToggleChecked} = props.ImageActions;
   const {filterImageByType, filterImageByMinSize} = props.ImageActions;
   const {filterImageByMaxSize, filterImageByName} = props.ImageActions;
@@ -48,6 +49,7 @@ function ImageCardContainer(props) {
 
   const RIGHT_KEY = 39;
   const LEFT_KEY = 37;
+  const ESCAPE_KEY = 27;
 
   React.useEffect(() => {
     filterImageByType({pageIndex, fileTypes})
@@ -71,8 +73,10 @@ function ImageCardContainer(props) {
 
   const handleKeyDown = (event) => {
     const key = event.keyCode;
+    console.log(key)
     key === RIGHT_KEY && setNextImage();
     key === LEFT_KEY && setPrevImage();
+    key === ESCAPE_KEY && handleClose();
   }
 
   const setNextImageInPage = () => () => {
@@ -102,6 +106,7 @@ function ImageCardContainer(props) {
             setImageToggleChecked={setImageToggleChecked}
             setImagePreviewOpen={setImagePreviewOpen} 
             setImagePreviewSrc={setImagePreviewSrc}
+            imageShow={imageShow}
           ></ImageCard>
         ))}
       </Box>
@@ -110,6 +115,7 @@ function ImageCardContainer(props) {
               open={imagePreviewOpen}
               onClose={handleClose}
               onKeyDown={handleKeyDown}
+              onEscapeKeyDown={handleClose}
               maxWidth={false}
             >
               <DialogTitle>Image Preview</DialogTitle>

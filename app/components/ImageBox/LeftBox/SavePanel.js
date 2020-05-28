@@ -4,6 +4,7 @@ import BorderedBox from '../../template/BorderedBox';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
 import SectionWithFullHeightFlex from '../../template/SectionWithFullHeightFlex';
 import {SmallButton, SmallMarginTextField} from '../../template/smallComponents'
 
@@ -14,7 +15,8 @@ export default function SavePanel(props) {
     console.log('######################## re-render SavePenel', props)
     const {deleteAfterSave, saveDirectory, pageSaveDirectory, currentTab, pageTitles} = props;
     const {setPageSaveDirectory, deleteFilesSelected, saveFilesSelected} = props.SavePanelAction;
-    const {setAllImageCheck} = props.ImageListAction;
+    const {setAllImageCheck, setImageShowPreview} = props.ImageListAction;
+    const {imageShow} = props;
     console.log(saveDirectory, pageSaveDirectory);
 
     React.useEffect(() => {
@@ -47,12 +49,16 @@ export default function SavePanel(props) {
         saveFilesSelected();
     }
 
+    const onClickCheckBox = event => {
+        setImageShowPreview()
+    }
+
     return (
         <SectionWithFullHeightFlex className="SectionWithFullHeightFlex ImageBox" flexGrow="0" width="1" >
             <BorderedBox display="flex" alignContent="center" flexGrow="1">
                 <Box bgcolor="midnightblue" display="flex" flexDirection="row" width="1" textAlign={"center"}>
                     <Box display="flex" width="0.3" justifyContent="space-around" alignItems="baseline" flexShrink="0" flexDirection="row">
-                        <Box width="150px">
+                        <Box minWidth="100px">
                             <Typography variant={"body1"}>Save Directory</Typography>
                         </Box>
                         <SmallMarginTextField
@@ -70,6 +76,10 @@ export default function SavePanel(props) {
                         <Box width="150px">
                             <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickLocateDirectory}>Locate</SmallButton>
                         </Box>
+                    </Box>
+                    <Box display="flex" justifyContent="center" alignItems="center" width="1">
+                        <Checkbox checked={imageShow} onChange={onClickCheckBox}>Image Show</Checkbox>
+                        <Typography variant="caption">Image Show</Typography>
                     </Box>
                     <Box display="flex" ml="auto" justifyContent="space-around" alignItems="center" flexShrink="0" flexDirection="row" >
                         <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSetAllChecked}>Select All</SmallButton>

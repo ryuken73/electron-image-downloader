@@ -12,7 +12,8 @@ function mapStateToProps(state) {
     pageSaveDirectory: state.savePanel.pageSaveDirectory,
     currentTab: state.imageList.currentTab,
     pageTitles: state.imageList.pageTitles,
-    deleteAfterSave: state.optionDialog.deleteAfterSave
+    deleteAfterSave: state.optionDialog.deleteAfterSave,
+    imageShow: state.imageList.imageShow
   }
 }
 

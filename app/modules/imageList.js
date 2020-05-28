@@ -19,6 +19,7 @@ const SET_IMAGE_CHECKBOX = 'imageList/SET_IMAGE_CHECKBOX';
 const SET_IMAGE_SAVED = 'imageList/SET_IMAGE_SAVED';
 const SET_ALL_IMAGE_CHECK = 'imageList/SET_ALL_IMAGE_CHECK';
 const DEL_IMAGE_FORM_IMAGELIST = 'imageList/DEL_IMAGE_FORM_IMAGELIST';
+const SET_IMAGE_SHOW_PREVIEW = 'imageList/SET_IMAGE_SHOW_PREVIEW';
 
 // action creator
 export const addPage = createAction(ADD_PAGE);
@@ -36,6 +37,7 @@ export const setImageCheckbox = createAction(SET_IMAGE_CHECKBOX);
 export const setImageSaved = createAction(SET_IMAGE_SAVED);
 export const setAllImageCheck = createAction(SET_ALL_IMAGE_CHECK);
 export const delImageFromImagelist = createAction(DEL_IMAGE_FORM_IMAGELIST);
+export const setImageShowPreview = createAction(SET_IMAGE_SHOW_PREVIEW);
 
 const imageDefault = {
     index: null,
@@ -161,7 +163,8 @@ export const delImage = (imageIndex) => async (dispatch, getState) => {
 const initialState = {
     // currentTab: 0,
     pageImages: new Map(),
-    pageTitles: new Map()
+    pageTitles: new Map(),
+    imageShow: true
 }
 
 // reducer
@@ -370,6 +373,15 @@ export default handleActions({
         return {
             ...state,
             pageImages
+        }
+    },
+    [SET_IMAGE_SHOW_PREVIEW]: (state, action) => {
+        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        const newImageShow = !state.imageShow;
+
+        return {
+            ...state,
+            imageShow: newImageShow
         }
     }
 }, initialState);

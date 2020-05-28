@@ -19,6 +19,7 @@ function mapStateToProps(state, ownProps) {
     filePatterns: state.displayFilters.filePatterns,
     imagePreviewOpen: state.imageList.imagePreviewOpen,
     imagePreviewSrc: state.imageList.imagePreviewSrc,
+    imageShow: state.imageList.imageShow
   }
 }
 

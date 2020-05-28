@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box';
 import Checkbox  from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import {makeStyles} from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -42,6 +43,7 @@ function ImageCard(props) {
     const {setImageToggleChecked, onClickSave, onClickRemove} = props;
     const {setImagePreviewOpen, setImagePreviewSrc} = props;
     const {delImage} = props;
+    const {imageShow} = props;
 
     const onClickImage = React.useCallback(() => {
         setImagePreviewOpen(true);
@@ -58,21 +60,21 @@ function ImageCard(props) {
 
     return (
         <Paper className={container} elevation={3} > 
-            <Box bgcolor="aliceblue">
+            <Box bgcolor="aliceblue" >
                 <Checkbox className={smallCheckBox} checked={checked} onChange={onClickCheckBox}></Checkbox>
-                <Typography className={imageName} variant="caption">{imageFname} [{sizeKB}KB]</Typography>
+                <Link className={imageName} variant="caption" onClick={onClickImage}>{imageFname} [{sizeKB}KB]</Link>
             </Box>   
-            <Box className="handle" display="flex" flexDirection="row" width="1">
+            {imageShow && <Box className="handle" display="flex" flexDirection="row" width="1">
                 <Box bgcolor="black" display="flex" justifyContent="center" flex="1">
                     <Tooltip title={reqUrl}>
                         <img className={image} alt="poster" src={imageSrc} style={{height:'80px'}} onClick={onClickImage}></img>
                     </Tooltip>
                 </Box>
-            </Box>
-            <Box display="flex" flexDirection="row" justifyContent="center" width={1}>
+            </Box>}
+            {imageShow && <Box display="flex" flexDirection="row" justifyContent="center" width={1}>
                 <Button className={smallBtn} onClick={onClickSave} variant="contained">Save</Button>  
                 <Button className={smallBtn} onClick={onClickDeleteBtn} variant="contained" >Remove</Button>  
-            </Box>
+            </Box>}
         </Paper>
     ) 
 }
