@@ -38,7 +38,7 @@ function ImageCardContainer(props) {
   console.log('&&&&&&&&&&&&&&&&&&&&&', hidden, imageData)
   const {fileTypes, fileSizeMin, fileSizeMax, filePatterns} = props;
   const {imagePreviewOpen, imagePreviewSrc} = props;
-  const {imageShow} = props;
+  const {imageShow, imagePreviewSrcIndex, imagePreviewSrcName} = props;
   const {setImageToggleChecked} = props.ImageActions;
   const {filterImageByType, filterImageByMinSize} = props.ImageActions;
   const {filterImageByMaxSize, filterImageByName} = props.ImageActions;
@@ -50,6 +50,7 @@ function ImageCardContainer(props) {
   const RIGHT_KEY = 39;
   const LEFT_KEY = 37;
   const ESCAPE_KEY = 27;
+  const DELETE_KEY = 46;
 
   React.useEffect(() => {
     filterImageByType({pageIndex, fileTypes})
@@ -77,9 +78,15 @@ function ImageCardContainer(props) {
     key === RIGHT_KEY && setNextImage();
     key === LEFT_KEY && setPrevImage();
     key === ESCAPE_KEY && handleClose();
+    key === DELETE_KEY && delCurrentImage();
   }
 
   const setNextImageInPage = () => () => {
+    setNextImage();
+  }
+
+  const delCurrentImage = () => {
+    delImage(imagePreviewSrcIndex);
     setNextImage();
   }
 
@@ -118,7 +125,7 @@ function ImageCardContainer(props) {
               onEscapeKeyDown={handleClose}
               maxWidth={false}
             >
-              <DialogTitle>Image Preview</DialogTitle>
+              <DialogTitle>Image Preview [{imagePreviewSrcName}]</DialogTitle>
               <DialogContent>
                 <DialogContentText
                     id="scroll-dialog-description"
@@ -135,6 +142,11 @@ function ImageCardContainer(props) {
                     </Button>
                     <Button onClick={setNextImage} color="primary">
                         Next
+                    </Button>
+                  </Box>
+                  <Box mx="auto">
+                    <Button onClick={delCurrentImage} color="secondary">
+                        Delete
                     </Button>
                   </Box>
                   <Button style={{marginLeft:'auto'}} onClick={handleClose} color="primary">

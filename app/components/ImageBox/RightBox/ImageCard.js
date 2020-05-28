@@ -47,7 +47,7 @@ function ImageCard(props) {
 
     const onClickImage = React.useCallback(() => {
         setImagePreviewOpen(true);
-        setImagePreviewSrc(imageSrc);
+        setImagePreviewSrc({imageSrc, index, imageFname});
     },[imageSrc])
 
     const onClickCheckBox = React.useCallback(() => {

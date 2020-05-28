@@ -47,7 +47,7 @@ const imageDefault = {
     dragStart: false,
     checked: false,
     show: true,
-    imagePreviewOpen:false,
+    // imagePreviewOpen:false,
     imagePreviewSrc:'',
     saved: false
 
@@ -127,7 +127,8 @@ export const setNextImage = () => (dispatch, getState) => {
     const currentImageDataSorted = getCurrentImageData(state, (a,b) => a.index - b.index);
     const currentImageIndex = getCurrentImageIndex(state);
     const nextImage = currentImageDataSorted.find(image => image.index > currentImageIndex) || firstElement(currentImageDataSorted);
-    dispatch(setImagePreviewSrc(nextImage.tmpSrc));
+    // dispatch(setImagePreviewSrc(nextImage.tmpSrc));
+    dispatch(setImagePreviewSrc({imageSrc:nextImage.tmpSrc, index:nextImage.index, imageFname: nextImage.imageFname}));
 }
 
 export const setPrevImage = () => (dispatch, getState) => {
@@ -137,7 +138,8 @@ export const setPrevImage = () => (dispatch, getState) => {
     const currentImageIndex = getCurrentImageIndex(state);
     const prevImage = currentImageDataSorted.find(image => image.index < currentImageIndex) || firstElement(currentImageDataSorted);
     console.log(prevImage)
-    dispatch(setImagePreviewSrc(prevImage.tmpSrc));
+    // dispatch(setImagePreviewSrc(prevImage.tmpSrc));
+    dispatch(setImagePreviewSrc({imageSrc:prevImage.tmpSrc, index:prevImage.index, imageFname: prevImage.imageFname}));
 }
 
 export const setImageToggleChecked = (imageIndex) => (dispatch, getState) => {
@@ -164,6 +166,7 @@ const initialState = {
     // currentTab: 0,
     pageImages: new Map(),
     pageTitles: new Map(),
+    imagePreviewOpen:false,
     imageShow: true
 }
 
@@ -306,11 +309,18 @@ export default handleActions({
     },
     [SET_IMAGE_PREVIEW_SRC]: (state, action) => {
         console.log('%%%%%%%%%%%%%%%%', action.payload);
-        const imagePreviewSrc = action.payload;
+        const {imageSrc, index, imageFname} = action.payload;
         return {
             ...state,
-            imagePreviewSrc
+            imagePreviewSrc: imageSrc,
+            imagePreviewSrcIndex: index,
+            imagePreviewSrcName: imageFname
         }
+        // const imagePreviewSrc = action.payload;
+        // return {
+        //     ...state,
+        //     imagePreviewSrc
+        // }
     },    
     [SET_IMAGE_CHECKBOX]: (state, action) => {
         console.log('%%%%%%%%%%%%%%%%', action.payload);
