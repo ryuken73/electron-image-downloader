@@ -81,25 +81,12 @@ function ImageCardContainer(props) {
     key === DELETE_KEY && delCurrentImage();
   }
 
-  const setNextImageInPage = () => () => {
-    setNextImage();
-  }
-
   const delCurrentImage = () => {
     delImage(imagePreviewSrcIndex);
     setNextImage();
   }
 
-  const toggleCheckImage = (pageIndex) => {
-    // return imageIndex => {
-    //   console.log(pageIndex, imageIndex);
-    //   setImageToggleChecked({pageIndex, imageIndex});
-    // }
-    // return ()  => {}
-  }
-
   return (
-    // <SectionWithFullHeightFlex className="SectionWithFullHeightFlexFlex ImageListPanel">
     <BorderedBox display={hidden ? 'none':'flex'} alignContent="center" alignItems="flex-start" flexGrow="1" border="0" minWidth="auto" flexBasis="0" overflow="auto" bgcolor="black">
       <Box display="flex" flexDirection="row" flexWrap="wrap" width={1} overflow="auto">
         {imageData.map(image => (
@@ -108,8 +95,6 @@ function ImageCardContainer(props) {
             order={image.index} 
             image={image} 
             delImage={delImage}
-            // toggleCheckImage={toggleCheckImage(pageIndex)} 
-            // toggleCheckImage={toggleCheckImage} 
             setImageToggleChecked={setImageToggleChecked}
             setImagePreviewOpen={setImagePreviewOpen} 
             setImagePreviewSrc={setImagePreviewSrc}
@@ -117,47 +102,47 @@ function ImageCardContainer(props) {
           ></ImageCard>
         ))}
       </Box>
-      {/* </StyledReactSortable> */}
-            <Dialog
-              open={imagePreviewOpen}
-              onClose={handleClose}
-              onKeyDown={handleKeyDown}
-              onEscapeKeyDown={handleClose}
-              maxWidth={false}
-            >
-              <DialogTitle>Image Preview [{imagePreviewSrcName}]</DialogTitle>
-              <DialogContent>
-                <DialogContentText
-                    id="scroll-dialog-description"
-                    tabIndex={-1}
-                >
-                    <img src={imagePreviewSrc} style={{maxHeight:'700px'}}></img>
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Box display="flex" justifyContent="center" width="1">
-                  <Box>
-                    <Button onClick={setPrevImage} color="primary">
-                        Prev
-                    </Button>
-                    <Button onClick={setNextImage} color="primary">
-                        Next
-                    </Button>
-                  </Box>
-                  <Box mx="auto">
-                    <Button onClick={delCurrentImage} color="secondary">
-                        Delete
-                    </Button>
-                  </Box>
-                  <Button style={{marginLeft:'auto'}} onClick={handleClose} color="primary">
-                      Close
-                  </Button>
-                </Box>
+      <Dialog
+        open={imagePreviewOpen}
+        onClose={handleClose}
+        onKeyDown={handleKeyDown}
+        onEscapeKeyDown={handleClose}
+        maxWidth={false}
+      >
+        <DialogTitle>Image Preview [{imagePreviewSrcName}]</DialogTitle>
+        <DialogContent>
+          <DialogContentText
+              id="scroll-dialog-description"
+              tabIndex={-1}
+          >
+              <img src={imagePreviewSrc} style={{maxHeight:'700px'}}></img>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Box display="flex" flexGrow="1" justifyContent="space-around" width="1">
+            <Box>
+              <Button onClick={setPrevImage} color="primary">
+                  Prev
+              </Button>
+              <Button onClick={setNextImage} color="primary">
+                  Next
+              </Button>
+            </Box>
+            <Box>
+              <Button onClick={delCurrentImage} color="secondary">
+                  Delete
+              </Button>
+            </Box>
+            <Box>
+              <Button onClick={handleClose} color="primary">
+                  Close
+              </Button>
+            </Box>
+          </Box>
 
-              </DialogActions>
-            </Dialog> 
+        </DialogActions>
+      </Dialog> 
     </BorderedBox>
-    // {/* //  </SectionWithFullHeightFlex> */}
   );
 }
 
