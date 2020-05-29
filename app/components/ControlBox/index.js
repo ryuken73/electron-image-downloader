@@ -13,6 +13,8 @@ export default class ControlBox extends Component {
                 height={1} 
                 // width={1}
                 minWidth="fit-content"
+                mt="3px"
+                mx="3px"
             >
                 <LeftBox></LeftBox>
                 <RightBox></RightBox>
