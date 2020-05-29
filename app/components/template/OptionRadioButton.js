@@ -34,6 +34,7 @@ export default function OptionRadioButton(props) {
             titlewidth={titlewidth}
             content={optionRadio.content} 
             border={1}
+            {...props}
         ></BorderedList>
     )
 }

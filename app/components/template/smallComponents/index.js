@@ -20,11 +20,11 @@ const SmallButton  = styled(Button)`
 const SmallMarginTextField = styled(TextField)`
     margin-top: ${props => props.mt || "2px"};
     margin-bottom: ${props => props.mb || "2px"};
-    background: ${defaultBgColor};
+    background: ${props => props.bgcolor || defaultBgColor};
     .MuiInputBase-input {
         padding-top: ${props => props.pt || "5px"};
         padding-bottom: ${props => props.pb || "5px"};
-        color: ${defaultFontColor};
+        color: ${props => props.textColor || defaultFontColor};
     }    
 `
 

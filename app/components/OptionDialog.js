@@ -145,12 +145,12 @@ export default function OptionDialog(props) {
         id="scroll-dialog-description"
         tabIndex={-1}
       >
-        <OptionTextInputWithDefault subtitle='Home Address' bgcolor='white' value={homeUrl} onChange={onChange('homeUrl')}></OptionTextInputWithDefault>
-        <OptionTextInputWithDefault subtitle='Save Directory' value={saveDir} onChange={onChange('saveDir')} iconButton={SaveDirectoryButton}></OptionTextInputWithDefault>
-        <OptionTextInputWithDefault subtitle='Temp Directory' value={tempDir} onChange={onChange('tempDir')} iconButton={TempDirectoryButton}></OptionTextInputWithDefault>
-        <OptionRadioButtonWithDefault subtitle="Delete on tab close" currentValue={deleteOnClose} onRadioChange={onChange('deleteOnClose')}></OptionRadioButtonWithDefault>
-        <OptionRadioButtonWithDefault subtitle="Delete on startup" currentValue={deleteOnStart} onRadioChange={onChange('deleteOnStart')}></OptionRadioButtonWithDefault>
-        <OptionRadioButtonWithDefault subtitle="Delete after save file" currentValue={deleteAfterSave} onRadioChange={onChange('deleteAfterSave')}></OptionRadioButtonWithDefault>
+        <OptionTextInputWithDefault subtitle='Home Address' bgcolor='white' textColor="black" value={homeUrl} onChange={onChange('homeUrl')}></OptionTextInputWithDefault>
+        <OptionTextInputWithDefault subtitle='Save Directory' bgcolor='white' textColor="black" value={saveDir} onChange={onChange('saveDir')} iconButton={SaveDirectoryButton}></OptionTextInputWithDefault>
+        <OptionTextInputWithDefault subtitle='Temp Directory' bgcolor='white' textColor="black" value={tempDir} onChange={onChange('tempDir')} iconButton={TempDirectoryButton}></OptionTextInputWithDefault>
+        <OptionRadioButtonWithDefault subtitle="Delete on tab close" bgcolor='white' currentValue={deleteOnClose} onRadioChange={onChange('deleteOnClose')}></OptionRadioButtonWithDefault>
+        <OptionRadioButtonWithDefault subtitle="Delete on startup" bgcolor='white' currentValue={deleteOnStart} onRadioChange={onChange('deleteOnStart')}></OptionRadioButtonWithDefault>
+        <OptionRadioButtonWithDefault subtitle="Delete after save file" bgcolor='white' currentValue={deleteAfterSave} onRadioChange={onChange('deleteAfterSave')}></OptionRadioButtonWithDefault>
         
       </DialogContentText>
     </DialogContent>
