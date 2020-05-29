@@ -78,13 +78,13 @@ export default function SavePanel(props) {
                         </Box>
                     </Box>
                     <Box display="flex" justifyContent="center" alignItems="center" width="1">
-                        <Checkbox checked={imageShow} onChange={onClickCheckBox}>Image Show</Checkbox>
+                        <Checkbox color="primary" checked={imageShow} onChange={onClickCheckBox}>Image Show</Checkbox>
                         <Typography variant="caption">Image Show</Typography>
                     </Box>
                     <Box display="flex" ml="auto" justifyContent="space-around" alignItems="center" flexShrink="0" flexDirection="row" >
                         <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSetAllChecked}>Select All</SmallButton>
                         <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSavelAllChecked}>Save Selected</SmallButton>
-                        <SmallButton size="small" color="primary" variant={"contained"} onClick={deleteFilesSelected}>Delete Selected</SmallButton>
+                        <SmallButton size="small" color="secondary" variant={"contained"} onClick={deleteFilesSelected}>Delete Selected</SmallButton>
                     </Box>            
                 </Box>
             </BorderedBox>
