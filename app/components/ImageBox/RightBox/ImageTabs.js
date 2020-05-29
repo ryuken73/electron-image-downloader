@@ -57,7 +57,7 @@ function ImageTabs(props) {
                             const [pageIndex, title] = pageTitle;
                             const imageData = pageImages.get(pageIndex) || [];
                             const imageCount = imageData.length || 0;
-                            return <StyledTab key={pageIndex} value={pageIndex} label={(title || 'new') + ` [${imageCount}]`} aria-controls={`tabpanel-${pageIndex}`}></StyledTab>                      
+                            return <StyledTab key={pageIndex} value={pageIndex} label={(title || 'new') + ` [${imageCount}]`} aria-controls={`tabpanel-${pageIndex}`} wrapped></StyledTab>                      
                         })}
 
                     </Tabs>
