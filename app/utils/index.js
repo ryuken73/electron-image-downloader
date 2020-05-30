@@ -152,7 +152,21 @@ const fp = {
             , sleep})
         }
 
-    },    
+    },  
+    delayedExecute(fn, delay){
+        return async (...args) => {
+            return new Promise((resolve, reject) => {
+                try {
+                    setTimeout(() => {
+                        fn(...args);
+                        resolve(true);        
+                    }, delay)
+                } catch(err) {
+                    reject(err);
+                }
+            })
+        }
+    }  
 }
 
 const browserStorage = {

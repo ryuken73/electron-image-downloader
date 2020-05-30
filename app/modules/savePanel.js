@@ -30,20 +30,14 @@ export const deleteFilesSelectedBatch = () => (dispatch, getState)=> {
     .catch((err) => console.error(err));
 }
 
-export const deleteFilesSelected = () => (dispatch, getState)=> {
+export const deleteFilesSelected = () => async (dispatch, getState)=> {
     const state = getState();
     const pageIndex = state.imageList.currentTab;
     const checkedImage = state.imageList.pageImages.get(pageIndex).filter(image => image.checked);
-    const deleteJobs = checkedImage.forEach(async image => {
-        // await utils.file.delete(image.tmpSrc);
-        dispatch(delImage(image.index));
-    })
-    // Promise.all(deleteJobs)
-    // .then(results =>{
-    //     console.log('all checked file deleted!')
-    //     checkedImage.forEach(image => dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index})))
-    // })
-    // .catch((err) => console.error(err));
+    for(let image of checkedImage){
+        const delayedDispatch = utils.fp.delayedExecute(dispatch, 100);
+        await delayedDispatch(delImage(image.index))
+    }
 }
 
 export const saveFilesSelected = () => (dispatch, getState)=> {
