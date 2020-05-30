@@ -49,7 +49,6 @@ const imageDefault = {
     dragStart: false,
     checked: false,
     show: true,
-    // imagePreviewOpen:false,
     imagePreviewSrc:'',
     saved: false
 
@@ -69,39 +68,17 @@ const mkImageItem = (imageInfo) => {
     }
 }
 
-const pageImagesLocal = new Map();
-
-const setPageImagesLocal = ({pageIndex, images}) => {
-    pageImagesLocal.set(pageIndex, [...images]);
-}
-
-const delPageImagesLocal = ({pageIndex, imageIndex}) => {
-    const pageImages = pageImagesLocal.get(pageIndex);
-    const newImageData = pageImages.filter(image => image.index !== imageIndex);
-    pageImagesLocal.set(pageIndex, newImageData);
-
-}
-
-const addImageDataDispatch = (action, dispatch) => {
-    dispatch(action);
-}
-
-const throttledDispatch = utils.fp.throttleButLastDebounce(1000, addImageDataDispatch);
-
 export const addImageData = (imageInfo) => async (dispatch, getState) => {
     console.log(`#### in addImageData:`, imageInfo)
     const state = getState();
     const {pageIndex} = imageInfo;
-
-    const imageData = pageImagesLocal.get(pageIndex) || [];
+    const imageData = state.imageList.pageImages.get(pageIndex) || [];
     const newImage = mkImageItem(imageInfo);
     const images = [
         ...imageData,
         newImage
     ]
-
-    setPageImagesLocal({pageIndex, images});
-    throttledDispatch(setPageImages({pageIndex, images}), dispatch);
+    dispatch(setPageImages({pageIndex, images}));
 }
 
 export const changePageTitle = ({pageIndex, title}) => (dispatch, getState) => {
@@ -135,7 +112,6 @@ export const setNextImage = () => (dispatch, getState) => {
         return
     }
     const nextImage = currentImageDataSorted.find(image => image.index > currentImageIndex) || firstElement(currentImageDataSorted);
-    // dispatch(setImagePreviewSrc(nextImage.tmpSrc));
     dispatch(setImagePreviewSrc({imageSrc:nextImage.tmpSrc, index:nextImage.index, imageFname: nextImage.imageFname}));
 }
 
@@ -146,7 +122,6 @@ export const setPrevImage = () => (dispatch, getState) => {
     const currentImageIndex = getCurrentImageIndex(state);
     const prevImage = currentImageDataSorted.find(image => image.index < currentImageIndex) || firstElement(currentImageDataSorted);
     console.log(prevImage)
-    // dispatch(setImagePreviewSrc(prevImage.tmpSrc));
     dispatch(setImagePreviewSrc({imageSrc:prevImage.tmpSrc, index:prevImage.index, imageFname: prevImage.imageFname}));
 }
 
@@ -326,11 +301,6 @@ export default handleActions({
             imagePreviewSrcIndex: index,
             imagePreviewSrcName: imageFname
         }
-        // const imagePreviewSrc = action.payload;
-        // return {
-        //     ...state,
-        //     imagePreviewSrc
-        // }
     },    
     [SET_IMAGE_CHECKBOX]: (state, action) => {
         console.log('%%%%%%%%%%%%%%%%', action.payload);
@@ -383,8 +353,6 @@ export default handleActions({
     [DEL_IMAGE_FORM_IMAGELIST]: (state, action) => {
         console.log('%%%%%%%%%%%%%%%%', action.payload);
         const {pageIndex, imageIndex} = action.payload;
-        delPageImagesLocal({pageIndex, imageIndex});
-
         const imageData = [...state.pageImages.get(pageIndex)];
         const newImageData = imageData.filter(image => image.index !== imageIndex);
 

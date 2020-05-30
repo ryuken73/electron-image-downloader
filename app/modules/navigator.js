@@ -38,9 +38,25 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
     // make new Browser instance
     const tempDir = optionProvider.get('tempDir');
     const browser = chromeBrowser.initBrowser({width, height, tempDir});
+    const unProcessedImages = [];
+    const delayedDispatch = utils.fp.delayedExecute(dispatch);
+    let serialDispatcher;
     browser.registerPageEventHandler('saveFile', imageInfo => {
         console.log('saved:',imageInfo);
-        dispatch(addImageData(imageInfo));
+        console.log(`+++++++ length of unProcessedImages : ${unProcessedImages.length}`);
+        unProcessedImages.push(imageInfo);
+        if(!serialDispatcher){
+            serialDispatcher = setInterval(() => {
+                const imageInfo = unProcessedImages.shift();
+                if(imageInfo){
+                    dispatch(addImageData(imageInfo));
+                } else {
+                    clearInterval(serialDispatcher);
+                    serialDispatcher = null;
+                }
+            }, 100)
+        }
+        // dispatch(addImageData(imageInfo));
     })
     browser.registerBrowserEventHandler('pageAdded', ({pageIndex, title}) => {
         console.log('pageAdded:',pageIndex);  
