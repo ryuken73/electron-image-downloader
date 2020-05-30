@@ -54,7 +54,7 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
                     clearInterval(serialDispatcher);
                     serialDispatcher = null;
                 }
-            }, 100)
+            }, 300)
         }
         // dispatch(addImageData(imageInfo));
     })
