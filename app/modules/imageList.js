@@ -1,5 +1,7 @@
 import {createAction, handleActions} from 'redux-actions';
 // import { batch } from 'react-redux';
+import {logInfo, logError, logFail} from './messagePanel'
+
 const utils = require('../utils');
 
 // action types
@@ -162,8 +164,10 @@ export const delImage = (imageIndex) => async (dispatch, getState) => {
     const targetImage = state.imageList.pageImages.get(pageIndex).find(image => image.index === imageIndex);
     try {
         await utils.file.delete(targetImage.tmpSrc);
+        dispatch(logInfo(`[${targetImage.tmpFname}] delete image success`));
     } catch(err) {
         console.error(err);
+        dispatch(logError(`[${targetImage.tmpFname}] delete image success failure`))
     }
     dispatch(delImageFromImagelist({pageIndex, imageIndex}));
 }

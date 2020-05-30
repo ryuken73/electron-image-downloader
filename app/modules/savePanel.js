@@ -1,5 +1,5 @@
 import {createAction, handleActions} from 'redux-actions';
-import {delImageFromImagelist, setImageSaved} from './imageList';
+import {delImage, delImageFromImagelist, setImageSaved} from './imageList';
 import utils from '../utils';
 import {optionProvider} from './navigator';
 
@@ -15,7 +15,7 @@ const SET_PAGE_SAVE_DIRECTORY = 'savePanel/SET_PAGE_SAVE_DIRECTORY';
 export const setFilePrefix = createAction(SET_FILE_PREFIX);
 export const setPageSaveDirectory = createAction(SET_PAGE_SAVE_DIRECTORY);
 
-export const deleteFilesSelected = () => (dispatch, getState)=> {
+export const deleteFilesSelectedBatch = () => (dispatch, getState)=> {
     const state = getState();
     const pageIndex = state.imageList.currentTab;
     const checkedImage = state.imageList.pageImages.get(pageIndex).filter(image => image.checked);
@@ -28,6 +28,22 @@ export const deleteFilesSelected = () => (dispatch, getState)=> {
         checkedImage.forEach(image => dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index})))
     })
     .catch((err) => console.error(err));
+}
+
+export const deleteFilesSelected = () => (dispatch, getState)=> {
+    const state = getState();
+    const pageIndex = state.imageList.currentTab;
+    const checkedImage = state.imageList.pageImages.get(pageIndex).filter(image => image.checked);
+    const deleteJobs = checkedImage.forEach(async image => {
+        // await utils.file.delete(image.tmpSrc);
+        dispatch(delImage(image.index));
+    })
+    // Promise.all(deleteJobs)
+    // .then(results =>{
+    //     console.log('all checked file deleted!')
+    //     checkedImage.forEach(image => dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index})))
+    // })
+    // .catch((err) => console.error(err));
 }
 
 export const saveFilesSelected = () => (dispatch, getState)=> {
