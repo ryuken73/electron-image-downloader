@@ -3,8 +3,8 @@ import BorderedBox from '../template/BorderedBox';
 import Box from '@material-ui/core/Box';
 import SavePanelContainer from '../../containers/SavePanelContainer';
 import ImageTabsContainer from '../../containers/ImageTabsContainer';
+import MessagePanelContainer from '../../containers/MessagePanelContainer';
 import SectionWithFullHeight from '../template/SectionWithFullHeight';
-import MessagePanel from './BottomBox/MessagePanel'
 
 export default class ImageBox extends Component {
     render() {
@@ -12,7 +12,7 @@ export default class ImageBox extends Component {
             <Box className="ImageBox" display="flex" flexDirection="column" flexGrow="1" px="3px">
                 <SavePanelContainer></SavePanelContainer>
                 <ImageTabsContainer></ImageTabsContainer>
-                <MessagePanel></MessagePanel>
+                <MessagePanelContainer></MessagePanelContainer>
             </Box>
         )
     } 
