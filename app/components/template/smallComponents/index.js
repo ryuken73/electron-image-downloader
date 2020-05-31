@@ -25,6 +25,9 @@ const SmallMarginTextField = styled(TextField)`
         padding-top: ${props => props.pt || "5px"};
         padding-bottom: ${props => props.pb || "5px"};
         color: ${props => props.textColor || defaultFontColor};
+    }
+    .MuiOutlinedInput-root {
+        border-radius: 0px;
     }    
 `
 
