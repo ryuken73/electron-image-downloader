@@ -40,12 +40,13 @@ export const deleteFilesSelected = () => async (dispatch, getState)=> {
     }
 }
 
-export const saveFilesSelected = () => (dispatch, getState)=> {
+export const saveFilesSelected = () => async (dispatch, getState)=> {
     const state = getState();
     const pageIndex = state.imageList.currentTab;
     const checkedImage = state.imageList.pageImages.get(pageIndex).filter(image => image.checked);
     const pageSaveDirectory = state.savePanel.pageSaveDirectory;
-    const saveJobs = checkedImage.map(async image => {
+    // const saveJobs = checkedImage.map(async image => {
+    for(let image of checkedImage) { 
         const srcFileName = image.tmpFname;
         const srcFullName = image.tmpSrc;
         const dstFullName = path.join(pageSaveDirectory, srcFileName);
@@ -55,15 +56,16 @@ export const saveFilesSelected = () => (dispatch, getState)=> {
         // TODO : too many dispatch makes application slow! first
         // dispatch(setImageSaved({pageIndex, imageIndex: image.index}));
         // dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index}));
-        return
-    })
-    console.log(saveJobs);
-    Promise.all(saveJobs)
-    .then(results =>{
-        console.log('all checked file saved!')
-        checkedImage.forEach(image => dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index})))
-    })
-    .catch((err) => console.error(err));
+        const delayedDispatch = utils.fp.delayedExecute(dispatch, 100);
+        await delayedDispatch(delImage(image.index))
+    }
+    // console.log(saveJobs);
+    // Promise.all(saveJobs)
+    // .then(results =>{
+    //     console.log('all checked file saved!')
+    //     checkedImage.forEach(image => dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index})))
+    // })
+    // .catch((err) => console.error(err));
 }
 
 

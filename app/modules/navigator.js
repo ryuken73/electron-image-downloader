@@ -53,7 +53,7 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
                     clearInterval(serialDispatcher);
                     serialDispatcher = null;
                 }
-            }, 300)
+            }, 100)
         }
     })
     browser.registerBrowserEventHandler('pageAdded', ({pageIndex, title}) => {
