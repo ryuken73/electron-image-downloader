@@ -68,9 +68,9 @@ export default function BrowserOptions(props) {
             ></BorderedList>
             <OptionRadioButton
                 subtitle="Tracking New Tab"
-                currentValue={trackingTab}
-                onRadioChange={onTrackingChange}
-                formLabels={[
+                currentvalue={trackingTab}
+                onChange={onTrackingChange}
+                formlabels={[
                     {disabled, value: 'all', label: 'YES'},
                     {disabled, value: 'initial', label: 'NO'}
                 ]}

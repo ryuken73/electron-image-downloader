@@ -37,7 +37,7 @@ const boolLabels = [
 
 const OptionRadioButtonWithDefault = props => {
   const {children} = props;
-  return <OptionRadioButton titlewidth={SUBTITLE_WIDTH} formLabels={boolLabels} {...props}>{children}</OptionRadioButton>
+  return <OptionRadioButton titlewidth={SUBTITLE_WIDTH} formlabels={boolLabels} {...props}>{children}</OptionRadioButton>
 }
 
 const setOptionsOnLocalStorage = (options) => {
@@ -148,9 +148,9 @@ export default function OptionDialog(props) {
         <OptionTextInputWithDefault subtitle='Home Address' bgcolor='white' textColor="black" value={homeUrl} onChange={onChange('homeUrl')}></OptionTextInputWithDefault>
         <OptionTextInputWithDefault subtitle='Save Directory' bgcolor='white' textColor="black" value={saveDir} onChange={onChange('saveDir')} iconButton={SaveDirectoryButton}></OptionTextInputWithDefault>
         <OptionTextInputWithDefault subtitle='Temp Directory' bgcolor='white' textColor="black" value={tempDir} onChange={onChange('tempDir')} iconButton={TempDirectoryButton}></OptionTextInputWithDefault>
-        <OptionRadioButtonWithDefault subtitle="Delete on tab close" bgcolor='white' currentValue={deleteOnClose} onRadioChange={onChange('deleteOnClose')}></OptionRadioButtonWithDefault>
-        <OptionRadioButtonWithDefault subtitle="Delete on startup" bgcolor='white' currentValue={deleteOnStart} onRadioChange={onChange('deleteOnStart')}></OptionRadioButtonWithDefault>
-        <OptionRadioButtonWithDefault subtitle="Delete after save file" bgcolor='white' currentValue={deleteAfterSave} onRadioChange={onChange('deleteAfterSave')}></OptionRadioButtonWithDefault>
+        <OptionRadioButtonWithDefault subtitle="Delete on tab close" bgcolor='white' currentvalue={deleteOnClose} onChange={onChange('deleteOnClose')}></OptionRadioButtonWithDefault>
+        <OptionRadioButtonWithDefault subtitle="Delete on startup" bgcolor='white' currentvalue={deleteOnStart} onChange={onChange('deleteOnStart')}></OptionRadioButtonWithDefault>
+        <OptionRadioButtonWithDefault subtitle="Delete after save file" bgcolor='white' currentvalue={deleteAfterSave} onChange={onChange('deleteAfterSave')}></OptionRadioButtonWithDefault>
         
       </DialogContentText>
     </DialogContent>
