@@ -39,7 +39,6 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
     const tempDir = optionProvider.get('tempDir');
     const browser = chromeBrowser.initBrowser({width, height, tempDir});
     const unProcessedImages = [];
-    const delayedDispatch = utils.fp.delayedExecute(dispatch);
     let serialDispatcher;
     browser.registerPageEventHandler('saveFile', imageInfo => {
         console.log('saved:',imageInfo);
@@ -56,7 +55,6 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
                 }
             }, 300)
         }
-        // dispatch(addImageData(imageInfo));
     })
     browser.registerBrowserEventHandler('pageAdded', ({pageIndex, title}) => {
         console.log('pageAdded:',pageIndex);  

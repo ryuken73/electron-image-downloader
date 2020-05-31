@@ -122,11 +122,11 @@ class Browser extends EventEmitter {
         page.getNextRequestIndex = () => page.requestIndex++;
     } 
     _setPageEventHandler = page => [...this.pageEventHandler].map(([event, handler]) => {
-        console.log(event, handler)
+        console.log(`setting page Event handler for ${event}`);
         page.on(event, handler)
     })
     _setDefaultBrowserEventHandler = () => [...this.browserEventHandler].map(([event, handler]) => {
-        console.log(event, handler)
+        console.log(`setting brwoser Event handler for ${event}`);
         this.on(event, handler)
     })
 
@@ -211,7 +211,7 @@ class Browser extends EventEmitter {
     }
 
     _initPage = page => {
-        console.log('******_initPage');
+        console.log('init page : set default timeout, init request map, and set trackfunction and so on.');
         const pageIndex = this._addPageList(page);
         this._setPageViewport(page);
         this._setDefaultTimeout(page);
@@ -255,7 +255,9 @@ class Browser extends EventEmitter {
 
         this._setDefaultBrowserEventHandler();
         const pages = await this.browser.pages();
+        console.log('await pages done')
         const page = head(pages);
+        console.log(page)
         const pageIndex = this._initPage(page);
         console.log(`added new page : ${pageIndex}`);
         console.time('goto');
