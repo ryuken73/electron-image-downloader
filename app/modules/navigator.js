@@ -58,9 +58,9 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
     })
     browser.registerBrowserEventHandler('pageAdded', ({pageIndex, title}) => {
         console.log('pageAdded:',pageIndex);  
-        dispatch(setCurrentTab(pageIndex));
         dispatch(addPage({pageIndex})); 
         dispatch(setPageTitles({pageIndex, title}));
+        dispatch(setCurrentTab(pageIndex));
         // dispatch(setCurrentTab(pageIndex));
     })
     browser.registerBrowserEventHandler('pageClosed', removedPageIndex => {

@@ -117,7 +117,9 @@ class Browser extends EventEmitter {
     _setPageViewport = page => page.setViewport({width:this.width, height:this.height});
     _setDefaultTimeout = page => page.setDefaultTimeout(this.pageTimeout);
     _initRequestMap = page => {
+        // requestMap will be used to order response (image file name index is based on request index(order))
         page.requestMap = new Map();
+        console.log(`initialized request map of page : ${this._getPageIndex(page)}`);
         page.requestIndex = 0;
         page.getNextRequestIndex = () => page.requestIndex++;
     } 
@@ -130,11 +132,17 @@ class Browser extends EventEmitter {
         this.on(event, handler)
     })
 
-    _requestHandler = page => request => {console.log('request on');page.requestMap.set(request, page.getNextRequestIndex());}
+    _requestHandler = page => request => {
+        console.log(`add request map of page : ${this._getPageIndex(page)} : ${request.url()}`);
+        // sometimes, there is responses with no previous request.
+        // it seems that when app is busy, page.on('request') not called
+        // TODO : need to check really page.on('request') is not called! 
+        page.requestMap.set(request, page.getNextRequestIndex());
+    }
     _responseHandler = (page, trackFilters) => async response => {
         try {
             const pageIndex = this._getPageIndex(page);
-            console.log(`size of request Map[${pageIndex}]: ${page.requestMap.size}`);
+            console.log(`response arrived! : size of request Map[${pageIndex}]: ${page.requestMap.size} : req : ${response.url()}`);
             // console.log(trackFilters)
             // trackFilters : filter functions(typeFilter, sizeFilter, nameFilter)
             const request = response.request();
@@ -145,11 +153,14 @@ class Browser extends EventEmitter {
             const {allowed, requestUrl, responseHeaders, buff, blockFilter} = await applyFilter(trackFilters, response);
             console.log(allowed, requestUrl, responseHeaders);
             if(!allowed) {
-                console.log('not allowed, skip...: ',blockFilter);
+                console.log('not allowed, skip...: ',blockFilter, response.url());
                 page.requestMap.delete(request);
                 return;
             }
             const requestIndex = page.requestMap.get(request);
+            if(requestIndex === undefined) {
+                console.error(`response which cannot be mapped with request Map(not added) arrived :  Map[${pageIndex}], ${response.url()}`);
+            }
             const requestFname = getFirstStringBySep({str:getLastStringBySep({str: requestUrl, sep: '/'}), sep:'?'});
             const metadata = await imageUtil.getMetadata(buff);
             const extname = path.extname(requestFname) || `.${metadata.format}`;
@@ -190,10 +201,12 @@ class Browser extends EventEmitter {
     _setRequestHandler = (handler, page)=> {
         page.requestHandler = handler(page);
         page.on('request', page.requestHandler);
+        console.log(`request handler registered for ${this._getPageIndex(page)}`);
     }
     _setResponseHandler = (handler, page, trackFilters)  => {
         page.responseHandler = handler(page, trackFilters);
         page.on('response', page.responseHandler);
+        console.log(`response handler registered for ${this._getPageIndex(page)}`);
     } 
     _setStartTrackFunction = page => {
         page.startTrack = (trackFilters)  => {
@@ -243,14 +256,17 @@ class Browser extends EventEmitter {
             if(target.type() !== 'page') return;
             const page = await target.page();
             // await page.waitForNavigation({waitUntil:'domcontentloaded'});
-            console.log('request paused!')
+            // setRequestInterception does not block page.on('request') event
+            // it just hold request not to be sent out!
             await page.setRequestInterception(true);
             const title = await page.title();
             const pageIndex = this._initPage(page); 
+            console.log(`request paused![${pageIndex}]`)
             console.log(`*** new target created : ${pageIndex}`);
             this.emit('pageAdded', {pageIndex, title});
             this.trackFilters && this._startTrackPage(this.trackFilters, pageIndex);
             await page.setRequestInterception(false);
+            console.log(`request resumed![${pageIndex}]`);
         });
 
         this._setDefaultBrowserEventHandler();
