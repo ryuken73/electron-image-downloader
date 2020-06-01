@@ -15,6 +15,7 @@ export default class ControlBox extends Component {
                 minWidth="fit-content"
                 mt="3px"
                 mx="3px"
+                overflow="hidden"
             >
                 <LeftBox></LeftBox>
                 <RightBox></RightBox>
