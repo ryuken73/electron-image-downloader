@@ -33,6 +33,15 @@ const styles = makeStyles({
         maxWidth: '500px'
     }
 })
+const ImageBox = React.memo((props) => {
+    console.log('rerender ImageBox')
+    const {reqUrl, imageSrc, onClickImage} = props;
+    return  <Box bgcolor="black" display="flex" justifyContent="center" flex="1">
+                <Tooltip title={reqUrl}>
+                    <img className={"image"} alt="poster" src={imageSrc} style={{height:'80px'}} onClick={onClickImage}></img>
+                </Tooltip>
+            </Box>
+});
 
 function ImageCard(props) {
     console.log('######################### re-render', props.image)
@@ -64,13 +73,14 @@ function ImageCard(props) {
                 <Checkbox className={smallCheckBox} checked={checked} onChange={onClickCheckBox}></Checkbox>
                 <Link href="#" className={imageName} variant="caption" onClick={onClickImage}>{imageFname} [{sizeKB}KB]</Link>
             </Box>   
-            {imageShow && <Box className="handle" display="flex" flexDirection="row" width="1">
+            {imageShow && <ImageBox reqUrl={reqUrl} imageSrc={imageSrc} onClickImage={onClickImage}></ImageBox>}
+            {/* {imageShow && <Box className="handle" display="flex" flexDirection="row" width="1">
                 <Box bgcolor="black" display="flex" justifyContent="center" flex="1">
                     <Tooltip title={reqUrl}>
                         <img className={image} alt="poster" src={imageSrc} style={{height:'80px'}} onClick={onClickImage}></img>
                     </Tooltip>
                 </Box>
-            </Box>}
+            </Box>} */}
             {imageShow && <Box display="flex" flexDirection="row" justifyContent="center" width={1}>
                 <Button className={smallBtn} onClick={onClickSave} variant="contained">Save</Button>  
                 <Button className={smallBtn} onClick={onClickDeleteBtn} variant="contained" >Remove</Button>  
