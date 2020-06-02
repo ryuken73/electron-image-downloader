@@ -3,6 +3,7 @@ import {addImageData, setCurrentTab, addPage, delPage, setPageTitles} from './im
 import utils from '../utils';
 import options from '../config/options';
 import optionStore from '../config/optionStore';
+import { batch } from 'react-redux'
 
 const chromeBrowser = require('../browser/Browser');
 
@@ -57,11 +58,14 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
         }
     })
     browser.registerBrowserEventHandler('pageAdded', ({pageIndex, title}) => {
-        console.log('pageAdded:',pageIndex);  
-        dispatch(addPage({pageIndex})); 
-        dispatch(setPageTitles({pageIndex, title}));
-        dispatch(setCurrentTab(pageIndex));
-        // dispatch(setCurrentTab(pageIndex));
+        batch(() => {
+            console.log('pageAdded:',pageIndex);  
+            dispatch(addPage({pageIndex})); 
+            dispatch(setPageTitles({pageIndex, title}));
+            dispatch(setCurrentTab(pageIndex));
+            // dispatch(setCurrentTab(pageIndex));
+        })
+
     })
     browser.registerBrowserEventHandler('pageClosed', removedPageIndex => {
         console.log('pageClosed:', removedPageIndex);    
@@ -78,9 +82,11 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
         })
     })
     browser.registerBrowserEventHandler('titleChanged', ({pageIndex, title}) => {
-        console.log('titleChanged:',pageIndex, title);        
-        dispatch(setPageTitles({pageIndex, title}));
-        dispatch(setCurrentTab(pageIndex));
+        batch(() => {
+            console.log('titleChanged:',pageIndex, title);        
+            dispatch(setPageTitles({pageIndex, title}));
+            dispatch(setCurrentTab(pageIndex));
+        })
     })
     // open first page and goto url
     await browser.launch(launchUrl);

@@ -142,13 +142,13 @@ export const delImage = (imageIndex) => async (dispatch, getState) => {
         dispatch(logInfo(`[${targetImage.tmpFname}] delete image success`));
     } catch(err) {
         console.error(err);
-        dispatch(logError(`[${targetImage.tmpFname}] delete image success failure`))
+        dispatch(logError(`[${targetImage.tmpFname}] delete image failure`))
     }
     dispatch(delImageFromImagelist({pageIndex, imageIndex}));
 }
 
 const initialState = {
-    // currentTab: 0,
+    currentTab: null,
     pageImages: new Map(),
     pageTitles: new Map(),
     imagePreviewOpen:false,
