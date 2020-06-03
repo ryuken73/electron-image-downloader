@@ -97,7 +97,6 @@ class Browser extends EventEmitter {
         this.browserEventHandler = new Map();
         this.trackFilters = null;
     }
-    // _nextPageIndex = () => this.pageIndex++;
     _nextPageIndex = () => (new Date()).getTime()
     _addPageList = page => {
         const nextIndex = this._nextPageIndex();
@@ -337,31 +336,29 @@ class Browser extends EventEmitter {
     }
 
     mkTrackFilter = (options) => {
-        // return () => {
-            const trackFilters = new Map();
-            const {contentTypes=[], contentSizeMin=0, contentSizeMax=1024000, urlPatterns=[]} = options;
-            const typeFilter = responseHeaders => {
-                const [type, ext] = responseHeaders['content-type'] ? responseHeaders['content-type'].split('/'):[];
-                return contentTypes.includes(type) || contentTypes.includes(`${type}/${ext}`);
-            }
-            const sizeFilter = size => {
-                console.log(size, contentSizeMin, contentSizeMax);
-                return size > contentSizeMin && size < contentSizeMax;
-            }
-            const nameFilter = url => {
-                if(urlPatterns.includes('*')) return true;
-                const matches = urlPatterns.map(urlPattern => {
-                    return url.includes(urlPattern);
-                })
-                console.log('matches:', matches)
-                return matches.some(match => match === true);
-            }
-            trackFilters.set('typeFilter', typeFilter);
-            trackFilters.set('sizeFilter', sizeFilter);
-            trackFilters.set('nameFilter', nameFilter);
-            return trackFilters;
+        const trackFilters = new Map();
+        const {contentTypes=[], contentSizeMin=0, contentSizeMax=1024000, urlPatterns=[]} = options;
+        const typeFilter = responseHeaders => {
+            const [type, ext] = responseHeaders['content-type'] ? responseHeaders['content-type'].split('/'):[];
+            return contentTypes.includes(type) || contentTypes.includes(`${type}/${ext}`);
         }
-    // }
+        const sizeFilter = size => {
+            console.log(size, contentSizeMin, contentSizeMax);
+            return size > contentSizeMin && size < contentSizeMax;
+        }
+        const nameFilter = url => {
+            if(urlPatterns.includes('*')) return true;
+            const matches = urlPatterns.map(urlPattern => {
+                return url.includes(urlPattern);
+            })
+            console.log('matches:', matches)
+            return matches.some(match => match === true);
+        }
+        trackFilters.set('typeFilter', typeFilter);
+        trackFilters.set('sizeFilter', sizeFilter);
+        trackFilters.set('nameFilter', nameFilter);
+        return trackFilters;
+    }
 }
 
 const initBrowser = (options) => {

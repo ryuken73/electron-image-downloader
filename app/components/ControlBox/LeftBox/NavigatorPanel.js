@@ -4,7 +4,6 @@ import Typography from '@material-ui/core/Typography';
 import OpenInBrowserTwoToneIcon from '@material-ui/icons/OpenInBrowserTwoTone';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import {SmallMarginTextField, SmallPaddingIconButton} from '../../template/smallComponents';
-// import ToggleImageButton from '../../template/ToggleImageButton';
 
 
 export default function NavigatorPanel(props) {

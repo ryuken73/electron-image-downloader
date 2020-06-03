@@ -53,7 +53,6 @@ const setOptionsOnLocalStorage = (options) => {
 } 
 
 export default function OptionDialog(props) {
-  // const [open, setOpen] = React.useState(true);
   console.log('######################## re-render OptionDialog', props)
   const {dialogOpen, homeUrl, saveDir, tempDir} = props;
   const {deleteOnClose, deleteOnStart, deleteAfterSave} = props;
@@ -71,7 +70,6 @@ export default function OptionDialog(props) {
   }
 
   const onChange = type => {
-    // console.log(type)
     return event => {
         console.log(type, event.target.value);
         actionFunctions[type](event.target.value);

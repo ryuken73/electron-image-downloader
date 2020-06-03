@@ -3,7 +3,6 @@ import ImageCard from './ImageCard';
 import { ReactSortable } from "react-sortablejs";
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
-import SectionWithFullHeightFlex from '../../template/SectionWithFullHeightFlex';
 import BorderedBox from '../../template/BorderedBox';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -11,8 +10,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
-import path from 'path';
 
 const StyledReactSortable = styled(ReactSortable)`
   display: flex;
@@ -22,10 +19,6 @@ const StyledReactSortable = styled(ReactSortable)`
   overflow: auto;
 `;
 
-const onEnd = (evt) => {
-  console.log(evt.item)
-}
-
 const toggleCheck = () => {};
 
 const firsttElement = array => array[0];
@@ -33,7 +26,6 @@ const lastElement = array => array[array.length - 1];
 
 
 function ImageCardContainer(props) {
-  // const [state, setState] = React.useState(imageData);
   const {pageIndex, imageData, hidden} = props;
   console.log('&&&&&&&&&&&&&&&&&&&&&', hidden, imageData)
   const {fileTypes, fileSizeMin, fileSizeMax, filePatterns} = props;

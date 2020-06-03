@@ -11,7 +11,6 @@ export default class ControlBox extends Component {
                 display="flex" 
                 flexDirection="row" 
                 height={1} 
-                // width={1}
                 minWidth="fit-content"
                 mt="3px"
                 mx="3px"

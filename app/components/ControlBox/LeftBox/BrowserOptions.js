@@ -1,14 +1,10 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import FormControl from '@material-ui/core/FormControl';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
 import {SmallMarginTextField}  from '../../template/smallComponents';
 import BorderedList from '../../template/BorderedList';
 import OptionRadioButton from '../../template/OptionRadioButton';
-import {SmallPaddingFormControlLabel} from '../../template/smallComponents';
-import deepPurple from '@material-ui/core/colors/deepPurple';
+
 
 
 export default function BrowserOptions(props) {

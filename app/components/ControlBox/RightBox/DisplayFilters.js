@@ -1,16 +1,9 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
-import BorderdBox from '../../template/BorderedBox';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField'
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import BorderedList from '../../template/BorderedList';
 import {SmallMarginTextField, SmallPaddingSelect}  from '../../template/smallComponents';
 import OptionSelectList from '../../template/OptionSelectList';
-import OptionTextInput from '../../template/OptionTextInput';
 
 export default function DisplayFilters(props) {
     const {fileTypes=["all"]} = props;

@@ -5,7 +5,6 @@ import TrackFilterContainer from '../../../containers/TrackFilterContainer';
 import DisplayFilterContainer from '../../../containers/DisplayFilterContainer';
 import OptionButtonContainer from '../../../containers/OptionButtonContainer';
 import SectionWithFullHeight from '../../template/SectionWithFullHeight';
-import Button from '@material-ui/core/Button';
 
 
 export default class LeftBox extends Component {

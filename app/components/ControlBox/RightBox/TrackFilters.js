@@ -1,12 +1,8 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
-import BorderdBox from '../../template/BorderedBox';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField'
-import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import BorderedList from '../../template/BorderedList';
 import {SmallMarginTextField, SmallPaddingSelect}  from '../../template/smallComponents';
 
@@ -38,7 +34,6 @@ export default function FilterPanel(props) {
         content: (
             <React.Fragment>
                 <FormControl style={{minWidth:"300px"}}>
-                    {/* <InputLabel id="content-type-label">Age</InputLabel> */}
                     <SmallPaddingSelect
                         labelId="content-type-select-label" 
                         variant="outlined"
