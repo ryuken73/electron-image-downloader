@@ -1,9 +1,7 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import BorderedBox from '../../template/BorderedBox';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import SectionWithFullHeightFlex from '../../template/SectionWithFullHeightFlex';
 import {SmallButton, SmallMarginTextField} from '../../template/smallComponents'
@@ -17,7 +15,6 @@ export default function SavePanel(props) {
     const {setPageSaveDirectory, deleteFilesSelected, saveFilesSelected} = props.SavePanelAction;
     const {setAllImageCheck, setImageShowPreview} = props.ImageListAction;
     const {imageShow} = props;
-    console.log(saveDirectory, pageSaveDirectory);
 
     React.useEffect(() => {
         const tabTitle = pageTitles.get(currentTab) || '';
