@@ -152,7 +152,8 @@ const initialState = {
     pageImages: new Map(),
     pageTitles: new Map(),
     imagePreviewOpen:false,
-    imageShow: true
+    imageShow: true,
+    pageImageAllChecked: new Map()
 }
 
 // reducer
@@ -345,9 +346,12 @@ export default handleActions({
         
         const pageImages = new Map(state.pageImages);
         pageImages.set(pageIndex, newImageData);
+        // const pageImageAllChecked = new Map(state.pageImageAllChecked);
+        // pageImageAllChecked.set(pageIndex, checked)
         return {
             ...state,
-            pageImages
+            pageImages,
+            // pageImageAllChecked
         }
     },  
     [DEL_IMAGE_FORM_IMAGELIST]: (state, action) => {

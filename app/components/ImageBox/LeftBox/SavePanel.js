@@ -14,12 +14,11 @@ export default function SavePanel(props) {
     const {deleteAfterSave, saveDirectory, pageSaveDirectory, currentTab, pageTitles} = props;
     const {setPageSaveDirectory, deleteFilesSelected, saveFilesSelected} = props.SavePanelAction;
     const {setAllImageCheck, setImageShowPreview} = props.ImageListAction;
-    const {imageShow} = props;
+    const {imageShow, allImageChecked} = props;
 
     React.useEffect(() => {
         const tabTitle = pageTitles.get(currentTab) || '';
         const tabTitleForPath = tabTitle.replace(/[\\/:*?\"<>|]/g,"") || '';
-        console.log(saveDirectory, tabTitleForPath)
         const newDirectory = path.join(saveDirectory, tabTitleForPath);
         setPageSaveDirectory(newDirectory);
     }, [pageTitles, currentTab])
@@ -42,6 +41,10 @@ export default function SavePanel(props) {
         setAllImageCheck(true);
     }
 
+    const onClickSetAllUnChecked = (event) => {
+        setAllImageCheck(false);
+    }
+
     const onClickSavelAllChecked = event => {
         saveFilesSelected();
     }
@@ -54,7 +57,7 @@ export default function SavePanel(props) {
         <SectionWithFullHeightFlex className="SectionWithFullHeightFlex ImageBox" flexGrow="0" width="1" overflow="hidden">
             <BorderedBox display="flex" alignContent="center" flexGrow="1">
                 <Box bgcolor="midnightblue" display="flex" flexDirection="row" width="1" textAlign={"center"}>
-                    <Box display="flex" width="0.5" justifyContent="space-around" alignItems="baseline" flexShrink="0" flexDirection="row">
+                    <Box display="flex" width="0.5" justifyContent="space-around" alignItems="center" flexShrink="0" flexDirection="row">
                         <Box minWidth="100px">
                             <Typography variant={"body1"}>Save Directory</Typography>
                         </Box>
@@ -67,19 +70,20 @@ export default function SavePanel(props) {
                             pb="8px"
                             fullWidth
                         ></SmallMarginTextField>
-                        <Box width="150px">
+                        <Box >
                             <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSelectSaveDirectory}>Choose</SmallButton>
                         </Box>
-                        <Box width="150px">
-                            <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickLocateDirectory}>Locate</SmallButton>
+                        <Box >
+                            <SmallButton size="small" style={{marginLeft:'0px'}} color="primary" variant={"contained"} onClick={onClickLocateDirectory}>Locate</SmallButton>
                         </Box>
                     </Box>
-                    <Box display="flex" justifyContent="center" alignItems="center" width="1">
+                    <Box display="flex" width="0.1" justifyContent="center" alignItems="center">
                         <Checkbox color="primary" checked={imageShow} onChange={onClickCheckBox}>Image Show</Checkbox>
                         <Typography variant="caption">Image Show</Typography>
                     </Box>
                     <Box display="flex" ml="auto" justifyContent="space-around" alignItems="center" flexShrink="0" flexDirection="row" >
-                        <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSetAllChecked}>Select All</SmallButton>
+                            {!allImageChecked && <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSetAllChecked} > Select All </SmallButton>}
+                            {allImageChecked && <SmallButton size="small" color="default" variant={"contained"} onClick={onClickSetAllUnChecked} >UnSelect All</SmallButton>}
                         <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSavelAllChecked}>Save Selected</SmallButton>
                         <SmallButton size="small" color="secondary" variant={"contained"} onClick={deleteFilesSelected}>Delete Selected</SmallButton>
                     </Box>            
