@@ -27,7 +27,17 @@ const SUBTITLE_WIDTH='25%';
 
 const OptionTextInputWithDefault = props => {
   const {children} = props;
-  return <OptionTextInput subTitleWidth={SUBTITLE_WIDTH} inputWidth={INPUT_WIDTH} {...props}>{children}</OptionTextInput>
+  return <OptionTextInput 
+            subTitleWidth={SUBTITLE_WIDTH} 
+            inputWidth={INPUT_WIDTH} 
+            border="0" 
+            color="black" 
+            bgcolor="white" 
+            textColor="black" 
+            {...props}
+          >
+            {children}
+          </OptionTextInput>
 }
 
 const boolLabels = [
@@ -37,7 +47,16 @@ const boolLabels = [
 
 const OptionRadioButtonWithDefault = props => {
   const {children} = props;
-  return <OptionRadioButton titlewidth={SUBTITLE_WIDTH} formlabels={boolLabels} {...props}>{children}</OptionRadioButton>
+  return <OptionRadioButton 
+          titlewidth={SUBTITLE_WIDTH} 
+          formlabels={boolLabels} 
+          border="0" 
+          color="black" 
+          bgcolor='white' 
+          {...props}
+        >
+          {children}
+        </OptionRadioButton>
 }
 
 const setOptionsOnLocalStorage = (options) => {
@@ -143,12 +162,12 @@ export default function OptionDialog(props) {
         id="scroll-dialog-description"
         tabIndex={-1}
       >
-        <OptionTextInputWithDefault subtitle='Home Address' bgcolor='white' textColor="black" value={homeUrl} onChange={onChange('homeUrl')}></OptionTextInputWithDefault>
-        <OptionTextInputWithDefault subtitle='Save Directory' bgcolor='white' textColor="black" value={saveDir} onChange={onChange('saveDir')} iconButton={SaveDirectoryButton}></OptionTextInputWithDefault>
-        <OptionTextInputWithDefault subtitle='Temp Directory' bgcolor='white' textColor="black" value={tempDir} onChange={onChange('tempDir')} iconButton={TempDirectoryButton}></OptionTextInputWithDefault>
-        <OptionRadioButtonWithDefault subtitle="Delete on tab close" bgcolor='white' currentvalue={deleteOnClose} onChange={onChange('deleteOnClose')}></OptionRadioButtonWithDefault>
-        <OptionRadioButtonWithDefault subtitle="Delete on startup" bgcolor='white' currentvalue={deleteOnStart} onChange={onChange('deleteOnStart')}></OptionRadioButtonWithDefault>
-        <OptionRadioButtonWithDefault subtitle="Delete after save file" bgcolor='white' currentvalue={deleteAfterSave} onChange={onChange('deleteAfterSave')}></OptionRadioButtonWithDefault>
+        <OptionTextInputWithDefault subtitle='Home Address' value={homeUrl} onChange={onChange('homeUrl')}></OptionTextInputWithDefault>
+        <OptionTextInputWithDefault subtitle='Save Directory' value={saveDir} onChange={onChange('saveDir')} iconButton={SaveDirectoryButton}></OptionTextInputWithDefault>
+        <OptionTextInputWithDefault subtitle='Temp Directory' value={tempDir} onChange={onChange('tempDir')} iconButton={TempDirectoryButton}></OptionTextInputWithDefault>
+        <OptionRadioButtonWithDefault subtitle="Delete on tab close" currentvalue={deleteOnClose} onChange={onChange('deleteOnClose')}></OptionRadioButtonWithDefault>
+        <OptionRadioButtonWithDefault subtitle="Delete on startup" currentvalue={deleteOnStart} onChange={onChange('deleteOnStart')}></OptionRadioButtonWithDefault>
+        <OptionRadioButtonWithDefault subtitle="Delete after save file" currentvalue={deleteAfterSave} onChange={onChange('deleteAfterSave')}></OptionRadioButtonWithDefault>
         
       </DialogContentText>
     </DialogContent>
