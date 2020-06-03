@@ -8,7 +8,7 @@ function mapStateToProps(state) {
   console.log('mapStateToProps:',state)
   const pageImages = state.imageList.pageImages.get(state.imageList.currentTab) || [];
   const allImageChecked = pageImages.length === 0 ? false : pageImages.every(image => image.checked);
-  console.log(`%%%%%%%%%%%%%%%%%%%%%% ${allImageChecked}`, pageImages)
+  const someImageChecked = pageImages.length === 0 ? false : pageImages.some(image => image.checked);
   return {
     filePrefix: state.savePanel.filePrefix,
     saveDirectory: state.savePanel.saveDirectory,
@@ -17,7 +17,9 @@ function mapStateToProps(state) {
     pageTitles: state.imageList.pageTitles,
     deleteAfterSave: state.optionDialog.deleteAfterSave,
     imageShow: state.imageList.imageShow,
-    allImageChecked
+    allImageChecked,
+    enableSaveButton: someImageChecked,
+    enableDeleteButton: someImageChecked
   }
 }
 

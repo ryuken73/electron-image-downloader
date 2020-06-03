@@ -14,7 +14,7 @@ export default function SavePanel(props) {
     const {deleteAfterSave, saveDirectory, pageSaveDirectory, currentTab, pageTitles} = props;
     const {setPageSaveDirectory, deleteFilesSelected, saveFilesSelected} = props.SavePanelAction;
     const {setAllImageCheck, setImageShowPreview} = props.ImageListAction;
-    const {imageShow, allImageChecked} = props;
+    const {imageShow, allImageChecked, enableSaveButton, enableDeleteButton} = props;
 
     React.useEffect(() => {
         const tabTitle = pageTitles.get(currentTab) || '';
@@ -84,8 +84,8 @@ export default function SavePanel(props) {
                     <Box display="flex" ml="auto" justifyContent="space-around" alignItems="center" flexShrink="0" flexDirection="row" >
                             {!allImageChecked && <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSetAllChecked} > Select All </SmallButton>}
                             {allImageChecked && <SmallButton size="small" color="default" variant={"contained"} onClick={onClickSetAllUnChecked} >UnSelect All</SmallButton>}
-                        <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSavelAllChecked}>Save Selected</SmallButton>
-                        <SmallButton size="small" color="secondary" variant={"contained"} onClick={deleteFilesSelected}>Delete Selected</SmallButton>
+                        <SmallButton disabled={!enableSaveButton} size="small" color="primary" variant={"contained"} onClick={onClickSavelAllChecked}>Save Selected</SmallButton>
+                        <SmallButton disabled={!enableDeleteButton} size="small" color="secondary" variant={"contained"} onClick={deleteFilesSelected}>Delete Selected</SmallButton>
                     </Box>            
                 </Box>
             </BorderedBox>
