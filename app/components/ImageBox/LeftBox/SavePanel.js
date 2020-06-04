@@ -23,6 +23,13 @@ export default function SavePanel(props) {
         setPageSaveDirectory(newDirectory);
     }, [pageTitles, currentTab])
 
+    // const deleteFilePage = React.useCallback((currentTab) => {
+    //     deleteFilesSelected(currentTab);
+    // }, currentTab)
+    const deleteFilePage = pageIndex => () => {
+        deleteFilesSelected(pageIndex);
+    }
+
     const onSaveDirectoryChange = (event) => {
         setPageSaveDirectory(event.target.value)
     }
@@ -85,7 +92,7 @@ export default function SavePanel(props) {
                             {!allImageChecked && <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSetAllChecked} > Select All </SmallButton>}
                             {allImageChecked && <SmallButton size="small" color="default" variant={"contained"} onClick={onClickSetAllUnChecked} >UnSelect All</SmallButton>}
                         <SmallButton disabled={!enableSaveButton} size="small" color="primary" variant={"contained"} onClick={onClickSavelAllChecked}>Save Selected</SmallButton>
-                        <SmallButton disabled={!enableDeleteButton} size="small" color="secondary" variant={"contained"} onClick={deleteFilesSelected}>Delete Selected</SmallButton>
+                        <SmallButton disabled={!enableDeleteButton} size="small" color="secondary" variant={"contained"} onClick={deleteFilePage(currentTab)}>Delete Selected</SmallButton>
                     </Box>            
                 </Box>
             </BorderedBox>

@@ -133,9 +133,9 @@ export const setImageToggleChecked = (imageIndex) => (dispatch, getState) => {
     dispatch(setImageCheckbox({pageIndex, imageIndex, checked}));
 }
 
-export const delImage = (imageIndex) => async (dispatch, getState) => {
+export const delImage = (imageIndex, targetPageIndex) => async (dispatch, getState) => {
     const state = getState();
-    const pageIndex = state.imageList.currentTab;
+    const pageIndex = targetPageIndex || state.imageList.currentTab;
     const targetImage = state.imageList.pageImages.get(pageIndex).find(image => image.index === imageIndex);
     try {
         await utils.file.delete(targetImage.tmpSrc);
