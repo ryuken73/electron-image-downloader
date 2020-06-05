@@ -9,6 +9,8 @@ function mapStateToProps(state) {
   const pageImages = state.imageList.pageImages.get(state.imageList.currentTab) || [];
   const allImageChecked = pageImages.length === 0 ? false : pageImages.every(image => image.checked);
   const someImageChecked = pageImages.length === 0 ? false : pageImages.some(image => image.checked);
+  const saveInProgress = state.savePanel.saveInProgress;
+  const deleteInProgress = state.savePanel.deleteInProgress;
   return {
     filePrefix: state.savePanel.filePrefix,
     saveDirectory: state.savePanel.saveDirectory,
@@ -18,8 +20,8 @@ function mapStateToProps(state) {
     deleteAfterSave: state.optionDialog.deleteAfterSave,
     imageShow: state.imageList.imageShow,
     allImageChecked,
-    enableSaveButton: someImageChecked,
-    enableDeleteButton: someImageChecked
+    enableSaveButton: someImageChecked && !saveInProgress && !deleteInProgress,
+    enableDeleteButton: someImageChecked && !saveInProgress && !deleteInProgress
   }
 }
 

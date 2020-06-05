@@ -10,10 +10,14 @@ const saveDirectory = optionProvider.get('saveDir');
 
 const SET_FILE_PREFIX = 'savePanel/SET_FILE_PREFIX';
 const SET_PAGE_SAVE_DIRECTORY = 'savePanel/SET_PAGE_SAVE_DIRECTORY';
+const SET_SAVE_IN_PROGRESS = 'savePanel/SET_SAVE_IN_PROGRESS';
+const SET_DELETE_IN_PROGRESS = 'savePanel/SET_DELETE_IN_PROGRESS';
 
 // action creator
 export const setFilePrefix = createAction(SET_FILE_PREFIX);
 export const setPageSaveDirectory = createAction(SET_PAGE_SAVE_DIRECTORY);
+export const setSaveInProgress = createAction(SET_SAVE_IN_PROGRESS);
+export const setDeleteInProgress = createAction(SET_DELETE_IN_PROGRESS);
 
 export const deleteFilesSelectedBatch = () => (dispatch, getState)=> {
     const state = getState();
@@ -44,10 +48,12 @@ export const deleteFilesSelected = (pageIndex) => async (dispatch, getState)=> {
     const state = getState();
     // const pageIndex = state.imageList.currentTab;
     const checkedImage = state.imageList.pageImages.get(pageIndex).filter(image => image.checked);
+    dispatch(setDeleteInProgress(true));
     for(let image of checkedImage){
         const delayedDispatch = utils.fp.delayedExecute(dispatch, 100);
         await delayedDispatch(delImage(image.index, pageIndex))
     }
+    dispatch(setDeleteInProgress(false));
 }
 
 export const saveFilesSelected = (pageIndex) => async (dispatch, getState)=> {
@@ -55,6 +61,7 @@ export const saveFilesSelected = (pageIndex) => async (dispatch, getState)=> {
     // const pageIndex = state.imageList.currentTab;
     const checkedImage = state.imageList.pageImages.get(pageIndex).filter(image => image.checked);
     const pageSaveDirectory = state.savePanel.pageSaveDirectory;
+    dispatch(setSaveInProgress(true));
     // const saveJobs = checkedImage.map(async image => {
     for(let image of checkedImage) { 
         const srcFileName = image.tmpFname;
@@ -69,13 +76,16 @@ export const saveFilesSelected = (pageIndex) => async (dispatch, getState)=> {
         const delayedDispatch = utils.fp.delayedExecute(dispatch, 100);
         await delayedDispatch(delImage(image.index, pageIndex))
     }
+    dispatch(setSaveInProgress(false));
 }
 
 
 const initialState = { 
     filePrefix: '',
     saveDirectory,
-    pageSaveDirectory: saveDirectory
+    pageSaveDirectory: saveDirectory,
+    saveInProgress: false,
+    deleteInProgress: false
 }
 
 // reducer
@@ -92,6 +102,20 @@ export default handleActions({
         return {
             ...state,
             pageSaveDirectory
+        }
+    },
+    [SET_SAVE_IN_PROGRESS]: (state, action) => {
+        const saveInProgress = action.payload;
+        return {
+            ...state,
+            saveInProgress
+        }
+    },
+    [SET_DELETE_IN_PROGRESS]: (state, action) => {
+        const deleteInProgress = action.payload;
+        return {
+            ...state,
+            deleteInProgress
         }
     } 
 }, initialState);
