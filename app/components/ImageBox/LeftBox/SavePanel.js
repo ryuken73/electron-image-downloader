@@ -52,8 +52,8 @@ export default function SavePanel(props) {
         setAllImageCheck(false);
     }
 
-    const onClickSavelAllChecked = event => {
-        saveFilesSelected();
+    const onClickSavelAllChecked = pageIndex => event => {
+        saveFilesSelected(pageIndex);
     }
 
     const onClickCheckBox = event => {
@@ -91,7 +91,7 @@ export default function SavePanel(props) {
                     <Box display="flex" ml="auto" justifyContent="space-around" alignItems="center" flexShrink="0" flexDirection="row" >
                             {!allImageChecked && <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSetAllChecked} > Select All </SmallButton>}
                             {allImageChecked && <SmallButton size="small" color="default" variant={"contained"} onClick={onClickSetAllUnChecked} >UnSelect All</SmallButton>}
-                        <SmallButton disabled={!enableSaveButton} size="small" color="primary" variant={"contained"} onClick={onClickSavelAllChecked}>Save Selected</SmallButton>
+                        <SmallButton disabled={!enableSaveButton} size="small" color="primary" variant={"contained"} onClick={onClickSavelAllChecked(currentTab)}>Save Selected</SmallButton>
                         <SmallButton disabled={!enableDeleteButton} size="small" color="secondary" variant={"contained"} onClick={deleteFilePage(currentTab)}>Delete Selected</SmallButton>
                     </Box>            
                 </Box>

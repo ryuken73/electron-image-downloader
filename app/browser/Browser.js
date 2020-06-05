@@ -181,6 +181,7 @@ class Browser extends EventEmitter {
     
             const success = await saveFile({fname:tmpName, buff});
             // saveFile({fname:`c:/temp/image/${index}.jpg`, buff:displaySrc});
+            // const success = true;
             if(success) {
                 console.log(`[${pageIndex}][${requestIndex}][${tmpName}]saved`);
                 page.requestMap.delete(request);

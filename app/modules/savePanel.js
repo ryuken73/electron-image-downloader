@@ -50,9 +50,9 @@ export const deleteFilesSelected = (pageIndex) => async (dispatch, getState)=> {
     }
 }
 
-export const saveFilesSelected = () => async (dispatch, getState)=> {
+export const saveFilesSelected = (pageIndex) => async (dispatch, getState)=> {
     const state = getState();
-    const pageIndex = state.imageList.currentTab;
+    // const pageIndex = state.imageList.currentTab;
     const checkedImage = state.imageList.pageImages.get(pageIndex).filter(image => image.checked);
     const pageSaveDirectory = state.savePanel.pageSaveDirectory;
     // const saveJobs = checkedImage.map(async image => {
@@ -67,15 +67,8 @@ export const saveFilesSelected = () => async (dispatch, getState)=> {
         // dispatch(setImageSaved({pageIndex, imageIndex: image.index}));
         // dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index}));
         const delayedDispatch = utils.fp.delayedExecute(dispatch, 100);
-        await delayedDispatch(delImage(image.index))
+        await delayedDispatch(delImage(image.index, pageIndex))
     }
-    // console.log(saveJobs);
-    // Promise.all(saveJobs)
-    // .then(results =>{
-    //     console.log('all checked file saved!')
-    //     checkedImage.forEach(image => dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index})))
-    // })
-    // .catch((err) => console.error(err));
 }
 
 
