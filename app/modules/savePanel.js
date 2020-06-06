@@ -2,6 +2,8 @@ import {createAction, handleActions} from 'redux-actions';
 import {delImage, delImageFromImagelist, setImageSaved} from './imageList';
 import utils from '../utils';
 import {optionProvider} from './navigator';
+import {logInfo, logError, logFail} from './messagePanel';
+
 
 const path = require('path');
 const saveDirectory = optionProvider.get('saveDir');
@@ -61,6 +63,7 @@ export const saveFilesSelected = (pageIndex) => async (dispatch, getState)=> {
     // const pageIndex = state.imageList.currentTab;
     const checkedImage = state.imageList.pageImages.get(pageIndex).filter(image => image.checked);
     const pageSaveDirectory = state.savePanel.pageSaveDirectory;
+    dispatch(logInfo('saving files...'));
     dispatch(setSaveInProgress(true));
     // const saveJobs = checkedImage.map(async image => {
     for(let image of checkedImage) { 
@@ -69,13 +72,18 @@ export const saveFilesSelected = (pageIndex) => async (dispatch, getState)=> {
         const dstFullName = path.join(pageSaveDirectory, srcFileName);
         console.log(srcFullName, dstFullName);
         const copyFunction = state.optionDialog.deleteAfterSave ? utils.file.move : utils.file.copy;
+        dispatch(logInfo(`saving file [${dstFullName}]`));
         await copyFunction(srcFullName, dstFullName);
+        dispatch(logInfo(`saving file done! [${dstFullName}]`));
         // TODO : too many dispatch makes application slow! first
         // dispatch(setImageSaved({pageIndex, imageIndex: image.index}));
         // dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index}));
         const delayedDispatch = utils.fp.delayedExecute(dispatch, 100);
+        dispatch(logInfo(`deleteing file [${srcFullName}]`));        
         await delayedDispatch(delImage(image.index, pageIndex))
+        dispatch(logInfo(`deleteing file done! [${srcFullName}]`));        
     }
+    dispatch(logInfo('saving files done!'));
     dispatch(setSaveInProgress(false));
 }
 

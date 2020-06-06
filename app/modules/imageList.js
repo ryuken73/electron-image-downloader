@@ -1,6 +1,6 @@
 import {createAction, handleActions} from 'redux-actions';
 // import { batch } from 'react-redux';
-import {logInfo, logError, logFail} from './messagePanel'
+import {logInfo, logError, logFail} from './messagePanel';
 
 const utils = require('../utils');
 
@@ -142,7 +142,7 @@ export const delImage = (imageIndex, targetPageIndex) => async (dispatch, getSta
         dispatch(logInfo(`[${targetImage.tmpFname}] delete image success`));
     } catch(err) {
         console.error(err);
-        dispatch(logError(`[${targetImage.tmpFname}] delete image failure`))
+        // dispatch(logError(`[${targetImage.tmpFname}] delete image failure`))
     }
     dispatch(delImageFromImagelist({pageIndex, imageIndex}));
 }

@@ -3,7 +3,9 @@ import {addImageData, setCurrentTab, addPage, delPage, setPageTitles} from './im
 import utils from '../utils';
 import options from '../config/options';
 import optionStore from '../config/optionStore';
-import { batch } from 'react-redux'
+import {batch} from 'react-redux';
+import {logInfo, logError, logFail} from './messagePanel';
+
 
 const chromeBrowser = require('../browser/Browser');
 
@@ -33,6 +35,7 @@ export const enableLaunchBtn = createAction(ENABLE_LAUNCHBTN);
 
 // react thunk
 export const launchBrowserAsync = () => async (dispatch, getState) => {
+    dispatch(logInfo('browser launching start...'));
     const state = getState();
     const {launchUrl} = state.navigator;
     const {browserWidth:width, browserHeight:height} = state.browserOptions;
@@ -43,6 +46,7 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
     let serialDispatcher;
     browser.registerPageEventHandler('saveFile', imageInfo => {
         console.log('saved:',imageInfo);
+        dispatch(logInfo(`image saved in temp directory [${imageInfo.tmpFname}]`));
         console.log(`+++++++ length of unProcessedImages : ${unProcessedImages.length}`);
         unProcessedImages.push(imageInfo);
         if(!serialDispatcher){
@@ -60,6 +64,7 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
     browser.registerBrowserEventHandler('pageAdded', ({pageIndex, title}) => {
         batch(() => {
             console.log('pageAdded:',pageIndex);  
+            dispatch(logInfo(`page added [${pageIndex}]`));
             dispatch(addPage({pageIndex})); 
             dispatch(setPageTitles({pageIndex, title}));
             dispatch(setCurrentTab(pageIndex));
@@ -69,6 +74,7 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
     })
     browser.registerBrowserEventHandler('pageClosed', removedPageIndex => {
         console.log('pageClosed:', removedPageIndex);    
+        dispatch(logInfo(`page closed [${removedPageIndex}]`));
         const {pageImages} = getState().imageList;
         const imageData = pageImages.get(removedPageIndex);
         const deleteFileJobs = imageData.map(async image => {
@@ -78,11 +84,13 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
         Promise.all(deleteFileJobs)
         .then(results => {
             console.log('delete all images from closed tab');
+            dispatch(logInfo(`delete all images in closed tab [${removedPageIndex}]`));
             dispatch(delPage(removedPageIndex));
         })
     })
     browser.registerBrowserEventHandler('titleChanged', ({pageIndex, title}) => {
         batch(() => {
+            dispatch(logInfo(`title changed [${pageIndex}:${title}]`));
             console.log('titleChanged:',pageIndex, title);        
             dispatch(setPageTitles({pageIndex, title}));
             dispatch(setCurrentTab(pageIndex));
@@ -90,6 +98,7 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
     })
     // open first page and goto url
     await browser.launch(launchUrl);
+    dispatch(logInfo('browser launching done'));    
     browser.on('disconnected', () => {
         console.log('browser closed')
         dispatch(enableLaunchBtn());
