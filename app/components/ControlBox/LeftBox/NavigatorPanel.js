@@ -13,7 +13,7 @@ export default function NavigatorPanel(props) {
     const urlInputDisabled = launched ? true : false;
     const launchIconDiabled = launched ? true : false;
     const trackIconDisabled = launched ? false : true;
-    const launchIconMode = launched ? 'disabled' : 'primary';
+    const launchIconMode = launched ? 'disabled' : 'secondary';
     const trackIconMode = launched ? tracking ? "secondary" : "primary" : 'disabled';
 
     React.useEffect(() => {
