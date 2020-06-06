@@ -9,6 +9,7 @@ https://github.com/ryuken73/electron-image-downloader/releases
 ## Usage   
 
 1. set url you want to navigate and click launch button.  
+![Alt Text](https://github.com/ryuken73/electron-image-downloader/blob/master/resources/readme.image/1.png)
 2. just navigate web page and images will be show up in app.
 3. you can save images or delete images.
 4. you can pause tracking images by click tracking button
