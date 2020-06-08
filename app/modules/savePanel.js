@@ -90,6 +90,7 @@ export const saveFilesSelected = (pageIndex) => async (dispatch, getState)=> {
         dispatch(logInfo(`deleteing file done! [${srcFullName}]`));        
     }
     dispatch(logInfo('saving files done!'));
+    state.optionDialog.closeTabAfterSave === 'YES' && state.navigator.browser.getPage(pageIndex).close();
     dispatch(setSaveInProgress(false));
 }
 

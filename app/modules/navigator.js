@@ -87,6 +87,11 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
             dispatch(logInfo(`delete all images in closed tab [${removedPageIndex}]`));
             dispatch(delPage(removedPageIndex));
         })
+        .catch(err => {
+            console.log('there is something wrong delete image from closed tab');
+            console.error(err)
+            dispatch(delPage(removedPageIndex));
+        })
     })
     browser.registerBrowserEventHandler('titleChanged', ({pageIndex, title}) => {
         batch(() => {

@@ -11,7 +11,7 @@ const path = require('path');
 
 export default function SavePanel(props) {
     console.log('######################## re-render SavePenel', props)
-    const {deleteAfterSave, saveDirectory, pageSaveDirectory, currentTab, pageTitles} = props;
+    const {deleteAfterSave, closeTabAfterSave, saveDirectory, pageSaveDirectory, currentTab, pageTitles} = props;
     const {setPageSaveDirectory, deleteFilesSelected, saveFilesSelected} = props.SavePanelAction;
     const {setAllImageCheck, setImageShowPreview} = props.ImageListAction;
     const {imageShow, allImageChecked, enableSaveButton, enableDeleteButton} = props;

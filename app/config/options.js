@@ -19,6 +19,7 @@ const defaultOptions = {
     deleteOnClose: 'YES',
     deleteOnStart: 'YES',
     deleteAfterSave: 'YES',
+    closeTabAfterSave: 'YES',
     ...trackDefault
 }
 

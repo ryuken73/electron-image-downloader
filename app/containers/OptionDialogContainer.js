@@ -12,7 +12,8 @@ function mapStateToProps(state) {
     tempDir: state.optionDialog.tempDir,
     deleteOnClose: state.optionDialog.deleteOnClose,
     deleteOnStart: state.optionDialog.deleteOnStart,
-    deleteAfterSave: state.optionDialog.deleteAfterSave
+    deleteAfterSave: state.optionDialog.deleteAfterSave,
+    closeTabAfterSave: state.optionDialog.closeTabAfterSave
   }
 }
 

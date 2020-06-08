@@ -18,6 +18,7 @@ function mapStateToProps(state) {
     currentTab: state.imageList.currentTab,
     pageTitles: state.imageList.pageTitles,
     deleteAfterSave: state.optionDialog.deleteAfterSave,
+    closeTabAfterSave: state.optionDialog.closeTabAfterSave,
     imageShow: state.imageList.imageShow,
     allImageChecked,
     enableSaveButton: someImageChecked && !saveInProgress && !deleteInProgress,

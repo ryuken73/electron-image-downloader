@@ -10,6 +10,7 @@ const SET_TEMP_DIR = 'optionDialog/SET_TEMP_DIR';
 const SET_DELETE_ON_CLOSE = 'optionDialog/SET_DELETE_ON_CLOSE';
 const SET_DELETE_ON_START = 'optionDialog/SET_DELETE_ON_START';
 const SET_DELETE_AFTER_SAVE = 'optionDialog/SET_DELETE_AFTER_SAVE';
+const SET_CLOSE_TAB_AFTER_SAVE = 'optionDialog/SET_CLOSE_TAB_AFTER_SAVE';
 const SET_ALL_OPTIONS = 'optionDialog/SET_ALL_OPTIONS';
 
 // action creator
@@ -20,6 +21,7 @@ export const setTempDir = createAction(SET_TEMP_DIR);
 export const setDeleteOnClose = createAction(SET_DELETE_ON_CLOSE);
 export const setDeleteOnStart = createAction(SET_DELETE_ON_START);
 export const setDeleteAfterSave = createAction(SET_DELETE_AFTER_SAVE);
+export const setCloseTabAfterSave = createAction(SET_CLOSE_TAB_AFTER_SAVE);
 export const setAllOptions = createAction(SET_ALL_OPTIONS);
 
 
@@ -76,6 +78,13 @@ export default handleActions({
         return {
             ...state,
             deleteAfterSave
+        }
+    },
+    [SET_CLOSE_TAB_AFTER_SAVE]: (state, action) => {
+        const closeTabAfterSave = action.payload
+        return {
+            ...state,
+            closeTabAfterSave
         }
     },
     [SET_ALL_OPTIONS]: (state, action) => {

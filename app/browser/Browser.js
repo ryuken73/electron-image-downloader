@@ -104,6 +104,7 @@ class Browser extends EventEmitter {
         page._indexNumber = nextIndex;
         return nextIndex;
     }
+    _getPageFromList = pageIndex => this.pages.get(pageIndex);
     _delPageFromList = pageIndex => {
         this.pages.delete(pageIndex);
     }
@@ -360,6 +361,8 @@ class Browser extends EventEmitter {
         trackFilters.set('nameFilter', nameFilter);
         return trackFilters;
     }
+
+    getPage = pageIndex => this._getPageFromList(pageIndex);
 }
 
 const initBrowser = (options) => {

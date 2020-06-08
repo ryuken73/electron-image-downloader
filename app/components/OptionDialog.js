@@ -61,22 +61,24 @@ const OptionRadioButtonWithDefault = props => {
 
 const setOptionsOnLocalStorage = (options) => {
   const {homeUrl, saveDir, tempDir} = options;
-  const {deleteOnClose, deleteOnStart, deleteAfterSave} = options;
+  const {deleteOnClose, deleteOnStart, deleteAfterSave, closeTabAfterSave} = options;
   optionProvider.set('homeUrl', homeUrl);
   optionProvider.set('saveDir', saveDir);
   optionProvider.set('tempDir', tempDir);
   optionProvider.set('deleteOnClose', deleteOnClose);
   optionProvider.set('deleteOnStart', deleteOnStart);
   optionProvider.set('deleteAfterSave', deleteAfterSave);
+  optionProvider.set('closeTabAfterSave', closeTabAfterSave);
   return true;
 } 
 
 export default function OptionDialog(props) {
   console.log('######################## re-render OptionDialog', props)
   const {dialogOpen, homeUrl, saveDir, tempDir} = props;
-  const {deleteOnClose, deleteOnStart, deleteAfterSave} = props;
+  const {deleteOnClose, deleteOnStart, deleteAfterSave, closeTabAfterSave} = props;
   const {setDialogOpen, setHomeUrl, setSaveDir, setTempDir} = props.OptionDialogActions;
-  const {setDeleteOnClose, setDeleteOnStart, setDeleteAfterSave, setAllOptions} = props.OptionDialogActions;
+  const {setDeleteOnClose, setDeleteOnStart, setDeleteAfterSave} = props.OptionDialogActions;
+  const {setCloseTabAfterSave, setAllOptions} = props.OptionDialogActions;
   const [scroll, setScroll] = React.useState('paper');
 
   const actionFunctions = {
@@ -86,6 +88,7 @@ export default function OptionDialog(props) {
     'deleteOnClose': setDeleteOnClose,
     'deleteOnStart': setDeleteOnStart,
     'deleteAfterSave': setDeleteAfterSave,
+    'closeTabAfterSave': setCloseTabAfterSave
   }
 
   const onChange = type => {
@@ -168,6 +171,7 @@ export default function OptionDialog(props) {
         <OptionRadioButtonWithDefault subtitle="Delete on tab close" currentvalue={deleteOnClose} onChange={onChange('deleteOnClose')}></OptionRadioButtonWithDefault>
         <OptionRadioButtonWithDefault subtitle="Delete on startup" currentvalue={deleteOnStart} onChange={onChange('deleteOnStart')}></OptionRadioButtonWithDefault>
         <OptionRadioButtonWithDefault subtitle="Delete after save file" currentvalue={deleteAfterSave} onChange={onChange('deleteAfterSave')}></OptionRadioButtonWithDefault>
+        <OptionRadioButtonWithDefault subtitle="Close tab after save file" currentvalue={closeTabAfterSave} onChange={onChange('closeTabAfterSave')}></OptionRadioButtonWithDefault>
         
       </DialogContentText>
     </DialogContent>
