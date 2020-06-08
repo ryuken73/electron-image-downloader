@@ -73,7 +73,13 @@ export const saveFilesSelected = (pageIndex) => async (dispatch, getState)=> {
         console.log(srcFullName, dstFullName);
         const copyFunction = state.optionDialog.deleteAfterSave ? utils.file.move : utils.file.copy;
         dispatch(logInfo(`saving file [${dstFullName}]`));
-        await copyFunction(srcFullName, dstFullName);
+        try {
+            await copyFunction(srcFullName, dstFullName);
+        } catch(err) {
+            dispatch(logErrror(err));
+            break;
+        }
+
         dispatch(logInfo(`saving file done! [${dstFullName}]`));
         // TODO : too many dispatch makes application slow! first
         // dispatch(setImageSaved({pageIndex, imageIndex: image.index}));
