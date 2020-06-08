@@ -29,7 +29,7 @@ https://github.com/ryuken73/electron-image-downloader/releases
    file name pattern   
 
 ## Options
-![Alt Text](https://github.com/ryuken73/electron-image-downloader/blob/master/resources/readme.image/5.jpg)
+![Alt Text](https://github.com/ryuken73/electron-image-downloader/blob/master/resources/readme.image/5.png)
 1. Home Address : initial url when launched
 2. Save Directory : base directory to save image
 3. Temp Directory : temp directory to save image
