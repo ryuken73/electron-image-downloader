@@ -179,7 +179,7 @@ class Browser extends EventEmitter {
             metadata.reqIndex = requestIndex;
             metadata.reqUrl = requestUrl;
             console.log(metadata, tmpFname)
-    
+            
             const success = await saveFile({fname:tmpName, buff});
             // saveFile({fname:`c:/temp/image/${index}.jpg`, buff:displaySrc});
             // const success = true;
@@ -224,10 +224,10 @@ class Browser extends EventEmitter {
         }
     }
 
-    _initPage = page => {
+    _initPage = async page => {
         console.log('init page : set default timeout, init request map, and set trackfunction and so on.');
         const pageIndex = this._addPageList(page);
-        this._setPageViewport(page);
+        await this._setPageViewport(page);
         this._setDefaultTimeout(page);
         this._initRequestMap(page);
         this._setPageEventHandler(page);
@@ -257,17 +257,20 @@ class Browser extends EventEmitter {
             if(target.type() !== 'page') return;
             const page = await target.page();
             // await page.waitForNavigation({waitUntil:'domcontentloaded'});
-            // setRequestInterception does not block page.on('request') event
+            // setRequestInterception does not block page.on('request') event 
             // it just hold request not to be sent out!
             await page.setRequestInterception(true);
             const title = await page.title();
-            const pageIndex = this._initPage(page); 
+            const pageIndex = await this._initPage(page); 
             console.log(`request paused![${pageIndex}]`)
             console.log(`*** new target created : ${pageIndex}`);
             this.emit('pageAdded', {pageIndex, title});
             this.trackFilters && this._startTrackPage(this.trackFilters, pageIndex);
-            await page.setRequestInterception(false);
-            console.log(`request resumed![${pageIndex}]`);
+            setTimeout(async () => {
+                await page.setRequestInterception(false);
+                console.log(`request resumed![${pageIndex}]`);
+            },100)
+
         });
 
         this._setDefaultBrowserEventHandler();

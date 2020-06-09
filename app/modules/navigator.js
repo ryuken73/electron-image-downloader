@@ -46,14 +46,16 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
     let serialDispatcher;
     browser.registerPageEventHandler('saveFile', imageInfo => {
         console.log('saved:',imageInfo);
-        dispatch(logInfo(`image saved in temp directory [${imageInfo.tmpFname}]`));
         console.log(`+++++++ length of unProcessedImages : ${unProcessedImages.length}`);
         unProcessedImages.push(imageInfo);
         if(!serialDispatcher){
             serialDispatcher = setInterval(() => {
                 const imageInfo = unProcessedImages.shift();
                 if(imageInfo){
-                    dispatch(addImageData(imageInfo));
+                    batch(() => {
+                        dispatch(logInfo(`image saved in temp directory [${imageInfo.tmpFname}]`));
+                        dispatch(addImageData(imageInfo));
+                    })
                 } else {
                     clearInterval(serialDispatcher);
                     serialDispatcher = null;
