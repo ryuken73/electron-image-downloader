@@ -25,18 +25,18 @@ const initialState = {
 // reducer
 export default handleActions({
     [SET_BROWSER_WIDTH]: (state, action) => {
-        console.log(state, action)
+        // console.log(state, action)
         const width = action.payload;
-        console.log(`*************${width}`)
+        // console.log(`*************${width}`)
         return {
             ...state,
             browserWidth: width
         }
     },
     [SET_BROWSER_HEIGHT]: (state, action) => {
-        console.log(state, action)
+        // console.log(state, action)
         const height = action.payload;
-        console.log(`*************${height}`)
+        // console.log(`*************${height}`)
         return {
             ...state,
             browserHeight: height

@@ -4,7 +4,7 @@ import ImageListPanel from '../components/ImageBox/RightBox/ImageListPanel';
 import * as imageActions from '../modules/imageList';
 
 function mapStateToProps(state, ownProps) {
-  console.log('mapStateToProps:',state)
+  // console.log('mapStateToProps:',state)
   const pageImages = state.imageList.pageImages;
   const {pageIndex, hidden} = ownProps;
   const imageData = pageImages.get(pageIndex) || [];

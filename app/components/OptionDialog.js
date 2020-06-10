@@ -73,7 +73,7 @@ const setOptionsOnLocalStorage = (options) => {
 } 
 
 export default function OptionDialog(props) {
-  console.log('######################## re-render OptionDialog', props)
+  // console.log('######################## re-render OptionDialog', props)
   const {dialogOpen, homeUrl, saveDir, tempDir} = props;
   const {deleteOnClose, deleteOnStart, deleteAfterSave, closeTabAfterSave} = props;
   const {setDialogOpen, setHomeUrl, setSaveDir, setTempDir} = props.OptionDialogActions;

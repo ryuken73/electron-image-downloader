@@ -59,7 +59,7 @@ export default handleActions({
     },
     [SET_URL_PATTERN]: (state, action) => {
         const urlPatterns = action.payload;
-        console.log('***********',urlPatterns)
+        // console.log('***********',urlPatterns)
         optionProvider.set('urlPatterns', urlPatterns);
         return {
             ...state,

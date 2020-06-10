@@ -4,7 +4,7 @@ import BrowserOptions from '../components/ControlBox/LeftBox/BrowserOptions';
 import * as browserOptionsActions from '../modules/browserOptions';
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps:',state)
+  // console.log('mapStateToProps:',state)
   return {
     width: state.browserOptions.browserWidth,
     height: state.browserOptions.browserHeight,

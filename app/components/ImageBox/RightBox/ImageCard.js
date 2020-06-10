@@ -43,7 +43,7 @@ const ImageBox = React.memo((props) => {
 });
 
 function ImageCard(props) {
-    console.log('######################### re-render', props.image)
+    // console.log('######################### re-render', props.image)
     const classes = styles(props);
     const {container, imageName, smallBtn, smallCheckBox, image} = classes;
     const {index, imageFname, imageSrc, metadata, checked, show} = props.image;

@@ -4,7 +4,7 @@ import TrackFilters from '../components/ControlBox/RightBox/TrackFilters';
 import * as trackFilterActions from '../modules/trackFilters';
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps:',state)
+  // console.log('mapStateToProps:',state)
   return {
     contentTypes: state.trackFilters.contentTypes,
     contentSizeMin: state.trackFilters.contentSizeMin,

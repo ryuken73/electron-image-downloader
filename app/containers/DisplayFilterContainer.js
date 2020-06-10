@@ -4,7 +4,7 @@ import DisplayFilters from '../components/ControlBox/RightBox/DisplayFilters';
 import * as displayFilterActions from '../modules/displayFilters';
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps:',state)
+  // console.log('mapStateToProps:',state)
   return {
     fileTypes: state.displayFilters.fileTypes,
     fileSizeMin: state.displayFilters.fileSizeMin,

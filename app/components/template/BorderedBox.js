@@ -19,7 +19,7 @@ export default function BorderedBox(props) {
         ...defaultProps,
         ...props
     }
-    console.log(combinedProps);
+    // console.log(combinedProps);
     return (
         <Box
             className="BorderedBox"

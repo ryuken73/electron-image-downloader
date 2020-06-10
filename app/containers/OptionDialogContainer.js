@@ -4,7 +4,7 @@ import OptionDialog from '../components/OptionDialog';
 import * as optionDialogActions from '../modules/optionDialog';
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps:',state)
+  // console.log('mapStateToProps:',state)
   return {
     dialogOpen: state.optionDialog.dialogOpen,
     homeUrl: state.optionDialog.homeUrl,

@@ -5,7 +5,7 @@ import * as savePanelAction from '../modules/savePanel';
 import * as imageListAction from '../modules/imageList';
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps:',state)
+  // console.log('mapStateToProps:',state)
   const pageImages = state.imageList.pageImages.get(state.imageList.currentTab) || [];
   const allImageChecked = pageImages.length === 0 ? false : pageImages.every(image => image.checked);
   const someImageChecked = pageImages.length === 0 ? false : pageImages.some(image => image.checked);

@@ -4,7 +4,7 @@ import MessagePanel from '../components/ImageBox/BottomBox/MessagePanel';
 import * as messagePanelActions from '../modules/messagePanel';
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps:',state)
+  // console.log('mapStateToProps:',state)
   return {
     logLevel: state.messagePanel.logLevel,
     message: state.messagePanel.message,

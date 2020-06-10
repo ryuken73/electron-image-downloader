@@ -46,7 +46,7 @@ export default handleActions({
     },
     [SET_FILE_PATTERN]: (state, action) => {
         const filePatterns = action.payload;
-        console.log('***********',filePatterns)
+        // console.log('***********',filePatterns)
         return {
             ...state,
             filePatterns

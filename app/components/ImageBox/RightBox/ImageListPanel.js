@@ -27,7 +27,7 @@ const lastElement = array => array[array.length - 1];
 
 function ImageCardContainer(props) {
   const {pageIndex, imageData, hidden} = props;
-  console.log('&&&&&&&&&&&&&&&&&&&&&', hidden, imageData)
+  // console.log('&&&&&&&&&&&&&&&&&&&&&', hidden, imageData)
   const {fileTypes, fileSizeMin, fileSizeMax, filePatterns} = props;
   const {imagePreviewOpen, imagePreviewSrc} = props;
   const {imageShow, imagePreviewSrcIndex, imagePreviewSrcName} = props;

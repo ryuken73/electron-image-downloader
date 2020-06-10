@@ -159,7 +159,7 @@ const initialState = {
 // reducer
 export default handleActions({
     [ADD_PAGE]: (state, action) => {
-        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        // console.log('%%%%%%%%%%%%%%%%', action.payload);
         const {pageIndex} = action.payload;
         const pageTitles = new Map(state.pageTitles);
         const pageImages = new Map(state.pageImages);
@@ -174,7 +174,7 @@ export default handleActions({
         }
     },
     [DEL_PAGE]: (state, action) => {
-        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        // console.log('%%%%%%%%%%%%%%%%', action.payload);
         const pageIndex = action.payload;
         const pageTitles = new Map(state.pageTitles);
         const pageImages = new Map(state.pageImages);
@@ -187,7 +187,7 @@ export default handleActions({
         }
     },
     [SET_PAGE_IMAGES]: (state, action) => {
-        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        // console.log('%%%%%%%%%%%%%%%%', action.payload);
         const {pageIndex, images} = action.payload;
         const pageImages = new Map(state.pageImages);
         pageImages.set(pageIndex, images);
@@ -197,7 +197,7 @@ export default handleActions({
         }
     },
     [SET_PAGE_TITLES]: (state, action) => {
-        console.log('%%%%%%%%%%%%%%%% change page', action.payload);
+        // console.log('%%%%%%%%%%%%%%%% change page', action.payload);
         const {pageIndex, title} = action.payload;
         const pageTitles = new Map(state.pageTitles);
         pageTitles.set(pageIndex, title);
@@ -286,7 +286,7 @@ export default handleActions({
         }
     },    
     [SET_IMAGE_PREVIEW_OPEN]: (state, action) => {
-        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        // console.log('%%%%%%%%%%%%%%%%', action.payload);
         const imagePreviewOpen = action.payload;
         return {
             ...state,
@@ -294,7 +294,7 @@ export default handleActions({
         }
     },
     [SET_IMAGE_PREVIEW_SRC]: (state, action) => {
-        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        // console.log('%%%%%%%%%%%%%%%%', action.payload);
         const {imageSrc, index, imageFname} = action.payload;
         return {
             ...state,
@@ -304,7 +304,7 @@ export default handleActions({
         }
     },    
     [SET_IMAGE_CHECKBOX]: (state, action) => {
-        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        // console.log('%%%%%%%%%%%%%%%%', action.payload);
         const {pageIndex, imageIndex, checked} = action.payload;
         const imageData = [...state.pageImages.get(pageIndex)];
         const image = imageData.find(image => image.index === imageIndex);
@@ -321,7 +321,7 @@ export default handleActions({
         }
     },  
     [SET_IMAGE_SAVED]: (state, action) => {
-        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        // console.log('%%%%%%%%%%%%%%%%', action.payload);
         const {pageIndex, imageIndex} = action.payload;
         const imageData = [...state.pageImages.get(pageIndex)];
         const image = imageData.find(image => image.index === imageIndex);
@@ -338,7 +338,7 @@ export default handleActions({
         }
     },  
     [SET_ALL_IMAGE_CHECK]: (state, action) => {
-        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        // console.log('%%%%%%%%%%%%%%%%', action.payload);
         const checked = action.payload;
         const pageIndex = state.currentTab;
         const imageData = [...state.pageImages.get(pageIndex)];
@@ -355,7 +355,7 @@ export default handleActions({
         }
     },  
     [DEL_IMAGE_FORM_IMAGELIST]: (state, action) => {
-        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        // console.log('%%%%%%%%%%%%%%%%', action.payload);
         const {pageIndex, imageIndex} = action.payload;
         const imageData = [...state.pageImages.get(pageIndex)];
         const newImageData = imageData.filter(image => image.index !== imageIndex);
@@ -368,7 +368,7 @@ export default handleActions({
         }
     },
     [SET_IMAGE_SHOW_PREVIEW]: (state, action) => {
-        console.log('%%%%%%%%%%%%%%%%', action.payload);
+        // console.log('%%%%%%%%%%%%%%%%', action.payload);
         const newImageShow = !state.imageShow;
 
         return {

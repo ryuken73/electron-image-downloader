@@ -6,7 +6,7 @@ import SectionWithFullHeightFlex from '../../template/SectionWithFullHeightFlex'
 
 
 export default function MessagePanel(props) {
-    console.log('######################## re-render MessagePanel', props);
+    // console.log('######################## re-render MessagePanel', props);
     const {logLevel, message} = props;
     const messageText = `[${logLevel}] ${message}`;
    return (

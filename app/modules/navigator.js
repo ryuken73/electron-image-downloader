@@ -152,7 +152,7 @@ const initialState = {
 // reducer
 export default handleActions({
     [SET_URL]: (state, action) => {
-        console.log(state, action)
+        // console.log(state, action)
         const launchUrl = action.payload;
         return {
             ...state,
@@ -160,9 +160,9 @@ export default handleActions({
         }
     },
     [LAUNCH]: (state, action) => {
-        console.log('launch browser triggered', state);
+        // console.log('launch browser triggered', state);
         const browser = action.payload;
-        console.log(browser)            
+        // console.log(browser)            
         return {
             ...state,
             launched: true,
@@ -176,9 +176,9 @@ export default handleActions({
         }
     },
     [TOGGLE_TRACK]: (state, action) => {
-        console.log('toggling', state);
+        // console.log('toggling', state);
         const newTrackFlag = action.payload;
-        console.log(newTrackFlag)
+        // console.log(newTrackFlag)
         return {
             ...state,
             tracking: newTrackFlag
