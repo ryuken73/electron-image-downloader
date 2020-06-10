@@ -45,12 +45,12 @@ const applyFilter = async (trackFilter, response) => {
 }
 
 const getLastStringBySep = ({str, sep=' '}) => {
-    // console.log(`get lastString : ${str}`)
+    console.log(`get lastString : ${str}`)
     return str.split(sep).pop();
 }
 
 const getFirstStringBySep = ({str='', sep=' '}) => {
-    // console.log(`get firstString : ${str}`)
+    console.log(`get firstString : ${str}`)
     return str.split(sep).shift();
 }
 
@@ -65,11 +65,11 @@ const mkFname = async (page, requestUrl, request) => {
             return {};
         }        
         const filename = `${index}${extname}`;
-        // console.log(`${filename}`)
+        console.log(`${filename}`)
         await utils.file.checkDirExists({dirname:SAVE_DIRECTORY});
         
         const tmpName = path.join(SAVE_DIRECTORY, filename);
-        // console.log(tmpName)
+        console.log(tmpName)
         return {tmpName, index};
     } catch (err) {
         console.error('something wrong:', err);
@@ -151,9 +151,9 @@ class Browser extends EventEmitter {
             if(IS_STATUS_REDIRECTED) return;
     
             const {allowed, requestUrl, responseHeaders, buff, blockFilter} = await applyFilter(trackFilters, response);
-            // console.log(allowed, requestUrl, responseHeaders);
+            console.log(allowed, requestUrl, responseHeaders);
             if(!allowed) {
-                // console.log('not allowed, skip...: ',blockFilter, response.url());
+                console.log('not allowed, skip...: ',blockFilter, response.url());
                 page.requestMap.delete(request);
                 return;
             }
@@ -173,17 +173,16 @@ class Browser extends EventEmitter {
                 page.requestMap.delete(request);
                 return;
             }
-            // console.log(`[${pageIndex}][${requestIndex}][${tmpName}]allowed...saving...`);
+            console.log(`[${pageIndex}][${requestIndex}][${tmpName}]allowed...saving...`);
             // const metadata = await imageUtil.getMetadata(buff);
             const tmpFname = path.basename(tmpName);
             metadata.reqIndex = requestIndex;
             metadata.reqUrl = requestUrl;
-            // console.log(metadata, tmpFname)
+            console.log(metadata, tmpFname)
             
             const success = await saveFile({fname:tmpName, buff});
             // saveFile({fname:`c:/temp/image/${index}.jpg`, buff:displaySrc});
             // const success = true;
-            
             if(success) {
                 console.log(`[${pageIndex}][${requestIndex}][${tmpName}]saved`);
                 page.requestMap.delete(request);
@@ -234,6 +233,7 @@ class Browser extends EventEmitter {
         this._setPageEventHandler(page);
         this._setStartTrackFunction(page);
         this._setStopTrackFunction(page);
+        console.log('_initPage Done')
         return pageIndex;
     }
 
@@ -279,8 +279,8 @@ class Browser extends EventEmitter {
         console.log('await pages done')
         const page = head(pages);
         console.log(page)
-        const pageIndex = this._initPage(page);
-        console.log(`added new page : ${pageIndex}`);
+        const pageIndex = await this._initPage(page);
+        // console.log(`added new page : ${pageIndex}`);
         console.time('goto');
         await page.goto(url);  
         console.timeEnd('goto');
@@ -349,7 +349,7 @@ class Browser extends EventEmitter {
             return contentTypes.includes(type) || contentTypes.includes(`${type}/${ext}`);
         }
         const sizeFilter = size => {
-            // console.log(size, contentSizeMin, contentSizeMax);
+            console.log(size, contentSizeMin, contentSizeMax);
             return size > contentSizeMin && size < contentSizeMax;
         }
         const nameFilter = url => {
