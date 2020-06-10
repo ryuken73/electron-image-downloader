@@ -83,16 +83,21 @@ export const launchBrowserAsync = () => async (dispatch, getState) => {
             const fname = image.tmpSrc;
             return await browser.delFile(fname);
         })
+        const pageIndexes = [...pageImages.keys()];
+        const previousPageIndex = pageIndexes[pageIndexes.indexOf(removedPageIndex) - 1];
+
         Promise.all(deleteFileJobs)
         .then(results => {
             console.log('delete all images from closed tab');
             dispatch(logInfo(`delete all images in closed tab [${removedPageIndex}]`));
             dispatch(delPage(removedPageIndex));
+            dispatch(setCurrentTab(previousPageIndex));
         })
         .catch(err => {
             console.log('there is something wrong delete image from closed tab');
             console.error(err)
             dispatch(delPage(removedPageIndex));
+            dispatch(setCurrentTab(previousPageIndex));
         })
     })
     browser.registerBrowserEventHandler('titleChanged', ({pageIndex, title}) => {

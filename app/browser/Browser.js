@@ -83,7 +83,7 @@ class Browser extends EventEmitter {
         this.width = toNumber(options.width, 800);
         this.height = toNumber(options.height, 600);
         this.tempDir = options.tempDir;
-        this.pageTimeout = toNumber(options.defaultTimeout, 60000);
+        this.pageTimeout = toNumber(options.defaultTimeout, 120000);
         this.launchOptions = {
             headless: options.headless || false,
             devtools: options.devtools || false,

@@ -21,20 +21,20 @@ export const setPageSaveDirectory = createAction(SET_PAGE_SAVE_DIRECTORY);
 export const setSaveInProgress = createAction(SET_SAVE_IN_PROGRESS);
 export const setDeleteInProgress = createAction(SET_DELETE_IN_PROGRESS);
 
-export const deleteFilesSelectedBatch = () => (dispatch, getState)=> {
-    const state = getState();
-    const pageIndex = state.imageList.currentTab;
-    const checkedImage = state.imageList.pageImages.get(pageIndex).filter(image => image.checked);
-    const deleteJobs = checkedImage.map(async image => {
-        return await utils.file.delete(image.tmpSrc);
-    })
-    Promise.all(deleteJobs)
-    .then(results =>{
-        console.log('all checked file deleted!')
-        checkedImage.forEach(image => dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index})))
-    })
-    .catch((err) => console.error(err));
-}
+// export const deleteFilesSelectedBatch = () => (dispatch, getState)=> {
+//     const state = getState();
+//     const pageIndex = state.imageList.currentTab;
+//     const checkedImage = state.imageList.pageImages.get(pageIndex).filter(image => image.checked);
+//     const deleteJobs = checkedImage.map(async image => {
+//         return await utils.file.delete(image.tmpSrc);
+//     })
+//     Promise.all(deleteJobs)
+//     .then(results =>{
+//         console.log('all checked file deleted!')
+//         checkedImage.forEach(image => dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index})))
+//     })
+//     .catch((err) => console.error(err));
+// }
 
 // export const deleteFilesSelected = () => async (dispatch, getState)=> {
 //     const state = getState();
