@@ -22,7 +22,8 @@ function mapStateToProps(state) {
     imageShow: state.imageList.imageShow,
     allImageChecked,
     enableSaveButton: someImageChecked && !saveInProgress && !deleteInProgress,
-    enableDeleteButton: someImageChecked && !saveInProgress && !deleteInProgress
+    enableDeleteButton: someImageChecked && !saveInProgress && !deleteInProgress,
+    enableSaveAllButton: !saveInProgress && !deleteInProgress
   }
 }
 

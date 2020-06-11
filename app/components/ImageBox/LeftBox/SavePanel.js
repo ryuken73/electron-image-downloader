@@ -15,6 +15,10 @@ export default function SavePanel(props) {
     const {setPageSaveDirectory, deleteFilesSelected, saveFilesSelected} = props.SavePanelAction;
     const {setAllImageCheck, setImageShowPreview} = props.ImageListAction;
     const {imageShow, allImageChecked, enableSaveButton, enableDeleteButton} = props;
+    const enableSaveAllButton = true;
+    const onClickSaveAll = () => {
+
+    }
 
     React.useEffect(() => {
         const tabTitle = pageTitles.get(currentTab) || '';
@@ -89,8 +93,9 @@ export default function SavePanel(props) {
                         <Typography variant="caption">Image Show</Typography>
                     </Box>
                     <Box display="flex" ml="auto" justifyContent="space-around" alignItems="center" flexShrink="0" flexDirection="row" >
-                            {!allImageChecked && <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSetAllChecked} > Select All </SmallButton>}
-                            {allImageChecked && <SmallButton size="small" color="default" variant={"contained"} onClick={onClickSetAllUnChecked} >UnSelect All</SmallButton>}
+                        <SmallButton disabled={!enableSaveAllButton} size="small" color="primary" variant={"contained"} onClick={onClickSaveAll}>Save All Tabs</SmallButton>
+                        {!allImageChecked && <SmallButton size="small" color="primary" variant={"contained"} onClick={onClickSetAllChecked} > Select All </SmallButton>}
+                        {allImageChecked && <SmallButton size="small" color="default" variant={"contained"} onClick={onClickSetAllUnChecked} >UnSelect All</SmallButton>}
                         <SmallButton disabled={!enableSaveButton} size="small" color="primary" variant={"contained"} onClick={onClickSavelAllChecked(currentTab)}>Save Selected</SmallButton>
                         <SmallButton disabled={!enableDeleteButton} size="small" color="secondary" variant={"contained"} onClick={deleteFilePage(currentTab)}>Delete Selected</SmallButton>
                     </Box>            
