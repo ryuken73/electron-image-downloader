@@ -158,8 +158,8 @@ const fp = {
             return new Promise((resolve, reject) => {
                 try {
                     setTimeout(() => {
-                        fn(...args);
-                        resolve(true);        
+                        const result = fn(...args);
+                        resolve(result);        
                     }, delay)
                 } catch(err) {
                     reject(err);
