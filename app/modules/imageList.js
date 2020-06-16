@@ -147,6 +147,12 @@ export const delImage = (imageIndex, targetPageIndex) => async (dispatch, getSta
     dispatch(delImageFromImagelist({pageIndex, imageIndex}));
 }
 
+export const closeTabIfAllSaved = (pageIndex) => (dispatch, getState) => {
+    const state = getState();
+    state.imageList.pageImages.get(pageIndex).length === 0
+    && state.navigator.browser.getPage(pageIndex).close();
+}
+
 const initialState = {
     currentTab: null,
     pageImages: new Map(),

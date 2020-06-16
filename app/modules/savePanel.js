@@ -1,5 +1,5 @@
 import {createAction, handleActions} from 'redux-actions';
-import {delImage, delImageFromImagelist, setImageSaved} from './imageList';
+import {delImage, delImageFromImagelist, setImageSaved, closeTabIfAllSaved} from './imageList';
 import utils from '../utils';
 import {optionProvider} from './navigator';
 import {logInfo, logError, logFail} from './messagePanel';
@@ -90,10 +90,8 @@ export const saveFilesSelected = (pageIndex) => async (dispatch, getState)=> {
         dispatch(logInfo(`deleteing file done! [${srcFullName}]`));        
     }
     dispatch(logInfo('saving files done!'));
-    state.optionDialog.closeTabAfterSave === 'YES' 
-    && state.imageList.pageImages.get(pageIndex).length === 0
-    && state.navigator.browser.getPage(pageIndex).close();
     dispatch(setSaveInProgress(false));
+    state.optionDialog.closeTabAfterSave === 'YES' && dispatch(closeTabIfAllSaved(pageIndex))
 }
 
 
