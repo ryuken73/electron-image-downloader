@@ -31,7 +31,7 @@ function ImageCardContainer(props) {
   const {fileTypes, fileSizeMin, fileSizeMax, filePatterns} = props;
   const {imagePreviewOpen, imagePreviewSrc} = props;
   const {imageShow, imagePreviewSrcIndex, imagePreviewSrcName} = props;
-  const {setImageToggleChecked} = props.ImageActions;
+  const {setImageToggleChecked, setImageCheckedFromNearestChecked} = props.ImageActions;
   const {filterImageByType, filterImageByMinSize} = props.ImageActions;
   const {filterImageByMaxSize, filterImageByName} = props.ImageActions;
   const {setImagePreviewOpen, setImagePreviewSrc} = props.ImageActions;
@@ -88,6 +88,7 @@ function ImageCardContainer(props) {
             image={image} 
             delImage={delImage}
             setImageToggleChecked={setImageToggleChecked}
+            setImageCheckedFromNearestChecked={setImageCheckedFromNearestChecked}
             setImagePreviewOpen={setImagePreviewOpen} 
             setImagePreviewSrc={setImagePreviewSrc}
             imageShow={imageShow}

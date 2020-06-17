@@ -20,6 +20,7 @@ const SET_IMAGE_PREVIEW_SRC = 'imageList/SET_IMAGE_PREVIEW_SRC';
 const SET_IMAGE_CHECKBOX = 'imageList/SET_IMAGE_CHECKBOX';
 const SET_IMAGE_SAVED = 'imageList/SET_IMAGE_SAVED';
 const SET_ALL_IMAGE_CHECK = 'imageList/SET_ALL_IMAGE_CHECK';
+const SET_LAST_IMAGE_CHECKED = 'imageList/SET_LAST_IMAGE_CHECKED';
 const DEL_IMAGE_FORM_IMAGELIST = 'imageList/DEL_IMAGE_FORM_IMAGELIST';
 const SET_IMAGE_SHOW_PREVIEW = 'imageList/SET_IMAGE_SHOW_PREVIEW';
 
@@ -38,6 +39,7 @@ export const setImagePreviewSrc = createAction(SET_IMAGE_PREVIEW_SRC);
 export const setImageCheckbox = createAction(SET_IMAGE_CHECKBOX);
 export const setImageSaved = createAction(SET_IMAGE_SAVED);
 export const setAllImageCheck = createAction(SET_ALL_IMAGE_CHECK);
+export const setLastImageChecked = createAction(SET_LAST_IMAGE_CHECKED);
 export const delImageFromImagelist = createAction(DEL_IMAGE_FORM_IMAGELIST);
 export const setImageShowPreview = createAction(SET_IMAGE_SHOW_PREVIEW);
 
@@ -131,6 +133,31 @@ export const setImageToggleChecked = (imageIndex) => (dispatch, getState) => {
     const clickedImage = state.imageList.pageImages.get(pageIndex).find(image => image.index === imageIndex);
     const checked = !clickedImage.checked;
     dispatch(setImageCheckbox({pageIndex, imageIndex, checked}));
+    if(checked) dispatch(setLastImageChecked({pageIndex, imageIndex}));
+}
+
+export const setImageCheckedFromNearestChecked = (imageIndex) => (dispatch, getState) => {
+    const state = getState();
+    const pageIndex = state.imageList.currentTab;
+    const lastCheckedImageIndex = state.imageList.pageLastCheckedImage.get(pageIndex);
+    const shiftRightChecked = (index, lastIndex) => lastIndex < index;
+    const shiftLeftChecked = (index, lastIndex) => lastIndex > index;
+    const checkBetweenIndex = (start, end)  => {
+        const pageImages = state.imageList.pageImages.get(pageIndex);
+        pageImages.forEach(image => {
+            const imageIndex = image.index;
+            console.log(imageIndex,start,end);
+            if(imageIndex >= start && imageIndex <= end) dispatch(setImageCheckbox({pageIndex, imageIndex, checked:true}));
+        })
+    }
+    if(shiftRightChecked(imageIndex, lastCheckedImageIndex)){
+        // console.log(`shftRightChecked : ${imageIndex}, ${lastCheckedImageIndex}`);
+        checkBetweenIndex(lastCheckedImageIndex, imageIndex);
+    }
+    if(shiftLeftChecked(imageIndex, lastCheckedImageIndex)){
+        // console.log(`shiftLeftChecked : ${imageIndex}, ${lastCheckedImageIndex}`);
+        checkBetweenIndex(imageIndex, lastCheckedImageIndex);
+    }
 }
 
 export const delImage = (imageIndex, targetPageIndex) => async (dispatch, getState) => {
@@ -157,9 +184,9 @@ const initialState = {
     currentTab: null,
     pageImages: new Map(),
     pageTitles: new Map(),
+    pageLastCheckedImage: new Map(),
     imagePreviewOpen:false,
-    imageShow: true,
-    pageImageAllChecked: new Map()
+    imageShow: true
 }
 
 // reducer
@@ -320,12 +347,22 @@ export default handleActions({
 
         const pageImages = new Map(state.pageImages);
         pageImages.set(pageIndex, newImageData);
-        console.log(imageData, newImageData);
+        // console.log(imageData, newImageData);
         return {
             ...state,
             pageImages
         }
     },  
+    [SET_LAST_IMAGE_CHECKED]: (state, action) => {
+        // console.log('%%%%%%%%%%%%%%%%', action.payload);
+        const {pageIndex, imageIndex} = action.payload;
+        const pageLastCheckedImage = new Map(state.pageLastCheckedImage);
+        pageLastCheckedImage.set(pageIndex, imageIndex);
+        return {
+            ...state,
+            pageLastCheckedImage
+        }
+    }, 
     [SET_IMAGE_SAVED]: (state, action) => {
         // console.log('%%%%%%%%%%%%%%%%', action.payload);
         const {pageIndex, imageIndex} = action.payload;
@@ -352,12 +389,9 @@ export default handleActions({
         
         const pageImages = new Map(state.pageImages);
         pageImages.set(pageIndex, newImageData);
-        // const pageImageAllChecked = new Map(state.pageImageAllChecked);
-        // pageImageAllChecked.set(pageIndex, checked)
         return {
             ...state,
             pageImages,
-            // pageImageAllChecked
         }
     },  
     [DEL_IMAGE_FORM_IMAGELIST]: (state, action) => {

@@ -49,6 +49,7 @@ function ImageCard(props) {
     const {index, imageFname, imageSrc, metadata, checked, show} = props.image;
     const {sizeKB, reqUrl} = metadata;
     const {setImageToggleChecked, onClickSave, onClickRemove} = props;
+    const {setImageCheckedFromNearestChecked} = props;
     const {setImagePreviewOpen, setImagePreviewSrc} = props;
     const {delImage} = props;
     const {imageShow} = props;
@@ -58,9 +59,19 @@ function ImageCard(props) {
         setImagePreviewSrc({imageSrc, index, imageFname});
     },[imageSrc])
 
-    const onClickCheckBox = React.useCallback(() => {
+    const onClickCheckBox = React.useCallback((event) => {
+        if(event.shiftKey === true){
+            setImageCheckedFromNearestChecked(index);
+            return
+        }
         setImageToggleChecked(index);
     },[index])
+
+    // const onClickCheckBox = (event) => {
+    //     console.log(event.shiftKey)
+    //     setImageToggleChecked(index);
+    // }
+
 
     const onClickDeleteBtn = React.useCallback(() => {
         delImage(index); 
@@ -69,7 +80,7 @@ function ImageCard(props) {
     return (
         <Paper className={container} elevation={3} > 
             <Box bgcolor="aliceblue" >
-                <Checkbox className={smallCheckBox} checked={checked} onChange={onClickCheckBox}></Checkbox>
+                <Checkbox className={smallCheckBox} checked={checked} onClick={onClickCheckBox}></Checkbox>
                 <Link href="#" className={imageName} variant="caption" onClick={onClickImage}>{imageFname} [{sizeKB}KB]</Link>
             </Box>   
             {imageShow && <ImageBox reqUrl={reqUrl} imageSrc={imageSrc} onClickImage={onClickImage}></ImageBox>}
