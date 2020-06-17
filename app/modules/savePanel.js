@@ -76,7 +76,9 @@ export const saveFilesSelected = (pageIndex) => async (dispatch, getState)=> {
         try {
             await copyFunction(srcFullName, dstFullName);
         } catch(err) {
+            console.log(err)
             dispatch(logErrror(err));
+            dispatch(setSaveInProgress(false));
             break;
         }
 

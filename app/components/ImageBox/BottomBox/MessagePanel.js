@@ -3,6 +3,7 @@ import Box from '@material-ui/core/Box';
 import BorderedBox from '../../template/BorderedBox';
 import Typography from '@material-ui/core/Typography';
 import SectionWithFullHeightFlex from '../../template/SectionWithFullHeightFlex';
+const { app } = require('electron').remote;
 
 
 export default function MessagePanel(props) {
@@ -15,6 +16,9 @@ export default function MessagePanel(props) {
                 <Box bgcolor="midnightblue" display="flex" flexDirection="row" width="1">
                     <Box mx="10px">
                         <Typography variant={"caption"}>{messageText}</Typography>
+                    </Box>
+                    <Box ml="auto" >
+                        <Typography variant={"caption"}>{app.getVersion()}</Typography>
                     </Box>
                 </Box>
             </BorderedBox>
