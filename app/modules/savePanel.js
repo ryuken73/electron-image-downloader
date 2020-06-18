@@ -66,32 +66,31 @@ export const saveFilesSelected = (pageIndex) => async (dispatch, getState)=> {
     dispatch(logInfo('saving files...'));
     dispatch(setSaveInProgress(true));
     // const saveJobs = checkedImage.map(async image => {
-    for(let image of checkedImage) { 
-        const srcFileName = image.tmpFname;
-        const srcFullName = image.tmpSrc;
-        const dstFullName = path.join(pageSaveDirectory, srcFileName);
-        console.log(srcFullName, dstFullName);
-        const copyFunction = state.optionDialog.deleteAfterSave ? utils.file.move : utils.file.copy;
-        dispatch(logInfo(`saving file [${dstFullName}]`));
-        try {
+    try {
+        for(let image of checkedImage) { 
+            const srcFileName = image.tmpFname;
+            const srcFullName = image.tmpSrc;
+            const dstFullName = path.join(pageSaveDirectory, srcFileName);
+            console.log(srcFullName, dstFullName);
+            const copyFunction = state.optionDialog.deleteAfterSave ? utils.file.move : utils.file.copy;
+            dispatch(logInfo(`saving file [${dstFullName}]`));
             await copyFunction(srcFullName, dstFullName);
-        } catch(err) {
-            console.log(err)
-            dispatch(logErrror(err));
-            dispatch(setSaveInProgress(false));
-            break;
+            dispatch(logInfo(`saving file done! [${dstFullName}]`));
+            // TODO : too many dispatch makes application slow! first
+            // dispatch(setImageSaved({pageIndex, imageIndex: image.index}));
+            // dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index}));
+            const delayedDispatch = utils.fp.delayedExecute(dispatch, 100);
+            dispatch(logInfo(`deleteing file [${srcFullName}]`));        
+            await delayedDispatch(delImage(image.index, pageIndex))
+            dispatch(logInfo(`deleteing file done! [${srcFullName}]`));      
         }
-
-        dispatch(logInfo(`saving file done! [${dstFullName}]`));
-        // TODO : too many dispatch makes application slow! first
-        // dispatch(setImageSaved({pageIndex, imageIndex: image.index}));
-        // dispatch(delImageFromImagelist({pageIndex, imageIndex:image.index}));
-        const delayedDispatch = utils.fp.delayedExecute(dispatch, 100);
-        dispatch(logInfo(`deleteing file [${srcFullName}]`));        
-        await delayedDispatch(delImage(image.index, pageIndex))
-        dispatch(logInfo(`deleteing file done! [${srcFullName}]`));        
+    } catch(err) {
+        console.log(err)
+        dispatch(logError(err));
+        dispatch(setSaveInProgress(false));
+        return;
     }
-    dispatch(logInfo('saving files done!'));
+    dispatch(logInfo('All files are saved!'));
     dispatch(setSaveInProgress(false));
     state.optionDialog.closeTabAfterSave === 'YES' && dispatch(closeTabIfAllSaved(pageIndex))
 }

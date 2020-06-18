@@ -26,16 +26,24 @@ const clone = {
 }
 
 const file = {
+    validType : {
+        directory(dirname){
+            if(typeof(dirname) === 'string') return true;
+            return false;
+        }
+    },
     async delete(fname){
         return fs.promises.unlink(fname);
     },
     async move(srcFile, dstFile){
         const dstDirectory = path.dirname(dstFile);
-        const dstDirExists = await file.checkDirExists({dirname:dstDirectory});
-        console.log(`dstDirExists : ${dstDirExists}`);
-
+        await file.makeDirectory(dstDirectory);
+        if(!await file.checkDirExists(dstDirectory)) {
+            console.error('target directory to move does not exit');
+            return Promise.reject(`directory doesn't exists and creating directory failed. [${dstDirectory}]`);
+        }
         try {
-            console.log(`dstDirExists : ${dstDirExists}`);
+            console.log(`dstDirExists : ${dstDirectory}`);
             await fs.promises.rename(srcFile, dstFile); 
             return true            
         } catch (error) {
@@ -51,10 +59,12 @@ const file = {
     },
     async copy(srcFile, dstFile){
         const dstDirectory = path.dirname();
-        const dstDirExists = await file.checkDirExists({dirname:dstDirectory});
-        if(dstDirExists) return fs.promises.copyFile(srcFile, dstFile);
-        return Promise.reject();
-
+        await file.makeDirectory(dstDirectory);
+        if(!await file.checkDirExists(dstDirectory)) {
+            console.error('target directory to move does not exit');
+            return Promise.reject(`directory doesn't exists and creating directory failed. [${dstDirectory}]`);
+        }
+        return fs.promises.copyFile(srcFile, dstFile);
     },
     checkDirWritable({dirname}){
         return new Promise((resolve, reject) => {
@@ -70,30 +80,32 @@ const file = {
             });
         })
     },
-    checkDirExists({dirname, retryCount=0, MAX_RETRY_COUNT=2}){
-        return new Promise( async (resolve, reject) => {
-            try {
-                if(retryCount < MAX_RETRY_COUNT){
-                    console.log(`check directory exists [${dirname}][retry count=${retryCount}]`);
-                    const success = await file.checkDirWritable({dirname});
-                    if(success){
-                        console.log('end checkDirExists');
-                        resolve(true);
-                        return;
-                    }
-                }
-                console.error(`directory existence check failure [${dirname}]`);
-                reject(`MAX_RETRY_COUNT exceed [${MAX_RETRY_COUNT}]`);            
-            } catch (err) {
-                if(err.errno === -4058) {
-                    retryCount++;
-                    console.error(`directory not writable or not exist. try make directory [${dirname}]`);
-                    await mkdirp(dirname);
-                    const result = await file.checkDirExists({dirname, retryCount, MAX_RETRY_COUNT});
-                    resolve(true);
-                }
+    checkDirExists(dirname){
+        return new Promise((resolve, reject) => {
+            if(!file.validType.directory(dirname)){
+                resolve(false);
+                return
             }
+            fs.lstat(dirname, (err, stats) => {
+                if(err) {
+                    resolve(false);
+                    return
+                }
+                stats.isDirectory() && resolve(true);
+                !stats.isDirectory() && resolve(false);
+            })
         })
+    },
+    async makeDirectory(dirname){
+        if(!file.validType.directory(dirname)){
+            return Promise.resolve(false);
+        }
+        try {
+            mkdirp(dirname);
+        } catch (err) {
+            console.log(err)
+            return Promise.resolve(false);            
+        }
     }
 }
 
@@ -204,3 +216,18 @@ module.exports = {
 // const trottled = fp.throttle(100, console.log);
 // const looplog = fp.times(trottled, {count:100, sleep:100});
 // looplog('ryuken')
+
+// const main = async () => {
+//     const targetDirectory = 'd:/temp/a|b';
+//     // console.log(await file.checkDirExists('C:/'));
+//     // console.log(await file.checkDirExists('C:/temp'));
+//     // console.log(await file.checkDirExists('d:/ttt'));
+//     // console.log(await file.checkDirExists({}));
+//     console.log(await file.checkDirExists(targetDirectory));
+
+//     console.log(await file.makeDirectory(targetDirectory));
+//     console.log(await file.checkDirExists(targetDirectory));
+
+// }
+
+// main()
