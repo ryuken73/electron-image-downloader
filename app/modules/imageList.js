@@ -147,7 +147,11 @@ export const setImageCheckedFromNearestChecked = (imageIndex) => (dispatch, getS
         pageImages.forEach(image => {
             const imageIndex = image.index;
             console.log(imageIndex,start,end);
-            if(imageIndex >= start && imageIndex <= end) dispatch(setImageCheckbox({pageIndex, imageIndex, checked:true}));
+            if(imageIndex >= start && imageIndex <= end) {
+                dispatch(setImageCheckbox({pageIndex, imageIndex, checked:true}));
+            } else {
+                dispatch(setImageCheckbox({pageIndex, imageIndex, checked:false}));
+            }
         })
     }
     if(shiftRightChecked(imageIndex, lastCheckedImageIndex)){
