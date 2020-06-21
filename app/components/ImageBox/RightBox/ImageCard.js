@@ -77,8 +77,12 @@ function ImageCard(props) {
         delImage(index); 
     },[index])
 
+    const onClickImageCard = (event) => {
+        event.stopPropagation();
+    }
+    
     return (
-        <Paper className={container} elevation={3} > 
+        <Paper className={container} elevation={3} onClick={onClickImageCard}> 
             <Box bgcolor="aliceblue" >
                 <Checkbox className={smallCheckBox} checked={checked} onClick={onClickCheckBox}></Checkbox>
                 <Link href="#" className={imageName} variant="caption" onClick={onClickImage}>{imageFname} [{sizeKB}KB]</Link>
