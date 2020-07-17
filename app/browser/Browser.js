@@ -159,7 +159,9 @@ class Browser extends EventEmitter {
             }
             const requestIndex = page.requestMap.get(request);
             if(requestIndex === undefined) {
-                console.error(`response which cannot be mapped with request Map(not added) arrived :  Map[${pageIndex}], ${response.url()}`);
+                console.error(`response which cannot be mapped with request Map(not added) arrived. reload :  Map[${pageIndex}], ${response.url()}`);
+                await page.reload();
+                return;
             }
             const requestFname = getFirstStringBySep({str:getLastStringBySep({str: requestUrl, sep: '/'}), sep:'?'});
             const metadata = await imageUtil.getMetadata(buff);
@@ -271,7 +273,13 @@ class Browser extends EventEmitter {
                 await page.setRequestInterception(false);
                 console.log(`request resumed![${pageIndex}]`);
             },100)
-
+            if(title === ''){
+                console.log('title is empty.');
+                setTimeout(async () => {
+                    const title = await page.title();
+                    this.emit('titleChanged', {pageIndex, title});
+                },1000)
+            }
         });
 
         this._setDefaultBrowserEventHandler();
